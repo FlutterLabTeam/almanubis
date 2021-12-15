@@ -1,0 +1,1 @@
+class VerifyPhoneNumberException implements Exception {}
