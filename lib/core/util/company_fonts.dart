@@ -1,3 +1,4 @@
+import 'package:almanubis/core/util/company_colors.dart';
 import 'package:flutter/cupertino.dart';
 
 class CompanyFontStyle {
@@ -27,8 +28,10 @@ class CompanyFontStyle {
       textStyle: const TextStyle(
         fontSize: 14,
       ),
-      buttonStyle: const TextStyle(
+      buttonStyle: TextStyle(
         fontSize: 20,
+        fontWeight: FontWeight.w500,
+        color: CompanyColor.color().primary
       )
     );
   }

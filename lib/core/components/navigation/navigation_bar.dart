@@ -33,9 +33,10 @@ class CustomNavigationBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: CompanyColor.color().primary,
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: _getColor(model.color),
+            /*color: _getColor(model.color),*/
+            color: Colors.black26,
             blurRadius: 10,
             spreadRadius: 5,
           ),
@@ -46,10 +47,11 @@ class CustomNavigationBar extends StatelessWidget {
         children: [
           Expanded(
             child: IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.message_rounded,
-                //! TODO: Cambiar por color predefinido
-                color: Colors.white,
+                color: CompanyColor.color().third,
+                /*color: CompanyColor.color().primary,*/
+                size: 25,
               ),
               onPressed: onTapMessage,
             ),
@@ -59,6 +61,7 @@ class CustomNavigationBar extends StatelessWidget {
               child: IconButton(
                 icon: Icon(
                   Icons.add_rounded,
+                  size: 35,
                   color: CompanyColor.color().second,
                 ),
                 onPressed: onTapPlus,
@@ -66,9 +69,11 @@ class CustomNavigationBar extends StatelessWidget {
             ),
           Expanded(
             child: IconButton(
-              icon: const Icon(Icons.person),
-              //! TODO: Cambiar por color predefinido
-              color: Colors.white,
+              icon: Icon(
+                Icons.person,
+                color: CompanyColor.color().third,
+                size: 25,
+              ),
               onPressed: onTapPerson,
             ),
           ),
@@ -77,7 +82,7 @@ class CustomNavigationBar extends StatelessWidget {
     );
   }
 
-  Color _getColor(CustomNavigationBarColors color) {
+/*  Color _getColor(CustomNavigationBarColors color) {
     switch (color) {
       case CustomNavigationBarColors.black:
         return Colors.black;
@@ -86,5 +91,5 @@ class CustomNavigationBar extends StatelessWidget {
       default:
         return Colors.black;
     }
-  }
+  }*/
 }

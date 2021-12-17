@@ -9,6 +9,7 @@ class CompanyColor {
   final Color second;
   final Color second40;
   final Color second70;
+  final Color third;
 
  const CompanyColor({
     this.primary = _defaultColor,
@@ -18,6 +19,8 @@ class CompanyColor {
     this.second = _defaultColor,
     this.second40 = _defaultColor,
     this.second70 = _defaultColor,
+
+   this.third = _defaultColor,
   });
 
   factory CompanyColor.color(){
@@ -28,6 +31,7 @@ class CompanyColor {
       second: Color(0xFF64CCB8),
       second40: Color.fromARGB(40, 100, 204, 184),
       second70: Color.fromARGB(70, 100, 204, 184),
+      third: Color(0xFFFFFFFF),
     );
   }
 }
