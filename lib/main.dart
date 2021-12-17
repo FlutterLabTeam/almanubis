@@ -1,4 +1,5 @@
 import 'package:almanubis/routes.dart';
+import 'package:almanubis/test_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
               primaryColor: Colors.white,
               scaffoldBackgroundColor: Colors.white),
-          onGenerateRoute: Routes.generateRoute,
+          //  onGenerateRoute: Routes.generateRoute,
+          home: TestPage(),
         ));
   }
 }
