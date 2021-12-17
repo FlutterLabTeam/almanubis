@@ -1,3 +1,4 @@
+import 'package:almanubis/core/components/start/paint_start.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/components/image/custom_image.dart';
 import 'package:almanubis/core/components/input/custom_input.dart';
@@ -75,6 +76,17 @@ class _AuthPageState extends State<AuthPage> {
                 isObscure: false,
               ),
             ),
+          ),SizedBox(
+            height: 20,
+          ),
+          Container(
+            width: 20,
+            height: 20,
+            child: PaintStart(
+            )
+          ),
+          SizedBox(
+            height: 20,
           ),
         ]),
       ),
