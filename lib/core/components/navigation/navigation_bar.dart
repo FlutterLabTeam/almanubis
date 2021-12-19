@@ -33,14 +33,13 @@ class CustomNavigationBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: CompanyColor.color().primary,
-        boxShadow: const [
+    /*    boxShadow: const [
           BoxShadow(
-            /*color: _getColor(model.color),*/
             color: Colors.black26,
             blurRadius: 10,
             spreadRadius: 5,
           ),
-        ],
+        ],*/
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,7 +49,6 @@ class CustomNavigationBar extends StatelessWidget {
               icon: Icon(
                 Icons.message_rounded,
                 color: CompanyColor.color().third,
-                /*color: CompanyColor.color().primary,*/
                 size: 25,
               ),
               onPressed: onTapMessage,
@@ -81,15 +79,4 @@ class CustomNavigationBar extends StatelessWidget {
       ),
     );
   }
-
-/*  Color _getColor(CustomNavigationBarColors color) {
-    switch (color) {
-      case CustomNavigationBarColors.black:
-        return Colors.black;
-      case CustomNavigationBarColors.white:
-        return Colors.white;
-      default:
-        return Colors.black;
-    }
-  }*/
 }

@@ -83,7 +83,8 @@ class _AuthPageState extends State<AuthPage> {
                   child: CustomButton(
                     model: CustomButtonModel(
                       label: "Entrar",
-                      handledButton: () {},
+                      handledButton: () =>
+                          Navigator.of(context).pushNamed('/adminPanel'),
                       color: CustomButtonColor.dark,
                     ),
                   ),
@@ -94,11 +95,14 @@ class _AuthPageState extends State<AuthPage> {
                   children: [
                     Text(
                       "Solicita el acceso a ",
-                      style: TextStyle(color: CompanyColor.color().third, fontSize: 12),
+                      style: TextStyle(
+                          color: CompanyColor.color().third, fontSize: 12),
                     ),
                     GestureDetector(
-                      child: Text("Info@almanubis.com",
-                        style: TextStyle(color: CompanyColor.color().second, fontSize: 12),
+                      child: Text(
+                        "Info@almanubis.com",
+                        style: TextStyle(
+                            color: CompanyColor.color().second, fontSize: 12),
                       ),
                     )
                   ],
