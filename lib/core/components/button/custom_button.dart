@@ -9,26 +9,28 @@ enum CustomButtonColor {
 
 class CustomButtonModel {
   final CustomButtonColor color;
+  final String label;
+  final Function handledButton;
 
-  CustomButtonModel({this.color = CustomButtonColor.light});
+  CustomButtonModel({
+    this.label = "",
+    required this.handledButton,
+    this.color = CustomButtonColor.light,
+  });
 }
 
 class CustomButton extends StatelessWidget {
-  final String label;
-  final Function handledButton;
   final CustomButtonModel model;
 
   const CustomButton({
     Key? key,
-    this.label = "",
     required this.model,
-    required this.handledButton,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => handledButton(),
+      onTap: () => model.handledButton(),
       child: Expanded(
         child: Container(
           alignment: Alignment.center,
@@ -43,7 +45,7 @@ class CustomButton extends StatelessWidget {
             ],
           ),
           child: Text(
-            label,
+            model.label,
             style: CompanyFontStyle.style().buttonStyle,
           ),
         ),

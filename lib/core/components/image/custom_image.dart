@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-
 enum CustomImageColor {
   light,
   dark,
 }
+
 
 class CustomImageModel {
   final CustomImageColor color;
