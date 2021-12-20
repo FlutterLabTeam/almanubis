@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:almanubis/core/components/button/custom_button.dart';
 import 'package:almanubis/core/components/navigation/navigation_bar.dart';
 import 'package:almanubis/features/admin_panel/presentation/widgets/body_admin.dart';
-import 'package:flutter/material.dart';
 
 class AdminPanel extends StatefulWidget {
   const AdminPanel({Key? key}) : super(key: key);
