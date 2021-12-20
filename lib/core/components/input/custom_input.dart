@@ -34,6 +34,7 @@ class CustomInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final borderSide = BorderSide(color: _getColor(model.color), width: 2);
     return TextFormField(
       autofocus: false,
       obscureText: model.isObscure,
@@ -70,22 +71,22 @@ class CustomInput extends StatelessWidget {
           fontSize: 16,
         ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: _getColor(model.color), width: 2),
+          borderSide: borderSide,
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: _getColor(model.color), width: 2),
+          borderSide: borderSide,
         ),
         errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: _getColor(model.color), width: 2),
+          borderSide: borderSide,
         ),
         disabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: _getColor(model.color), width: 2),
+          borderSide: borderSide,
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: _getColor(model.color), width: 2),
+          borderSide: borderSide,
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: _getColor(model.color), width: 2),
+          borderSide: borderSide,
         ),
       ),
     );
