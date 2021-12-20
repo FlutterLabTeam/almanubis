@@ -26,27 +26,29 @@ class _AdminPanelState extends State<AdminPanel> {
                 height: size.height * 0.1,
                 margin: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                 child: CustomButton(
-                    model: CustomButtonModel(
-                        handledButton: () {},
-                        color: CustomButtonColor.dark,
-                        label: "CREAR GRUPO")),
+                  model: CustomButtonModel(
+                      handledButton: () {},
+                      color: CustomButtonColor.dark,
+                      label: "CREAR GRUPO"),
+                ),
               ),
               const SizedBox(height: 70),
               Container(
                 height: size.height * 0.1,
                 margin: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                 child: CustomButton(
-                    model: CustomButtonModel(
-                        handledButton: () {},
-                        color: CustomButtonColor.light,
-                        label: "CREAT USUARIO")),
+                  model: CustomButtonModel(
+                      handledButton: () => Navigator.of(context).pushNamed('/newUser'),
+                      color: CustomButtonColor.light,
+                      label: "CREAT USUARIO"),
+                ),
               )
             ]),
       ),
       bottomNavigationBar: CustomNavigationBar(
-        onTapPlus: (){},
+        onTapPlus: () {},
         model: CustomNavigationBarModel(
-           color: CustomNavigationBarColors.black,
+          color: CustomNavigationBarColors.black,
         ),
       ),
     );

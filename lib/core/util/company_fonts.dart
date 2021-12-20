@@ -24,9 +24,10 @@ class CompanyFontStyle {
 
   factory CompanyFontStyle.style(){
     return CompanyFontStyle(
-      titleStyle: const TextStyle(
+      titleStyle: TextStyle(
         fontSize: 24,
-        fontWeight: FontWeight.bold
+        fontWeight: FontWeight.bold,
+        color: CompanyColor.color().primary
       ),
       subTitleStyle:  const TextStyle(
           fontSize: 18,
