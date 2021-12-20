@@ -27,7 +27,7 @@ class _AdminPanelState extends State<AdminPanel> {
                 margin: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                 child: CustomButton(
                   model: CustomButtonModel(
-                      handledButton: () {},
+                      handledButton: () => Navigator.of(context).pushNamed('/listChat'),
                       color: CustomButtonColor.dark,
                       label: "CREAR GRUPO"),
                 ),

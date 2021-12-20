@@ -1,29 +1,21 @@
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:flutter/material.dart';
 
-
-enum ElevationCount{
-  E0,
-  E26,
-  E12,
-  E38,
-  E54,
-  E45,
-  E87,
-  E100
-}
+enum ElevationCount { E0, E26, E12, E38, E54, E45, E87, E100 }
 
 class CustomAppBarModel {
   final Widget body;
   final double? height;
-  final ElevationCount elevation;
+  final bool? disableGoBack;
   final Function handledGoBack;
+  final ElevationCount elevation;
 
   CustomAppBarModel({
     this.height = 110,
-    this.elevation = ElevationCount.E0,
     required this.body,
+    this.disableGoBack = false,
     required this.handledGoBack,
+    this.elevation = ElevationCount.E0,
   });
 }
 
@@ -35,18 +27,14 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: _getElevation(model.elevation),
-            offset: const Offset(0,2),
-            spreadRadius: 2,
-            blurRadius: 4,
-          )
-        ]
-
-      ),
+      decoration: BoxDecoration(color: Colors.white, boxShadow: [
+        BoxShadow(
+          color: _getElevation(model.elevation),
+          offset: const Offset(0, 2),
+          spreadRadius: 2,
+          blurRadius: 4,
+        )
+      ]),
       height: model.height,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -54,17 +42,16 @@ class CustomAppBar extends StatelessWidget {
         children: [
           Expanded(
             flex: 1,
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: CompanyColor.color().primary,
-            ),
+            child: model.disableGoBack!
+                ? Container()
+                : Icon(
+                    Icons.arrow_back_ios,
+                    color: CompanyColor.color().primary,
+                  ),
           ),
           Expanded(
-            flex: 3,
-            child: Container(
-              alignment: Alignment.center,
-                child: model.body)
-          ),
+              flex: 3,
+              child: Container(alignment: Alignment.center, child: model.body)),
           const Expanded(
             flex: 1,
             child: SizedBox(),
@@ -74,7 +61,7 @@ class CustomAppBar extends StatelessWidget {
     );
   }
 
-  Color _getElevation(ElevationCount elevation){
+  Color _getElevation(ElevationCount elevation) {
     switch (elevation) {
       case ElevationCount.E0:
         return Colors.transparent;
