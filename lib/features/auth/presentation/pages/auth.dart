@@ -83,8 +83,7 @@ class _AuthPageState extends State<AuthPage> {
                   child: CustomButton(
                     model: CustomButtonModel(
                       label: "Entrar",
-                      handledButton: () =>
-                          Navigator.of(context).pushNamed('/adminPanel'),
+                      handledButton: () => Navigator.of(context).pushNamed('/adminPanel'),
                       color: CustomButtonColor.dark,
                     ),
                   ),
