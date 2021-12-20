@@ -11,6 +11,9 @@ class CompanyFontStyle {
   final TextStyle titleAppDark;
   final TextStyle subTitleStyle;
   final TextStyle titleAppLight;
+  final TextStyle textCartDarkStyle;
+  final TextStyle labelCounterStyle;
+  final TextStyle textCartLightStyle;
 
   CompanyFontStyle({
     this.titleApp = _undefinedStyle,
@@ -20,6 +23,9 @@ class CompanyFontStyle {
     this.titleAppDark = _undefinedStyle,
     this.subTitleStyle = _undefinedStyle,
     this.titleAppLight = _undefinedStyle,
+    this.textCartDarkStyle = _undefinedStyle,
+    this.labelCounterStyle = _undefinedStyle,
+    this.textCartLightStyle = _undefinedStyle,
   });
 
   factory CompanyFontStyle.style(){
@@ -29,11 +35,26 @@ class CompanyFontStyle {
         fontWeight: FontWeight.bold,
         color: CompanyColor.color().primary
       ),
+      labelCounterStyle: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          color: CompanyColor.color().primary
+      ),
       subTitleStyle:  const TextStyle(
           fontSize: 18,
       ),
       textStyle: const TextStyle(
         fontSize: 14,
+      ),
+      textCartLightStyle: TextStyle(
+          fontSize: 12,
+          color: CompanyColor.color().second,
+          fontWeight: FontWeight.w400
+      ),
+      textCartDarkStyle: TextStyle(
+          fontSize: 12,
+          color: CompanyColor.color().primary,
+          fontWeight: FontWeight.w400
       ),
       buttonStyle: TextStyle(
         fontSize: 20,
