@@ -24,7 +24,7 @@ class SquareImage extends StatelessWidget {
       height: model.size,
       width: model.size,
       child: Image.network(
-        "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/97.jpg",
+        model.urlImage,
         fit: BoxFit.cover,
       ),
     );

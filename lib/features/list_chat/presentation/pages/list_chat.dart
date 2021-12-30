@@ -53,7 +53,7 @@ class _ListChatState extends State<ListChat> {
                           dateTime: dateTime,
                           description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed purus eget consectetur adipiscing elit",
                           counter: 3,
-                          imageUrl: "",
+                          imageUrl: "https://laboratoriosniam.com/wp-content/uploads/2018/07/michael-dam-258165-unsplash_WEB2.jpg",
                         ),
                       ),
                     );

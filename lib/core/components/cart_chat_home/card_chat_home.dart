@@ -40,7 +40,7 @@ class CardChatHome extends StatelessWidget {
               Expanded(
                 flex: 0,
                 child: SquareImage(
-                  model: SquareImageModel(urlImage: "", size: 60),
+                  model: SquareImageModel(urlImage: model.imageUrl, size: 60),
                 ),
               ),
               Expanded(

@@ -2,6 +2,7 @@ import 'package:almanubis/core/components/custom_chat/custom_chat.dart';
 import 'package:almanubis/core/components/header_chat/header_chat.dart';
 import 'package:almanubis/core/model/chat_model.dart';
 import 'package:almanubis/core/model/user_model.dart';
+import 'package:almanubis/features/chat_group/presentation/widgets/chat_input.dart';
 import 'package:flutter/material.dart';
 
 class ChatGroup extends StatefulWidget {
@@ -15,6 +16,14 @@ class ChatGroup extends StatefulWidget {
 
 class _ChatGroupState extends State<ChatGroup> {
   late Size size;
+  late bool isSend = false;
+  late TextEditingController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +55,13 @@ class _ChatGroupState extends State<ChatGroup> {
                         model: CustomChatModel(
                           color: CustomChatColor.light,
                           userModel: UserModel(
-                              image:
-                                  "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
-                              name: "Jeison"),
+                            image:
+                                "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
+                            name: "Jeison",
+                          ),
                           chatModel: ChatModel(
-                            label: "Hola mundo Como estan todos,  estan todos mundo Como Hola  ",
+                            label:
+                                "Hola mundo Como estan todos,  estan todos mundo Como Hola  ",
                             dateCreate: DateTime.now(),
                           ),
                         ),
@@ -58,21 +69,20 @@ class _ChatGroupState extends State<ChatGroup> {
                     );
                   }),
             ),
-
-
-
-            Container(
-              width: size.width,
-              height: size.height*0.1,
-              color: Colors.purple,
-              child: Row(
-                children: [
-                  Expanded(child: IconButton(
-                    onPressed: (){},
-                    icon: const Icon(Icons.link),
-                  ))
-                ],
-              ),
+            ChatInput(
+              isSend: isSend,
+              controller: controller,
+              handledChangeInput: (String text) {
+                if (text.isNotEmpty) {
+                  setState(() {
+                    isSend = true;
+                  });
+                } else {
+                  setState(() {
+                    isSend = false;
+                  });
+                }
+              },
             )
           ],
         ),
