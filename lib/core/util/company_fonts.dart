@@ -11,9 +11,13 @@ class CompanyFontStyle {
   final TextStyle titleAppDark;
   final TextStyle subTitleStyle;
   final TextStyle titleAppLight;
+  final TextStyle titleLightStyle;
   final TextStyle textCartDarkStyle;
   final TextStyle labelCounterStyle;
+  final TextStyle textCartWhiteStyle;
   final TextStyle textCartLightStyle;
+  final TextStyle textCartChatDarkStyle;
+  final TextStyle textCartChatWhiteStyle;
 
   CompanyFontStyle({
     this.titleApp = _undefinedStyle,
@@ -23,9 +27,13 @@ class CompanyFontStyle {
     this.titleAppDark = _undefinedStyle,
     this.subTitleStyle = _undefinedStyle,
     this.titleAppLight = _undefinedStyle,
+    this.titleLightStyle = _undefinedStyle,
     this.textCartDarkStyle = _undefinedStyle,
     this.labelCounterStyle = _undefinedStyle,
+    this.textCartWhiteStyle = _undefinedStyle,
     this.textCartLightStyle = _undefinedStyle,
+    this.textCartChatDarkStyle = _undefinedStyle,
+    this.textCartChatWhiteStyle = _undefinedStyle,
   });
 
   factory CompanyFontStyle.style(){
@@ -56,6 +64,11 @@ class CompanyFontStyle {
           color: CompanyColor.color().primary,
           fontWeight: FontWeight.w400
       ),
+      textCartWhiteStyle: TextStyle(
+          fontSize: 12,
+          color: CompanyColor.color().third,
+          fontWeight: FontWeight.w400
+      ),
       buttonStyle: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w500,
@@ -71,6 +84,21 @@ class CompanyFontStyle {
           fontSize: 40,
           letterSpacing: 10,
           fontWeight: FontWeight.w300,
+          color: CompanyColor.color().primary
+      ),
+      titleLightStyle: TextStyle(
+          fontSize: 30,
+          fontWeight: FontWeight.w700,
+          color: CompanyColor.color().third
+      ),
+      textCartChatWhiteStyle: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          color: CompanyColor.color().third
+      ),
+      textCartChatDarkStyle: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
           color: CompanyColor.color().primary
       ),
     );

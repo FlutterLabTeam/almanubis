@@ -31,23 +31,21 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => model.handledButton(),
-      child: Expanded(
-        child: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: _getColor(model.color),
-            boxShadow: [
-              BoxShadow(
-                  color: CompanyColor.color().second70,
-                  spreadRadius: 3,
-                  blurRadius: 3,
-                  offset: const Offset(0, 2))
-            ],
-          ),
-          child: Text(
-            model.label,
-            style: CompanyFontStyle.style().buttonStyle,
-          ),
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: _getColor(model.color),
+          boxShadow: [
+            BoxShadow(
+                color: CompanyColor.color().second70,
+                spreadRadius: 3,
+                blurRadius: 3,
+                offset: const Offset(0, 2))
+          ],
+        ),
+        child: Text(
+          model.label,
+          style: CompanyFontStyle.style().buttonStyle,
         ),
       ),
     );

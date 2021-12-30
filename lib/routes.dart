@@ -1,4 +1,5 @@
 import 'package:almanubis/features/admin_panel/presentation/pages/admin_panel.dart';
+import 'package:almanubis/features/chat_group/presentation/pages/chat_group.dart';
 import 'package:almanubis/features/list_chat/presentation/pages/list_chat.dart';
 import 'package:almanubis/features/new_user/presentation/pages/new_user.dart';
 import 'package:almanubis/features/auth/presentation/pages/auth.dart';
@@ -18,6 +19,7 @@ class Routes {
       case '/': return MaterialPageRoute(builder: (_) => const AuthPage());
       case '/newUser': return MaterialPageRoute(builder: (_) => const NewUser());
       case '/listChat': return MaterialPageRoute(builder: (_) => const ListChat());
+      case '/chatGroup': return MaterialPageRoute(builder: (_) => const ChatGroup());
       case '/adminPanel': return MaterialPageRoute(builder: (_) => const AdminPanel());
       default: return MaterialPageRoute(builder: (_) => const AuthPage());
     }

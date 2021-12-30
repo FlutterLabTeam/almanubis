@@ -78,8 +78,9 @@ class _AuthPageState extends State<AuthPage> {
                 Container(
                   height: size.height * 0.085,
                   margin: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.12,
-                      vertical: size.height * 0.08),
+                    horizontal: size.width * 0.12,
+                    vertical: size.height * 0.08,
+                  ),
                   child: CustomButton(
                     model: CustomButtonModel(
                       label: "Entrar",
