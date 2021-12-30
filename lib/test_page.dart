@@ -14,17 +14,18 @@ class _TestPageState extends State<TestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(children: [
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width,
           height: 69,
           child: CustomNavigationBar(
+            onTapPerson: () => Navigator.of(context).pushNamed('/userConfiguration'),
             model: CustomNavigationBarModel(),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         SizedBox(
@@ -32,6 +33,7 @@ class _TestPageState extends State<TestPage> {
           height: 69,
           child: CustomNavigationBar(
               model: CustomNavigationBarModel(),
+              onTapPerson: () => Navigator.of(context).pushNamed('/userConfiguration'),
               onTapPlus: () {
                 print('tap plus');
               }),

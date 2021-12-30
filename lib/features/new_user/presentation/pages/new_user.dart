@@ -117,6 +117,9 @@ class _NewUserState extends State<NewUser> {
       bottomNavigationBar: CustomNavigationBar(
         onTapPlus: () {},
         model: CustomNavigationBarModel(),
+        onTapPerson: (){
+          Navigator.of(context).pushNamed('/userConfiguration');
+        },
       ),
     );
   }

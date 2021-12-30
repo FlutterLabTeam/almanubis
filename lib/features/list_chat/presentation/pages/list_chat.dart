@@ -63,6 +63,9 @@ class _ListChatState extends State<ListChat> {
         ),
         bottomNavigationBar: CustomNavigationBar(
           model: CustomNavigationBarModel(),
+          onTapPerson: (){
+            Navigator.of(context).pushNamed('/userConfiguration');
+          },
         ),
       ),
     );
