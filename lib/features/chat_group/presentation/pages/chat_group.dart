@@ -1,8 +1,8 @@
+import 'package:almanubis/features/chat_group/presentation/widgets/chat_input.dart';
 import 'package:almanubis/core/components/custom_chat/custom_chat.dart';
 import 'package:almanubis/core/components/header_chat/header_chat.dart';
 import 'package:almanubis/core/model/chat_model.dart';
 import 'package:almanubis/core/model/user_model.dart';
-import 'package:almanubis/features/chat_group/presentation/widgets/chat_input.dart';
 import 'package:flutter/material.dart';
 
 class ChatGroup extends StatefulWidget {
@@ -39,7 +39,9 @@ class _ChatGroupState extends State<ChatGroup> {
                   description:
                       "Juan, Raúl, Fernando, Pol, Marta Juan, Raúl, Fernando, Pol, Marta",
                   title: "Reiki Usui",
-                  handledMenu: () {}),
+                  handledMenu: () {
+                    Navigator.pushNamed(context, '/informationPanelGroups');
+                  }),
             ),
             Flexible(
               child: ListView.builder(

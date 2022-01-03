@@ -40,7 +40,7 @@ class _NewUserState extends State<NewUser> {
               model: CustomAppBarModel(
                 body: Text(
                   "NUEVO USUARIO",
-                  style: CompanyFontStyle.style().titleStyle,
+                  style: CompanyFontStyle.style().titleStyleDark,
                 ),
                 handledGoBack: () {},
               ),

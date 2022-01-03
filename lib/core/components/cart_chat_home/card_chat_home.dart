@@ -53,7 +53,7 @@ class CardChatHome extends StatelessWidget {
                     children: [
                       Text(
                         model.title,
-                        style: CompanyFontStyle.style().titleStyle,
+                        style: CompanyFontStyle.style().titleStyleDark,
                       ),
                       const SizedBox(height: 5),
                       Text(

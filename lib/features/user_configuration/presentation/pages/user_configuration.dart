@@ -32,7 +32,7 @@ class _UserConfigurationState extends State<UserConfiguration> {
                   margin: EdgeInsets.symmetric(vertical: size.height * 0.07),
                   child: Text(
                     "NOMBRE DE USUARIO",
-                    style: CompanyFontStyle.style().titleStyle,
+                    style: CompanyFontStyle.style().titleStyleDark,
                   ),
                 ),
                 Text(
