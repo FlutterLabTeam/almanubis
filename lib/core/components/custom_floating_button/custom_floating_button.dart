@@ -28,11 +28,11 @@ class CustomFloatingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () => model.handledIcon,
+      onPressed: () => model.handledIcon(),
       backgroundColor: handledGenerateColor(model.color!),
       shape: const RoundedRectangleBorder(),
       child: Icon(
-        Icons.add,
+        model.icon,
         size: model.size!,
         color: handledGenerateIconColor(model.color!),
       ),

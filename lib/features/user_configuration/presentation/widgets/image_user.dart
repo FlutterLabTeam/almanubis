@@ -1,11 +1,11 @@
 import 'package:almanubis/core/util/company_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ImageUser extends StatelessWidget {
   static late Size size;
+  final String? image;
 
-  const ImageUser({Key? key}) : super(key: key);
+  const ImageUser({Key? key, this.image}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +14,9 @@ class ImageUser extends StatelessWidget {
       alignment: Alignment.bottomRight,
       children: [
         Container(
-          margin: EdgeInsets.all(10),
-          height: size.height * 0.25,
-          width: size.width * 0.5,
+          margin: const EdgeInsets.all(10),
+          height: size.width * 0.4,
+          width: size.width * 0.4,
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
@@ -25,14 +25,24 @@ class ImageUser extends StatelessWidget {
                 blurRadius: 9,
               )
             ],
-            image: const DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(
-                    "https://laboratoriosniam.com/wp-content/uploads/2018/07/michael-dam-258165-unsplash_WEB2.jpg")),
+            color: CompanyColor.color().primary,
+            image: image != null
+                ? DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                      image!,
+                    ),
+                  )
+                : null,
             border: Border.all(
               width: 4,
               color: CompanyColor.color().primary,
             ),
+          ),
+          child: Icon(
+            Icons.people_outline_rounded,
+            size: 100,
+            color: CompanyColor.color().third,
           ),
         ),
         Container(

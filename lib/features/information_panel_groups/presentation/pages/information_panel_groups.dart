@@ -1,13 +1,18 @@
-import 'package:almanubis/core/components/carousel_image_user/carousel_image_user.dart';
 import 'package:almanubis/core/components/custom_floating_button/custom_floating_button.dart';
+import 'package:almanubis/core/components/carousel_image_user/carousel_image_user.dart';
 import 'package:almanubis/core/components/custom_switch/custom_switch.dart';
-import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:almanubis/core/util/company_fonts.dart';
+import 'package:almanubis/core/model/user_model.dart';
 import 'package:flutter/material.dart';
 
+enum InformationPanelGroupsEnum { admin, user }
+
 class InformationPanelGroups extends StatefulWidget {
-  const InformationPanelGroups({Key? key}) : super(key: key);
+  final InformationPanelGroupsEnum typeUser;
+
+  const InformationPanelGroups({Key? key, required this.typeUser})
+      : super(key: key);
 
   @override
   _InformationPanelGroupsState createState() => _InformationPanelGroupsState();
@@ -42,65 +47,73 @@ class _InformationPanelGroupsState extends State<InformationPanelGroups> {
               ),
             ),
           ),
-          Expanded(
-            flex: 0,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 36, vertical: 20),
-              child: Text(
-                "Participantes",
-                style: CompanyFontStyle.style().titleStyleLight,
+
+          viewWidget(
+            enumData: widget.typeUser,
+            body: Expanded(
+              flex: 0,
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 36, vertical: 20),
+                child: Text(
+                  "Participantes",
+                  style: CompanyFontStyle.style().titleStyleLight,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 0,
-            child: SizedBox(
-              height: 100,
-              width: double.infinity,
-              child: CarouselImageUser(
-                handledIcon: () {},
-                listUserData: [
-                  UserModel(
-                    name: "Jeison Vargas",
-                    image:
+          ),viewWidget(
+            enumData: widget.typeUser,
+            body: Expanded(
+              flex: 0,
+              child: SizedBox(
+                height: 100,
+                width: double.infinity,
+                child: CarouselImageUser(
+                  model: CarouselImageUserModel(
+                    handledIcon: () {},
+                    listUserData: [
+                      UserModel(
+                        name: "Jeison Vargas",
+                        image:
                         "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
-                  ),
-                  UserModel(
-                    name: "Jeison Vargas",
-                    image:
+                      ),
+                      UserModel(
+                        name: "Jeison Vargas",
+                        image:
                         "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
-                  ),
-                  UserModel(
-                    name: "Jeison Vargas",
-                    image:
+                      ),
+                      UserModel(
+                        name: "Jeison Vargas",
+                        image:
                         "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
-                  ),
-                  UserModel(
-                    name: "Jeison Vargas",
-                    image:
+                      ),
+                      UserModel(
+                        name: "Jeison Vargas",
+                        image:
                         "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
-                  ),
-                  UserModel(
-                    name: "Jeison Vargas",
-                    image:
+                      ),
+                      UserModel(
+                        name: "Jeison Vargas",
+                        image:
                         "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
-                  ),
-                  UserModel(
-                    name: "Jeison Vargas",
-                    image:
+                      ),
+                      UserModel(
+                        name: "Jeison Vargas",
+                        image:
                         "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
-                  ),
-                  UserModel(
-                    name: "Jeison Vargas",
-                    image:
+                      ),
+                      UserModel(
+                        name: "Jeison Vargas",
+                        image:
                         "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
-                  ),
-                  UserModel(
-                    name: "Jeison Vargas",
-                    image:
+                      ),
+                      UserModel(
+                        name: "Jeison Vargas",
+                        image:
                         "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
@@ -114,14 +127,13 @@ class _InformationPanelGroupsState extends State<InformationPanelGroups> {
               ),
             ),
           ),
-           Expanded(
-            flex: 0,
-            child: CustomSwitch(
-              label: "Silenciar notificaciones",
-              state: true,
-              handledSwitch: (bool state){},
-            )
-          ),
+          Expanded(
+              flex: 0,
+              child: CustomSwitch(
+                label: "Silenciar notificaciones",
+                state: true,
+                handledSwitch: (bool state) {},
+              )),
         ],
       ),
       floatingActionButton: CustomFloatingButton(
@@ -131,5 +143,10 @@ class _InformationPanelGroupsState extends State<InformationPanelGroups> {
         ),
       ),
     );
+  }
+
+  Widget viewWidget({required Widget body, required InformationPanelGroupsEnum enumData}){
+    if(enumData == InformationPanelGroupsEnum.admin) return body;
+    return Container();
   }
 }

@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 
-enum ImageUserColor {
+enum ImageUserOptionColor {
   light,
   dark,
 }
 
-class ImageUserModel {
+class ImageUserOptionModel {
   final String image;
   final IconData icon;
   final double? size;
-  final ImageUserColor? color;
+  final ImageUserOptionColor? color;
   final Function handledIcon;
 
-  ImageUserModel({
+  ImageUserOptionModel({
     this.size = 50,
     required this.icon,
     required this.image,
     required this.handledIcon,
-    this.color = ImageUserColor.light,
+    this.color = ImageUserOptionColor.light,
   });
 }
 
-class ImageUser extends StatelessWidget {
+class ImageUserOption extends StatelessWidget {
 
-  final ImageUserModel model;
+  final ImageUserOptionModel model;
 
-  const ImageUser({Key? key, required this.model}) : super(key: key);
+  const ImageUserOption({Key? key, required this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -71,29 +71,29 @@ class ImageUser extends StatelessWidget {
     );
   }
 
-  Color handledGenerateColor(ImageUserColor customChatColor) {
+  Color handledGenerateColor(ImageUserOptionColor customChatColor) {
     switch (customChatColor) {
-      case ImageUserColor.light:
+      case ImageUserOptionColor.light:
         return CompanyColor.color().second;
-      case ImageUserColor.dark:
+      case ImageUserOptionColor.dark:
         return CompanyColor.color().primary;
     }
   }
 
-  Color handledGenerateIconColor(ImageUserColor customChatColor) {
+  Color handledGenerateIconColor(ImageUserOptionColor customChatColor) {
     switch (customChatColor) {
-      case ImageUserColor.dark:
+      case ImageUserOptionColor.dark:
         return CompanyColor.color().third;
-      case ImageUserColor.light:
+      case ImageUserOptionColor.light:
         return CompanyColor.color().primary;
     }
   }
 
-  Color handledGenerateBackColor(ImageUserColor customChatColor) {
+  Color handledGenerateBackColor(ImageUserOptionColor customChatColor) {
     switch (customChatColor) {
-      case ImageUserColor.light:
+      case ImageUserOptionColor.light:
         return CompanyColor.color().second70;
-      case ImageUserColor.dark:
+      case ImageUserOptionColor.dark:
         return CompanyColor.color().primary70;
     }
   }

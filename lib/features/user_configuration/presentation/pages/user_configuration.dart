@@ -27,7 +27,9 @@ class _UserConfigurationState extends State<UserConfiguration> {
                 Container(
                   width: size.width,
                 ),
-                ImageUser(),
+                ImageUser(
+                  image: "https://laboratoriosniam.com/wp-content/uploads/2018/07/michael-dam-258165-unsplash_WEB2.jpg",
+                ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: size.height * 0.07),
                   child: Text(

@@ -1,3 +1,4 @@
+import 'package:almanubis/core/util/company_colors.dart';
 import 'package:flutter/cupertino.dart';
 
 class SquareImageModel {
@@ -20,7 +21,13 @@ class SquareImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: CompanyColor.color().primary,
+          width: 1
+        )
+      ),
       height: model.size,
       width: model.size,
       child: Image.network(

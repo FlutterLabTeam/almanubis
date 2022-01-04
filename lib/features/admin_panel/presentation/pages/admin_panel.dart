@@ -28,7 +28,7 @@ class _AdminPanelState extends State<AdminPanel> {
                 child: CustomButton(
                   model: CustomButtonModel(
                       handledButton: () =>
-                          Navigator.of(context).pushNamed('/listChat'),
+                          Navigator.of(context).pushNamed('/newGroup'),
                       color: CustomButtonColor.dark,
                       label: "CREAR GRUPO"),
                 ),
@@ -39,8 +39,7 @@ class _AdminPanelState extends State<AdminPanel> {
                 margin: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                 child: CustomButton(
                   model: CustomButtonModel(
-                      handledButton: () =>
-                          Navigator.of(context).pushNamed('/newUser'),
+                      handledButton: () => Navigator.of(context).pushNamed('/newUser'),
                       color: CustomButtonColor.light,
                       label: "CREAT USUARIO"),
                 ),
@@ -49,6 +48,7 @@ class _AdminPanelState extends State<AdminPanel> {
       ),
       bottomNavigationBar: CustomNavigationBar(
         onTapPlus: () {},
+        onTapMessage: () => Navigator.of(context).pushNamed('/listChat'),
         onTapPerson: () => Navigator.of(context).pushNamed('/userConfiguration'),
         model: CustomNavigationBarModel(
           color: CustomNavigationBarColors.black,

@@ -30,96 +30,97 @@ class _NewUserState extends State<NewUser> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CustomAppBar(
-              model: CustomAppBarModel(
-                body: Text(
-                  "NUEVO USUARIO",
-                  style: CompanyFontStyle.style().titleStyleDark,
-                ),
-                handledGoBack: () {},
-              ),
-            ),
-            Container(
-              height: size.height * 0.17,
-              margin: EdgeInsets.only(
-                top: size.height * 0.02,
-                bottom: size.height * 0.02,
-              ),
-              width: double.infinity,
-              child: CustomImage(
-                model: CustomImageModel(color: CustomImageColor.dark),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                top: size.height * 0.02,
-                bottom: size.height * 0.02,
-                right: size.width * 0.12,
-                left: size.width * 0.12,
-              ),
-              child: CustomInput(
-                model: CustomInputColorModel(
-                    color: CustomInputColor.dark,
-                    label: "Usuario",
-                    controller: userController),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                top: size.height * 0.02,
-                bottom: size.height * 0.02,
-                right: size.width * 0.12,
-                left: size.width * 0.12,
-              ),
-              child: CustomInput(
-                model: CustomInputColorModel(
-                    color: CustomInputColor.dark,
-                    label: "Correo electronico",
-                    controller: emailController),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                top: size.height * 0.02,
-                bottom: size.height * 0.02,
-                right: size.width * 0.12,
-                left: size.width * 0.12,
-              ),
-              child: CustomInput(
-                model: CustomInputColorModel(
-                    color: CustomInputColor.dark,
-                    label: "Contraseña",
-                    controller: passwordController),
-              ),
-            ),
-            Container(
-              height: size.height * 0.085,
-              margin: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.12,
-                  vertical: size.height * 0.02),
-              child: CustomButton(
-                model: CustomButtonModel(
-                  label: "CREAR USUARIO",
-                  handledButton: () => Navigator.of(context).pushNamed('/adminPanel'),
-                  color: CustomButtonColor.dark,
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CustomAppBar(
+                model: CustomAppBarModel(
+                  body: Text(
+                    "NUEVO USUARIO",
+                    style: CompanyFontStyle.style().titleStyleDark,
+                  ),
+                  handledGoBack: () => Navigator.of(context).pop(),
                 ),
               ),
-            ),
-          ],
+              Container(
+                height: size.height * 0.17,
+                margin: EdgeInsets.only(
+                  top: size.height * 0.02,
+                  bottom: size.height * 0.02,
+                ),
+                width: double.infinity,
+                child: CustomImage(
+                  model: CustomImageModel(color: CustomImageColor.dark),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                  top: size.height * 0.02,
+                  bottom: size.height * 0.02,
+                  right: size.width * 0.12,
+                  left: size.width * 0.12,
+                ),
+                child: CustomInput(
+                  model: CustomInputColorModel(
+                      color: CustomInputColor.dark,
+                      label: "Usuario",
+                      controller: userController),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                  top: size.height * 0.02,
+                  bottom: size.height * 0.02,
+                  right: size.width * 0.12,
+                  left: size.width * 0.12,
+                ),
+                child: CustomInput(
+                  model: CustomInputColorModel(
+                      color: CustomInputColor.dark,
+                      label: "Correo electronico",
+                      controller: emailController),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                  top: size.height * 0.02,
+                  bottom: size.height * 0.02,
+                  right: size.width * 0.12,
+                  left: size.width * 0.12,
+                ),
+                child: CustomInput(
+                  model: CustomInputColorModel(
+                      color: CustomInputColor.dark,
+                      label: "Contraseña",
+                      controller: passwordController),
+                ),
+              ),
+              Container(
+                height: size.height * 0.085,
+                margin: EdgeInsets.symmetric(
+                    horizontal: size.width * 0.12,
+                    vertical: size.height * 0.02),
+                child: CustomButton(
+                  model: CustomButtonModel(
+                    label: "CREAR USUARIO",
+                    handledButton: () => Navigator.of(context).pushNamed('/adminPanel'),
+                    color: CustomButtonColor.dark,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: CustomNavigationBar(
-        onTapPlus: () {},
-        model: CustomNavigationBarModel(),
-        onTapPerson: (){
-          Navigator.of(context).pushNamed('/userConfiguration');
-        },
+        bottomNavigationBar: CustomNavigationBar(
+          onTapPlus: () {},
+          model: CustomNavigationBarModel(),
+          onTapMessage: () => Navigator.of(context).pushNamed('/listChat'),
+          onTapPerson: ()=> Navigator.of(context).pushNamed('/userConfiguration'),
+        ),
       ),
     );
   }

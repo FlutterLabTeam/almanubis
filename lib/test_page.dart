@@ -21,6 +21,7 @@ class _TestPageState extends State<TestPage> {
           width: MediaQuery.of(context).size.width,
           height: 69,
           child: CustomNavigationBar(
+            onTapMessage: () => Navigator.of(context).pushNamed('/listChat'),
             onTapPerson: () => Navigator.of(context).pushNamed('/userConfiguration'),
             model: CustomNavigationBarModel(),
           ),
@@ -34,9 +35,8 @@ class _TestPageState extends State<TestPage> {
           child: CustomNavigationBar(
               model: CustomNavigationBarModel(),
               onTapPerson: () => Navigator.of(context).pushNamed('/userConfiguration'),
-              onTapPlus: () {
-                print('tap plus');
-              }),
+              onTapMessage: () => Navigator.of(context).pushNamed('/listChat'),
+              onTapPlus: () {}),
         ),
       ]),
     );
