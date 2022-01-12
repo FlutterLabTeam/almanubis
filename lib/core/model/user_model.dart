@@ -21,20 +21,21 @@ class UserModel {
   DateTime dateCreate;
   DateTime? dateUpdate;
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+  factory UserModel.fromJson(Map<String, dynamic> json, String id) => UserModel(
+    uid: id,
     rol: json["rol"],
-    uid: json["uid"],
     name: json["name"],
     email: json["email"],
     image: json["image"],
-    dateCreate: json["dateCreate"],
-    dateUpdate: json["dateUpdate"],
+    // ignore: prefer_null_aware_operators
+    dateCreate: json["dateCreate"] != null ? json["dateCreate"].toDate() : null,
+    // ignore: prefer_null_aware_operators
+    dateUpdate: json["dateUpdate"] != null ? json["dateUpdate"].toDate() : null,
     description: json["description"],
     query: List<String>.from(json["query"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
-    "uid": uid,
     "rol": rol,
     "name": name,
     "email": email,
