@@ -11,10 +11,9 @@ import 'package:almanubis/features/auth/presentation/bloc/auth_bloc.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  /*SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom, SystemUiOverlay.top]);*/
   WidgetsFlutterBinding.ensureInitialized();
 
-  di.init();
+  await di.init();
   runApp(const MyApp());
 }
 

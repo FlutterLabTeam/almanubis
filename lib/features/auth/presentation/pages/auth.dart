@@ -2,6 +2,8 @@ import 'package:almanubis/core/components/button/custom_button.dart';
 import 'package:almanubis/core/components/image/custom_image.dart';
 import 'package:almanubis/core/components/input/custom_input.dart';
 import 'package:almanubis/core/components/body/custom_body.dart';
+import 'package:almanubis/core/constant.dart';
+import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:almanubis/core/util/company_fonts.dart';
 import 'package:almanubis/core/util/snack_bar_message.dart';
@@ -51,7 +53,7 @@ class _AuthPageState extends State<AuthPage> {
           );
         }
         if (state is GetUserDataLoadedState) {
-          handledGoHome();
+          handledGoHome(state.userModel);
         }
       },
       child: Scaffold(
@@ -166,7 +168,10 @@ class _AuthPageState extends State<AuthPage> {
     ));
   }
 
-  handledGoHome() {
-    Navigator.pushReplacementNamed(context, "/adminPanel");
+  handledGoHome(UserModel userModel) {
+    if(userModel.rol == adminConstant){
+      Navigator.pushReplacementNamed(context, "/adminPanel");
+    }
+      Navigator.pushReplacementNamed(context, "/listChat");
   }
 }

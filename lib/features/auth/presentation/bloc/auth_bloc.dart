@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'package:almanubis/core/model/user_model.dart';
+import 'package:almanubis/core/usecases/use_cases.dart';
+import 'package:almanubis/features/auth/data/models/credentials_model.dart';
 import 'package:almanubis/features/auth/domain/usecases/get_user_data.dart';
 import 'package:almanubis/features/auth/domain/usecases/login_email.dart';
+import 'package:almanubis/features/auth/domain/usecases/validate_user_logged.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,10 +16,12 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final GetUserData getUserData;
   final LoginEmail loginEmail;
+  final ValidateUserLogged validateUserLogged;
 
   AuthBloc({
     required this.loginEmail,
     required this.getUserData,
+    required this.validateUserLogged,
   }) : super(AuthInitial());
 
   @override
@@ -48,6 +53,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is ChangePasswordEvent) {
       yield LoginLoadingState();
       yield ChangePasswordState(state: event.state);
+    }
+    if (event is ValidateUserLoggedEvent) {
+      final dataCredential = await validateUserLogged(NoParams());
+      yield* dataCredential.fold((error) async* {
+        yield NoExistCredentialErrorState();
+      }, (credential) async* {
+        if (credential.email.isEmpty) {
+          yield NoExistCredentialErrorState();
+        } else {
+          yield ExistCredentialState(dataCredential: credential);
+        }
+      });
     }
   }
 }

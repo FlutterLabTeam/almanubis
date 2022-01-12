@@ -7,6 +7,7 @@ import 'package:almanubis/features/chat_group/presentation/pages/chat_group.dart
 import 'package:almanubis/features/list_chat/presentation/pages/list_chat.dart';
 import 'package:almanubis/features/new_user/presentation/pages/new_user.dart';
 import 'package:almanubis/features/auth/presentation/pages/auth.dart';
+import 'package:almanubis/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -20,8 +21,9 @@ class Routes {
     }*/
 
     switch (settings.name) {
-      case '/': return MaterialPageRoute(builder: (_) => const AuthPage());
+      case '/': return MaterialPageRoute(builder: (_) => const AppSplashScreen());
       case '/newUser': return MaterialPageRoute(builder: (_) => const NewUser());
+      case '/authPage': return MaterialPageRoute(builder: (_) => const AuthPage());
       case '/newGroup': return MaterialPageRoute(builder: (_) => const NewGroup());
       case '/listChat': return MaterialPageRoute(builder: (_) => const ListChat());
       case '/saveGroup': return MaterialPageRoute(builder: (_) => const SaveGroup());

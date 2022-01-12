@@ -1,3 +1,4 @@
+import 'package:almanubis/features/auth/data/models/credentials_model.dart';
 import 'package:dartz/dartz.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/exceptions.dart';
@@ -28,6 +29,16 @@ class AuthRepositoryImpl implements AuthRepository{
       return Right(response);
     } on LoginEmailException {
       return Left(LoginEmailFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, CredentialsModel>> validateUserLogged() async {
+    try {
+      final result = await authDataSource.validateUserLogged();
+      return Right(result);
+    } on ValidateUserLoggedException {
+      return Left(ValidateUserLoggedFailure());
     }
   }
 }

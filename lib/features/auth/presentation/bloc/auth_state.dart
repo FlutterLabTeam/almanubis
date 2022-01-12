@@ -22,3 +22,12 @@ class ChangePasswordState implements AuthState {
 
   ChangePasswordState({required this.state});
 }
+
+class NoExistCredentialErrorState extends AuthState {}
+
+class ExistCredentialState extends AuthState {
+
+  final CredentialsModel dataCredential;
+
+  ExistCredentialState({required this.dataCredential});
+}

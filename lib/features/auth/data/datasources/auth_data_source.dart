@@ -1,23 +1,36 @@
+import 'dart:convert';
+
+import 'package:almanubis/features/auth/data/models/credentials_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/core/errors/exceptions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AuthDataSource {
   Future<User> loginEmail(String email, String password);
+
+  Future<CredentialsModel> validateUserLogged();
+
   Future<UserModel> getUserDb(String uid);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firestore;
+  final SharedPreferences sharedPreferences;
 
-  AuthDataSourceImpl({required this.firebaseAuth, required this.firestore});
+  AuthDataSourceImpl({
+    required this.firestore,
+    required this.firebaseAuth,
+    required this.sharedPreferences,
+  });
 
   @override
   Future<User> loginEmail(String email, String password) async {
     try {
-      final UserCredential userCredential = await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      final UserCredential userCredential = await firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
       return userCredential.user!;
     } catch (e) {
       throw LoginEmailException();
@@ -33,6 +46,23 @@ class AuthDataSourceImpl implements AuthDataSource {
       return user;
     } catch (e) {
       throw GetUserDbException();
+    }
+  }
+
+  @override
+  Future<CredentialsModel> validateUserLogged() async {
+    try {
+      String? credentials = sharedPreferences.getString("userCredentials");
+      if (credentials != null) {
+        Map<String, dynamic> data = jsonDecode(credentials);
+        return CredentialsModel(
+          email: data["email"],
+          password: data["password"],
+        );
+      }
+      return CredentialsModel(email: "", password: "");
+    } on Exception {
+      throw ValidateUserLoggedException();
     }
   }
 }

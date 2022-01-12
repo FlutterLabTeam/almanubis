@@ -17,3 +17,5 @@ class ChangePasswordEvent implements AuthEvent {
 
   ChangePasswordEvent({required this.state});
 }
+
+class ValidateUserLoggedEvent extends AuthEvent {}
