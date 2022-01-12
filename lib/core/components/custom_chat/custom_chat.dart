@@ -42,7 +42,7 @@ class CustomChat extends StatelessWidget {
                 flex: 0,
                 child: SquareImage(
                   model: SquareImageModel(
-                    urlImage: model.userModel.image,
+                    urlImage: model.userModel.image!,
                     size: size.width * 0.12,
                   ),
                 ),

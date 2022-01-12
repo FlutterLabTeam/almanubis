@@ -39,7 +39,7 @@ class CarouselImageUser extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 10),
             child: ImageUserOption(
               model: ImageUserOptionModel(
-                image: model.listUserData[index].image,
+                image: model.listUserData[index].image!,
                 icon: Icons.clear,
                 color: handledGenerateBackColor(model.color),
                 handledIcon: () => model.handledIcon,

@@ -57,9 +57,12 @@ class _ChatGroupState extends State<ChatGroup> {
                         model: CustomChatModel(
                           color: CustomChatColor.light,
                           userModel: UserModel(
-                            image:
-                                "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
+                            image: "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
                             name: "Jeison",
+                            email: "",
+                            dateCreate: DateTime.now(),
+                            query: [],
+                            rol: ""
                           ),
                           chatModel: ChatModel(
                             label:

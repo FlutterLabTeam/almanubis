@@ -39,11 +39,11 @@ class ImageUser extends StatelessWidget {
               color: CompanyColor.color().primary,
             ),
           ),
-          child: Icon(
+          child: image == null ? Icon(
             Icons.people_outline_rounded,
             size: 100,
             color: CompanyColor.color().third,
-          ),
+          ) : null,
         ),
         Container(
           height: size.height * 0.05,

@@ -25,7 +25,7 @@ class _NewGroupState extends State<NewGroup> {
 
   @override
   Widget build(BuildContext context) {
-  /*  size = MediaQuery.of(context).size;*/
+    /*  size = MediaQuery.of(context).size;*/
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -50,45 +50,69 @@ class _NewGroupState extends State<NewGroup> {
                   color: CarouselColor.dark,
                   listUserData: [
                     UserModel(
-                      name: "Jeison Vargas",
-                      image:
-                          "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
-                    ),
+                        image:
+                            "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
+                        name: "Jeison",
+                        email: "",
+                        dateCreate: DateTime.now(),
+                        query: [],
+                        rol: ""),
                     UserModel(
-                      name: "Jeison Vargas",
-                      image:
-                          "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
-                    ),
+                        image:
+                            "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
+                        name: "Jeison",
+                        email: "",
+                        dateCreate: DateTime.now(),
+                        query: [],
+                        rol: ""),
                     UserModel(
-                      name: "Jeison Vargas",
-                      image:
-                          "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
-                    ),
+                        image:
+                            "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
+                        name: "Jeison",
+                        email: "",
+                        dateCreate: DateTime.now(),
+                        query: [],
+                        rol: ""),
                     UserModel(
-                      name: "Jeison Vargas",
-                      image:
-                          "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
-                    ),
+                        image:
+                            "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
+                        name: "Jeison",
+                        email: "",
+                        dateCreate: DateTime.now(),
+                        query: [],
+                        rol: ""),
                     UserModel(
-                      name: "Jeison Vargas",
-                      image:
-                          "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
-                    ),
+                        image:
+                            "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
+                        name: "Jeison",
+                        email: "",
+                        dateCreate: DateTime.now(),
+                        query: [],
+                        rol: ""),
                     UserModel(
-                      name: "Jeison Vargas",
-                      image:
-                          "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
-                    ),
+                        image:
+                            "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
+                        name: "Jeison",
+                        email: "",
+                        dateCreate: DateTime.now(),
+                        query: [],
+                        rol: ""),
                     UserModel(
-                      name: "Jeison Vargas",
-                      image:
-                          "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
-                    ),
+                        image:
+                            "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
+                        name: "Jeison",
+                        email: "",
+                        dateCreate: DateTime.now(),
+                        query: [],
+                        rol: ""),
                     UserModel(
-                      name: "Jeison Vargas",
-                      image:
-                          "https://www.caritas.org.mx/wp-content/uploads/2019/02/cualidades-persona-humanitaria.jpg",
-                    ),
+                        image:
+                            "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
+                        name: "Jeison",
+                        email: "",
+                        dateCreate: DateTime.now(),
+                        query: [],
+                        rol: ""),
                   ],
                 ),
               ),
@@ -108,7 +132,7 @@ class _NewGroupState extends State<NewGroup> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemBuilder: (context, index) => Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
+                        margin: const EdgeInsets.symmetric(vertical: 10),
                         child: SelectedItem()),
                   ),
                 ),

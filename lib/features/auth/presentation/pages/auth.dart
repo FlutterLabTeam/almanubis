@@ -1,10 +1,10 @@
 import 'package:almanubis/core/components/button/custom_button.dart';
 import 'package:almanubis/core/components/image/custom_image.dart';
 import 'package:almanubis/core/components/input/custom_input.dart';
+import 'package:almanubis/core/components/body/custom_body.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:almanubis/core/util/company_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:almanubis/core/components/body/custom_body.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -84,7 +84,7 @@ class _AuthPageState extends State<AuthPage> {
                   child: CustomButton(
                     model: CustomButtonModel(
                       label: "Entrar",
-                      handledButton: () => Navigator.of(context).pushNamed('/adminPanel'),
+                      handledButton: () => /*generateQuery(emailController.text),*/Navigator.of(context).pushNamed('/adminPanel'),
                       color: CustomButtonColor.dark,
                     ),
                   ),

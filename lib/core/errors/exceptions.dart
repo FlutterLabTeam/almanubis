@@ -1,1 +1,3 @@
-class VerifyPhoneNumberException implements Exception {}
+class RegisterEmailException implements Exception {}
+
+class RegisterUseDbException implements Exception {}
