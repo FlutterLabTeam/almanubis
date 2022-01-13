@@ -1,3 +1,4 @@
+import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/features/information_panel_groups/presentation/pages/information_panel_groups.dart';
 import 'package:almanubis/features/new_group/presentation/pages/new_group.dart';
 import 'package:almanubis/features/save_group/presentation/pages/save_group.dart';
@@ -13,12 +14,12 @@ import 'package:flutter/material.dart';
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
 
-    /*UserModel userModel = UserModel();*/
-    /*final argument  = settings.arguments;*/
+    List<UserModel> listUserModel = [];
+    final argument  = settings.arguments;
 
-    /*if(argument is UserModel){
-      userModel = argument;
-    }*/
+    if(argument is List<UserModel>){
+      listUserModel = argument;
+    }
 
     switch (settings.name) {
       case '/': return MaterialPageRoute(builder: (_) => const AppSplashScreen());
@@ -26,10 +27,10 @@ class Routes {
       case '/authPage': return MaterialPageRoute(builder: (_) => const AuthPage());
       case '/newGroup': return MaterialPageRoute(builder: (_) => const NewGroup());
       case '/listChat': return MaterialPageRoute(builder: (_) => const ListChat());
-      case '/saveGroup': return MaterialPageRoute(builder: (_) => const SaveGroup());
       case '/chatGroup': return MaterialPageRoute(builder: (_) => const ChatGroup());
       case '/adminPanel': return MaterialPageRoute(builder: (_) => const AdminPanel());
       case '/userConfiguration': return MaterialPageRoute(builder: (_) => const UserConfiguration());
+      case '/saveGroup': return MaterialPageRoute(builder: (_) =>  SaveGroup(listUser: listUserModel));
       case '/informationPanelGroups': return MaterialPageRoute(builder: (_) => const InformationPanelGroups(typeUser: InformationPanelGroupsEnum.admin));
       default: return MaterialPageRoute(builder: (_) => const AuthPage());
     }

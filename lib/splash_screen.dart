@@ -56,7 +56,8 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
   handledGoHome(UserModel userModel) {
     if(userModel.rol == adminConstant){
       Navigator.pushReplacementNamed(context, "/adminPanel");
-    }
+    }else{
     Navigator.pushReplacementNamed(context, "/listChat");
+    }
   }
 }

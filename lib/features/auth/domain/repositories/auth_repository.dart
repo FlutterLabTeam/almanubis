@@ -8,4 +8,5 @@ abstract class AuthRepository {
   Future<Either<Failure, UserModel>> getUserDb(String uid);
   Future<Either<Failure, CredentialsModel>> validateUserLogged();
   Future<Either<Failure, User>> loginEmail(String email, String password);
+  Future<Either<Failure, bool>> saveUserLogged(CredentialsModel credentialsModel);
 }

@@ -5,6 +5,7 @@ class UserModel {
     this.dateUpdate,
     this.description,
     required this.rol,
+    this.state = false,
     required this.name,
     required this.email,
     required this.query,
@@ -12,6 +13,7 @@ class UserModel {
   });
 
   String rol;
+  bool? state;
   String name;
   String? uid;
   String email;
@@ -21,7 +23,7 @@ class UserModel {
   DateTime dateCreate;
   DateTime? dateUpdate;
 
-  factory UserModel.fromJson(Map<String, dynamic> json, String id) => UserModel(
+  factory UserModel.fromJson(json, String id) => UserModel(
     uid: id,
     rol: json["rol"],
     name: json["name"],

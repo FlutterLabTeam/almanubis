@@ -171,7 +171,8 @@ class _AuthPageState extends State<AuthPage> {
   handledGoHome(UserModel userModel) {
     if(userModel.rol == adminConstant){
       Navigator.pushReplacementNamed(context, "/adminPanel");
-    }
+    }else{
       Navigator.pushReplacementNamed(context, "/listChat");
+    }
   }
 }

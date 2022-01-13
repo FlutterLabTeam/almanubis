@@ -8,11 +8,11 @@ import 'package:almanubis/core/errors/exceptions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AuthDataSource {
-  Future<User> loginEmail(String email, String password);
-
-  Future<CredentialsModel> validateUserLogged();
 
   Future<UserModel> getUserDb(String uid);
+  Future<CredentialsModel> validateUserLogged();
+  Future<User> loginEmail(String email, String password);
+  Future<bool> saveUserLogged(CredentialsModel credentialsModel);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -61,6 +61,17 @@ class AuthDataSourceImpl implements AuthDataSource {
         );
       }
       return CredentialsModel(email: "", password: "");
+    } on Exception {
+      throw ValidateUserLoggedException();
+    }
+  }
+
+  @override
+  Future<bool> saveUserLogged(CredentialsModel credentialsModel) async {
+    try {
+      String data = jsonEncode(credentialsModel.toJson());
+      sharedPreferences.setString("userCredentials", data);
+      return true;
     } on Exception {
       throw ValidateUserLoggedException();
     }

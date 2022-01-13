@@ -57,14 +57,17 @@ class ImageUserOption extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          width: model.size!/2,
-          height: model.size!/2,
-          color: handledGenerateColor(model.color!),
-          child: Icon(
-            Icons.clear,
-            size: model.size!/2,
-            color: handledGenerateIconColor(model.color!),
+        GestureDetector(
+          onTap: ()=> model.handledIcon(),
+          child: Container(
+            width: model.size!/2,
+            height: model.size!/2,
+            color: handledGenerateColor(model.color!),
+            child: Icon(
+              Icons.clear,
+              size: model.size!/2,
+              color: handledGenerateIconColor(model.color!),
+            ),
           ),
         )
       ],

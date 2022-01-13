@@ -11,7 +11,6 @@ class LoginErrorState extends AuthState {}
 class GetUserDataErrorState extends AuthState {}
 
 class GetUserDataLoadedState extends AuthState {
-
   final UserModel userModel;
 
   GetUserDataLoadedState({required this.userModel});
@@ -25,8 +24,9 @@ class ChangePasswordState implements AuthState {
 
 class NoExistCredentialErrorState extends AuthState {}
 
-class ExistCredentialState extends AuthState {
+class SaveCredentialErrorState extends AuthState {}
 
+class ExistCredentialState extends AuthState {
   final CredentialsModel dataCredential;
 
   ExistCredentialState({required this.dataCredential});

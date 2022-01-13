@@ -22,14 +22,15 @@ class NewUser extends StatefulWidget {
 
 class _NewUserState extends State<NewUser> {
   static late Size size;
+  static late bool loadingButton = false;
+  static late EdgeInsets marginGlobal;
+  static late bool statePassword = true;
+  static late bool stateRepeatPassword = true;
   static late TextEditingController userController;
   static late TextEditingController emailController;
   static late TextEditingController passwordController;
   static late TextEditingController repeatPasswordController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  static late EdgeInsets marginGlobal;
-  static late bool statePassword = true;
-  static late bool stateRepeatPassword = true;
 
   @override
   void initState() {
@@ -84,11 +85,15 @@ class _NewUserState extends State<NewUser> {
                 key: _formKey,
                 child: BlocBuilder<NewUserBloc, NewUserState>(
                   builder: (context, state) {
+                    loadingButton = false;
                     if (state is ChangePasswordState) {
                       statePassword = state.state;
                     }
                     if (state is ChangeRepeatPasswordState) {
                       stateRepeatPassword = state.state;
+                    }
+                    if (state is NewUserRegisterLoading) {
+                      loadingButton = true;
                     }
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -170,19 +175,28 @@ class _NewUserState extends State<NewUser> {
                             ),
                           ),
                         ),
-                        Container(
-                          height: size.height * 0.085,
-                          margin: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.12,
-                              vertical: size.height * 0.02),
-                          child: CustomButton(
-                            model: CustomButtonModel(
-                              label: "CREAR USUARIO",
-                              color: CustomButtonColor.dark,
-                              handledButton: () => handledRegisterUser(),
-                            ),
-                          ),
-                        ),
+                        loadingButton
+                            ? Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.symmetric(
+                                  vertical: size.height * 0.02,
+                                ),
+                                child: const CircularProgressIndicator(),
+                              )
+                            : Container(
+                                height: size.height * 0.085,
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.12,
+                                  vertical: size.height * 0.02,
+                                ),
+                                child: CustomButton(
+                                  model: CustomButtonModel(
+                                    label: "CREAR USUARIO",
+                                    color: CustomButtonColor.dark,
+                                    handledButton: () => handledRegisterUser(),
+                                  ),
+                                ),
+                              ),
                       ],
                     );
                   },

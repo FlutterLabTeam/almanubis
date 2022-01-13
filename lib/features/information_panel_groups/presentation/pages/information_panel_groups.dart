@@ -69,7 +69,7 @@ class _InformationPanelGroupsState extends State<InformationPanelGroups> {
                 width: double.infinity,
                 child: CarouselImageUser(
                   model: CarouselImageUserModel(
-                    handledIcon: () {},
+                    handledIcon: (e) {},
                     listUserData: [
                       UserModel(image: "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
                             name: "Jeison",

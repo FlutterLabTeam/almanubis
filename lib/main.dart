@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 
+import 'features/new_group/presentation/bloc/new_group_bloc.dart';
 import 'injection_container.dart';
 import 'package:almanubis/routes.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => sl<AuthBloc>()),
           BlocProvider(create: (context) => sl<NewUserBloc>()),
+          BlocProvider(create: (context) => sl<NewGroupBloc>()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

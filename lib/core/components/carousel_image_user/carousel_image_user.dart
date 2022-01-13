@@ -1,5 +1,6 @@
 import 'package:almanubis/core/components/image_user_option/image_user_option.dart';
 import 'package:almanubis/core/model/user_model.dart';
+import 'package:almanubis/core/constant.dart';
 import 'package:flutter/material.dart';
 
 enum CarouselColor {
@@ -8,7 +9,7 @@ enum CarouselColor {
 }
 
 class CarouselImageUserModel {
-  final Function handledIcon;
+  final Function(UserModel) handledIcon;
   final List<UserModel> listUserData;
   final CarouselColor color;
 
@@ -39,10 +40,10 @@ class CarouselImageUser extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 10),
             child: ImageUserOption(
               model: ImageUserOptionModel(
-                image: model.listUserData[index].image!,
+                image: model.listUserData[index].image??noImage,
                 icon: Icons.clear,
                 color: handledGenerateBackColor(model.color),
-                handledIcon: () => model.handledIcon,
+                handledIcon: () => model.handledIcon(model.listUserData[index]),
               ),
             ),
           );

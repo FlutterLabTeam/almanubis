@@ -1,4 +1,6 @@
 import 'package:almanubis/core/components/custom_floating_button/custom_floating_button.dart';
+import 'package:almanubis/core/constant.dart';
+import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/features/user_configuration/presentation/widgets/image_user.dart';
 import 'package:almanubis/core/components/image_user_option/image_user_option.dart';
 import 'package:almanubis/core/components/navigation/navigation_bar.dart';
@@ -8,7 +10,12 @@ import 'package:almanubis/core/util/company_fonts.dart';
 import 'package:flutter/material.dart';
 
 class SaveGroup extends StatefulWidget {
-  const SaveGroup({Key? key}) : super(key: key);
+  final List<UserModel> listUser;
+
+  const SaveGroup({
+    Key? key,
+    required this.listUser,
+  }) : super(key: key);
 
   @override
   State<SaveGroup> createState() => SaveGroupState();
@@ -86,14 +93,14 @@ class SaveGroupState extends State<SaveGroup> {
                         mainAxisSpacing: 10,
                         crossAxisCount: 4,
                         children: List.generate(
-                            40,
-                            (index) =>  ImageUserOption(
+                          widget.listUser.length,
+                          (index) => ImageUserOption(
                               model: ImageUserOptionModel(
-                                handledIcon: (){},
-                                icon: Icons.people,
-                                image: "https://laboratoriosniam.com/wp-content/uploads/2018/07/michael-dam-258165-unsplash_WEB2.jpg",
-                              )
-                            ),),
+                            handledIcon: () {},
+                            icon: Icons.people,
+                            image: widget.listUser[index].image??noImage
+                          )),
+                        ),
                       ),
                     ],
                   ),

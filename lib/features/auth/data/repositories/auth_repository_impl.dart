@@ -41,4 +41,14 @@ class AuthRepositoryImpl implements AuthRepository{
       return Left(ValidateUserLoggedFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> saveUserLogged(CredentialsModel credentialsModel) async {
+    try {
+      final result = await authDataSource.saveUserLogged(credentialsModel);
+      return Right(result);
+    } on ValidateUserLoggedException {
+      return Left(ValidateUserLoggedFailure());
+    }
+  }
 }
