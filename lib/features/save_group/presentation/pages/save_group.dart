@@ -99,7 +99,7 @@ class SaveGroupStateView extends State<SaveGroup> {
                             margin: const EdgeInsets.symmetric(
                                 horizontal: 30, vertical: 3),
                             child: InputEditAccount(
-                              model: InputEditAccountColorModel(
+                              model: InputEditAccountModel(
                                 label: "Nombre De Grupo",
                                 validator: validationEmpty,
                                 controller: titleGroupController,
@@ -109,7 +109,7 @@ class SaveGroupStateView extends State<SaveGroup> {
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 30),
                             child: InputEditAccount(
-                              model: InputEditAccountColorModel(
+                              model: InputEditAccountModel(
                                   validator: validationEmpty,
                                   label: "Descripción del grupo",
                                   controller: descriptionGroupController,

@@ -1,3 +1,4 @@
+import 'package:almanubis/core/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/components/image/custom_image.dart';
 import 'package:almanubis/core/components/appbar/custom_appbar.dart';
@@ -5,7 +6,10 @@ import 'package:almanubis/core/components/navigation/navigation_bar.dart';
 import 'package:almanubis/core/components/cart_chat_home/card_chat_home.dart';
 
 class ListChat extends StatefulWidget {
-  const ListChat({Key? key}) : super(key: key);
+
+  final UserModel userModel;
+
+  const ListChat({Key? key, required this.userModel}) : super(key: key);
 
   @override
   _ListChatState createState() => _ListChatState();
@@ -63,8 +67,8 @@ class _ListChatState extends State<ListChat> {
         ),
         bottomNavigationBar: CustomNavigationBar(
           model: CustomNavigationBarModel(),
-          onTapMessage: () => Navigator.of(context).pushNamed('/listChat'),
-          onTapPerson: ()=> Navigator.of(context).pushNamed('/userConfiguration'),
+          onTapMessage: () {},
+          onTapPerson: ()=> Navigator.of(context).pushNamed('/userConfiguration', arguments: widget.userModel),
         ),
       ),
     );

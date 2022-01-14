@@ -1,10 +1,14 @@
+import 'package:almanubis/core/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/components/button/custom_button.dart';
 import 'package:almanubis/core/components/navigation/navigation_bar.dart';
 import 'package:almanubis/features/admin_panel/presentation/widgets/body_admin.dart';
 
 class AdminPanel extends StatefulWidget {
-  const AdminPanel({Key? key}) : super(key: key);
+
+  final UserModel userModel;
+
+  const AdminPanel({Key? key, required this.userModel}) : super(key: key);
 
   @override
   _AdminPanelState createState() => _AdminPanelState();
@@ -49,7 +53,7 @@ class _AdminPanelState extends State<AdminPanel> {
       bottomNavigationBar: CustomNavigationBar(
         onTapPlus: () {},
         onTapMessage: () => Navigator.of(context).pushNamed('/listChat'),
-        onTapPerson: () => Navigator.of(context).pushNamed('/userConfiguration'),
+        onTapPerson: () => Navigator.of(context).pushNamed('/userConfiguration', arguments: widget.userModel),
         model: CustomNavigationBarModel(
           color: CustomNavigationBarColors.black,
         ),

@@ -15,10 +15,14 @@ class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
 
     List<UserModel> listUserModel = [];
+    UserModel userModel= UserModel.fromJsonNoData();
     final argument  = settings.arguments;
 
     if(argument is List<UserModel>){
       listUserModel = argument;
+    }
+    if(argument is UserModel){
+      userModel = argument;
     }
 
     switch (settings.name) {
@@ -26,11 +30,11 @@ class Routes {
       case '/newUser': return MaterialPageRoute(builder: (_) => const NewUser());
       case '/authPage': return MaterialPageRoute(builder: (_) => const AuthPage());
       case '/newGroup': return MaterialPageRoute(builder: (_) => const NewGroup());
-      case '/listChat': return MaterialPageRoute(builder: (_) => const ListChat());
+      case '/listChat': return MaterialPageRoute(builder: (_) =>  ListChat(userModel: userModel));
       case '/chatGroup': return MaterialPageRoute(builder: (_) => const ChatGroup());
-      case '/adminPanel': return MaterialPageRoute(builder: (_) => const AdminPanel());
-      case '/userConfiguration': return MaterialPageRoute(builder: (_) => const UserConfiguration());
+      case '/adminPanel': return MaterialPageRoute(builder: (_) => AdminPanel(userModel: userModel,));
       case '/saveGroup': return MaterialPageRoute(builder: (_) =>  SaveGroup(listUser: listUserModel));
+      case '/userConfiguration': return MaterialPageRoute(builder: (_) => UserConfiguration(userModel: userModel));
       case '/informationPanelGroups': return MaterialPageRoute(builder: (_) => const InformationPanelGroups(typeUser: InformationPanelGroupsEnum.admin));
       default: return MaterialPageRoute(builder: (_) => const AuthPage());
     }

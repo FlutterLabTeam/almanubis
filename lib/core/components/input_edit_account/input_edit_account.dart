@@ -6,7 +6,7 @@ enum InputEditAccountType {
   description,
 }
 
-class InputEditAccountColorModel {
+class InputEditAccountModel {
   final TextEditingController? controller;
   final InputEditAccountType typeInput;
   final String label;
@@ -14,7 +14,7 @@ class InputEditAccountColorModel {
   final Function(dynamic)? validator;
   final Function? tapIcon;
 
-  InputEditAccountColorModel({
+  InputEditAccountModel({
     this.typeInput = InputEditAccountType.title,
     this.isObscure = false,
     this.label = "",
@@ -25,7 +25,7 @@ class InputEditAccountColorModel {
 }
 
 class InputEditAccount extends StatelessWidget {
-  final InputEditAccountColorModel model;
+  final InputEditAccountModel model;
 
   const InputEditAccount({
     Key? key,

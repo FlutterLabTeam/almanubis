@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'features/new_group/presentation/bloc/new_group_bloc.dart';
 import 'features/save_group/presentation/bloc/save_group_bloc.dart';
+import 'features/user_configuration/presentation/bloc/user_configuration_bloc.dart';
 import 'injection_container.dart';
 import 'package:almanubis/routes.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => sl<NewUserBloc>()),
           BlocProvider(create: (context) => sl<NewGroupBloc>()),
           BlocProvider(create: (context) => sl<SaveGroupBloc>()),
+          BlocProvider(create: (context) => sl<UserConfigurationBloc>()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

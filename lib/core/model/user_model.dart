@@ -37,6 +37,20 @@ class UserModel {
     query: List<String>.from(json["query"].map((x) => x)),
   );
 
+  factory UserModel.fromJsonNoData() => UserModel(
+    uid: "",
+    rol: "",
+    name: "",
+    email: "",
+    image: "",
+    // ignore: prefer_null_aware_operators
+    dateCreate: DateTime.now(),
+    // ignore: prefer_null_aware_operators
+    dateUpdate: DateTime.now(),
+    description: "",
+    query: [],
+  );
+
   Map<String, dynamic> toJson() => {
     "rol": rol,
     "name": name,
