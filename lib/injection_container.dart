@@ -4,6 +4,11 @@ import 'package:almanubis/features/new_group/data/repositories/new_group_reposit
 import 'package:almanubis/features/new_group/domain/repositories/new_group_repository.dart';
 import 'package:almanubis/features/new_group/domain/use_cases/get_all_user.dart';
 import 'package:almanubis/features/new_group/presentation/bloc/new_group_bloc.dart';
+import 'package:almanubis/features/save_group/data/data_sources/save_group_data_source.dart';
+import 'package:almanubis/features/save_group/data/repositories/save_group_repository_impl.dart';
+import 'package:almanubis/features/save_group/domain/repositories/save_group_repository.dart';
+import 'package:almanubis/features/save_group/domain/use_cases/save_new_group.dart';
+import 'package:almanubis/features/save_group/presentation/bloc/save_group_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -40,12 +45,16 @@ init() async {
   sl.registerFactory(() => NewGroupBloc(
     getAllUser: sl(),
   ));
+  sl.registerFactory(() => SaveGroupBloc(
+    saveNewGroup: sl()
+  ));
 
 // Use cases
   sl.registerLazySingleton(() => LoginEmail(authRepository: sl()));
   sl.registerLazySingleton(() => GetUserData(authRepository: sl()));
   sl.registerLazySingleton(() => GetAllUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => SaveUserLogged(authRepository: sl()));
+  sl.registerLazySingleton(() => SaveNewGroup(saveGroupRepository: sl()));
   sl.registerLazySingleton(() => RegisterEmail(newUserRepository: sl()));
   sl.registerLazySingleton(() => RegisterUserDb(newUserRepository: sl()));
   sl.registerLazySingleton(() => ValidateUserLogged(authRepository: sl()));
@@ -54,10 +63,12 @@ init() async {
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(authDataSource: sl()));
   sl.registerLazySingleton<NewUserRepository>(() => NewUserRepositoryImpl(newUserDataSource: sl()));
   sl.registerLazySingleton<NewGroupRepository>(() => NewGroupRepositoryImpl(newGroupDataSource: sl()));
+  sl.registerLazySingleton<SaveGroupRepository>(() => SaveGroupRepositoryImpl(saveGroupDataSource: sl()));
 
   //DataSource
   sl.registerLazySingleton<NewUserDataSource>(() => NewUserDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<NewGroupDataSource>(() => NewGroupDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
+  sl.registerLazySingleton<SaveGroupDataSource>(() => SaveGroupDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<AuthDataSource>(() => AuthDataSourceImpl(firestore: sl(),firebaseAuth: sl(), sharedPreferences: sl()));
 
 //Firebase

@@ -117,7 +117,9 @@ class _AuthPageState extends State<AuthPage> {
                     buttonLoading
                         ? Container(
                             alignment: Alignment.center,
-                            margin: EdgeInsets.symmetric(vertical: size.height * 0.08,),
+                            margin: EdgeInsets.symmetric(
+                              vertical: size.height * 0.08,
+                            ),
                             child: const CircularProgressIndicator(),
                           )
                         : Container(
@@ -169,9 +171,9 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   handledGoHome(UserModel userModel) {
-    if(userModel.rol == adminConstant){
+    if (userModel.rol == adminConstant) {
       Navigator.pushReplacementNamed(context, "/adminPanel");
-    }else{
+    } else {
       Navigator.pushReplacementNamed(context, "/listChat");
     }
   }

@@ -15,8 +15,8 @@ class ImageUser extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.all(10),
-          height: size.width * 0.4,
-          width: size.width * 0.4,
+          height: size.width * 0.35,
+          width: size.width * 0.35,
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(

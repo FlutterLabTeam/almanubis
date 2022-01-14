@@ -11,11 +11,13 @@ class CustomFloatingButtonModel {
   final double? size;
   final CustomFloatingButtonColor? color;
   final Function handledIcon;
+  final bool? loadingButton;
 
   CustomFloatingButtonModel({
     this.size = 40,
     required this.icon,
     required this.handledIcon,
+    this.loadingButton = false,
     this.color = CustomFloatingButtonColor.light,
   });
 }
@@ -31,11 +33,13 @@ class CustomFloatingButton extends StatelessWidget {
       onPressed: () => model.handledIcon(),
       backgroundColor: handledGenerateColor(model.color!),
       shape: const RoundedRectangleBorder(),
-      child: Icon(
-        model.icon,
-        size: model.size!,
-        color: handledGenerateIconColor(model.color!),
-      ),
+      child: model.loadingButton!
+          ? const CircularProgressIndicator()
+          : Icon(
+              model.icon,
+              size: model.size!,
+              color: handledGenerateIconColor(model.color!),
+            ),
     );
   }
 

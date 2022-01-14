@@ -9,3 +9,5 @@ class LoginEmailException implements Exception {}
 class ValidateUserLoggedException implements Exception {}
 
 class GetAllUserByNewGroupException implements Exception {}
+
+class SaveNewGroupException implements Exception {}
