@@ -29,8 +29,10 @@ class SaveGroupBloc extends Bloc<SaveGroupEvent, SaveGroupState> {
       final result = await saveNewGroup(event.groupModel);
        yield* result.fold((failure) async* {
         yield SaveNewGroupErrorState();
-      }, (bool listUser) async* {
-        yield SaveNewGroupState();
+      }, (GroupModel groupModel) async* {
+        yield SaveNewGroupState(
+          groupModel: groupModel
+        );
       });
     }
   }

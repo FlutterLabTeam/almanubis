@@ -68,6 +68,7 @@ class _UserConfigurationState extends State<UserConfiguration> {
                     ),
                     ImageUser(
                       image: widget.userModel.image,
+                      handledTakeImage: (){},
                     ),
                     Container(
                         margin: EdgeInsets.symmetric(

@@ -11,3 +11,7 @@ class ValidateUserLoggedException implements Exception {}
 class GetAllUserByNewGroupException implements Exception {}
 
 class SaveNewGroupException implements Exception {}
+
+class SaveImageException implements Exception {}
+
+class GetListGroupException implements Exception {}

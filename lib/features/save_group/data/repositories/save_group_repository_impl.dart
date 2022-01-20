@@ -11,7 +11,7 @@ class SaveGroupRepositoryImpl implements SaveGroupRepository {
   SaveGroupRepositoryImpl({required this.saveGroupDataSource});
 
   @override
-  Future<Either<Failure, bool>> saveNewGroup(GroupModel groupModel) async {
+  Future<Either<Failure, GroupModel>> saveNewGroup(GroupModel groupModel) async {
     try {
       final response = await saveGroupDataSource.saveNewGroup(groupModel);
       return Right(response);

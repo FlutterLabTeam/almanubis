@@ -1,11 +1,26 @@
+import 'dart:io';
+
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:flutter/material.dart';
 
-class ImageUser extends StatelessWidget {
-  static late Size size;
-  final String? image;
+enum TypeImage {
+  fileType,
+  networkType,
+  assetType,
+}
 
-  const ImageUser({Key? key, this.image}) : super(key: key);
+class ImageUser extends StatelessWidget {
+  final String? image;
+  static late Size size;
+  final TypeImage? typeImage;
+  final Function handledTakeImage;
+
+  const ImageUser({
+    Key? key,
+    this.image,
+    this.typeImage = TypeImage.networkType,
+    required this.handledTakeImage,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,24 +41,21 @@ class ImageUser extends StatelessWidget {
               )
             ],
             color: CompanyColor.color().primary,
-            image: image != null
-                ? DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                      image!,
-                    ),
-                  )
+            image: image != null && image!.isNotEmpty
+                ? handledGenderImage(typeImage: typeImage!, path: image!)
                 : null,
             border: Border.all(
               width: 4,
               color: CompanyColor.color().primary,
             ),
           ),
-          child: image == null ? Icon(
-            Icons.people_outline_rounded,
-            size: 100,
-            color: CompanyColor.color().third,
-          ) : null,
+          child: image == null || image!.isEmpty
+              ? Icon(
+                  Icons.people_outline_rounded,
+                  size: 100,
+                  color: CompanyColor.color().third,
+                )
+              : null,
         ),
         Container(
           height: size.height * 0.05,
@@ -59,7 +71,7 @@ class ImageUser extends StatelessWidget {
             ],
           ),
           child: IconButton(
-            onPressed: () {},
+            onPressed: () => handledTakeImage(),
             icon: Icon(
               Icons.edit,
               color: CompanyColor.color().primary,
@@ -69,5 +81,28 @@ class ImageUser extends StatelessWidget {
         )
       ],
     );
+  }
+
+  DecorationImage handledGenderImage(
+      {required TypeImage typeImage, required String path}) {
+    switch (typeImage) {
+      case TypeImage.fileType:
+        return DecorationImage(
+          fit: BoxFit.cover,
+          image: FileImage(
+            File(path),
+          ),
+        );
+      case TypeImage.networkType:
+        return DecorationImage(
+          fit: BoxFit.cover,
+          image: NetworkImage(path),
+        );
+      case TypeImage.assetType:
+        return DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage(path),
+        );
+    }
   }
 }

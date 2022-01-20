@@ -1,17 +1,18 @@
-import 'package:almanubis/core/model/group_model.dart';
-import 'package:almanubis/core/util/generate_query.dart';
-import 'package:almanubis/core/util/snack_bar_message.dart';
-import 'package:almanubis/features/save_group/presentation/bloc/save_group_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/constant.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:almanubis/core/bloc/global_bloc.dart';
 import 'package:almanubis/core/model/user_model.dart';
+import 'package:almanubis/core/model/group_model.dart';
 import 'package:almanubis/core/util/company_fonts.dart';
+import 'package:almanubis/core/util/generate_query.dart';
 import 'package:almanubis/core/util/company_colors.dart';
+import 'package:almanubis/core/util/snack_bar_message.dart';
 import 'package:almanubis/core/components/appbar/custom_appbar.dart';
 import 'package:almanubis/core/components/navigation/navigation_bar.dart';
 import 'package:almanubis/core/components/image_user_option/image_user_option.dart';
 import 'package:almanubis/core/components/input_edit_account/input_edit_account.dart';
+import 'package:almanubis/features/save_group/presentation/bloc/save_group_bloc.dart';
 import 'package:almanubis/features/user_configuration/presentation/widgets/image_user.dart';
 import 'package:almanubis/core/components/custom_floating_button/custom_floating_button.dart';
 
@@ -29,6 +30,8 @@ class SaveGroup extends StatefulWidget {
 
 class SaveGroupStateView extends State<SaveGroup> {
   static late Size size;
+  static late String path = "";
+  static late bool isPath = false;
   static late bool loadingButton = false;
   static late GlobalKey<FormState> _formKey;
   static late List<UserModel> listUserModel;
@@ -50,10 +53,17 @@ class SaveGroupStateView extends State<SaveGroup> {
     return BlocListener<SaveGroupBloc, SaveGroupState>(
       listener: (context, state) {
         if (state is SaveNewGroupErrorState) {
-          snackBarMessage(context, message: "Lo sentimos, ocurrió un error al realizar el guardado de nuevo grupo");
+          snackBarMessage(
+            context,
+            message:
+                "Lo sentimos, ocurrió un error al realizar el guardado de nuevo grupo",
+          );
         }
         if (state is SaveNewGroupState) {
-          snackBarMessage(context, message: "La operación se realizó con éxito");
+          snackBarMessage(
+            context,
+            message: "La operación se realizó con éxito",
+          );
           Navigator.pop(context);
           Navigator.pop(context);
         }
@@ -94,10 +104,25 @@ class SaveGroupStateView extends State<SaveGroup> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          const ImageUser(),
+                          BlocBuilder<GlobalBloc, GlobalState>(
+                              builder: (context, state) {
+                            if (state is TakeImageState) {
+                              isPath = true;
+                              path = state.path;
+                            }
+                            return ImageUser(
+                              typeImage: isPath
+                                  ? TypeImage.fileType
+                                  : TypeImage.networkType,
+                              handledTakeImage: () => handledTakeImage(),
+                              image: path,
+                            );
+                          }),
                           Container(
                             margin: const EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 3),
+                              horizontal: 30,
+                              vertical: 3,
+                            ),
                             child: InputEditAccount(
                               model: InputEditAccountModel(
                                 label: "Nombre De Grupo",
@@ -146,12 +171,13 @@ class SaveGroupStateView extends State<SaveGroup> {
                             children: List.generate(
                               listUserModel.length,
                               (index) => ImageUserOption(
-                                  model: ImageUserOptionModel(
-                                      handledIcon: () => handledSelectedUser(
-                                          listUserModel[index]),
-                                      icon: Icons.people,
-                                      image: listUserModel[index].image ??
-                                          noImage)),
+                                model: ImageUserOptionModel(
+                                  handledIcon: () =>
+                                      handledSelectedUser(listUserModel[index]),
+                                  icon: Icons.people,
+                                  image: listUserModel[index].image ?? noImage,
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -168,12 +194,22 @@ class SaveGroupStateView extends State<SaveGroup> {
               onTapPerson: () =>
                   Navigator.of(context).pushNamed('/userConfiguration'),
             ),
-            floatingActionButton: CustomFloatingButton(
-              model: CustomFloatingButtonModel(
-                icon: Icons.arrow_forward,
-                loadingButton: loadingButton,
-                handledIcon: () => saveNewGroup(),
-              ),
+            floatingActionButton: BlocBuilder<GlobalBloc, GlobalState>(
+              builder: (context, state) {
+                if (state is SaveImageLoadingState) {
+                  isPath = true;
+                }
+                if (state is SaveImageState) {
+                  saveNewGroup(state.link);
+                }
+                return CustomFloatingButton(
+                  model: CustomFloatingButtonModel(
+                    icon: Icons.arrow_forward,
+                    loadingButton: loadingButton,
+                    handledIcon: () => saveImage(),
+                  ),
+                );
+              },
             ),
           );
         },
@@ -193,19 +229,31 @@ class SaveGroupStateView extends State<SaveGroup> {
       BlocProvider.of<SaveGroupBloc>(context)
           .add(ChangeStateEvent(userModel: userModel));
 
-  saveNewGroup() {
-    if (_formKey.currentState!.validate()) {
-      GroupModel groupModel = GroupModel(
-        title: titleGroupController.text,
-        description: descriptionGroupController.text,
-        listUser: listUserModel,
-        query: generateQuery(titleGroupController.text),
-        image: "",
-        dateCreate: DateTime.now(),
-      );
+  handledTakeImage() =>
+      BlocProvider.of<GlobalBloc>(context).add(TakeImageEvent());
 
-      BlocProvider.of<SaveGroupBloc>(context)
-          .add(SaveNewGroupEvent(groupModel: groupModel));
+  saveImage() {
+    if (_formKey.currentState!.validate()) {
+      BlocProvider.of<GlobalBloc>(context).add(
+        SaveImageEvent(
+          path: path,
+          folderDB: "group_image",
+        ),
+      );
     }
+  }
+
+  saveNewGroup(String link) {
+    GroupModel groupModel = GroupModel(
+      title: titleGroupController.text,
+      description: descriptionGroupController.text,
+      listUser: listUserModel,
+      query: generateQuery(titleGroupController.text),
+      image: link,
+      dateCreate: DateTime.now(),
+    );
+
+    BlocProvider.of<SaveGroupBloc>(context)
+        .add(SaveNewGroupEvent(groupModel: groupModel));
   }
 }

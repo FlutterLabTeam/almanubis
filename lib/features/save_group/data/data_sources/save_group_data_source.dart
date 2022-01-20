@@ -4,7 +4,7 @@ import 'package:almanubis/core/model/group_model.dart';
 import 'package:almanubis/core/errors/exceptions.dart';
 
 abstract class SaveGroupDataSource {
-  Future<bool> saveNewGroup(GroupModel groupModel);
+  Future<GroupModel> saveNewGroup(GroupModel groupModel);
 }
 
 class SaveGroupDataSourceImpl implements SaveGroupDataSource {
@@ -14,10 +14,11 @@ class SaveGroupDataSourceImpl implements SaveGroupDataSource {
   SaveGroupDataSourceImpl({required this.firebaseAuth, required this.firestore});
 
   @override
-  Future<bool> saveNewGroup(GroupModel groupModel) async {
+  Future<GroupModel> saveNewGroup(GroupModel groupModel) async {
     try {
-      await firestore.collection("groups").add(groupModel.toJson());
-      return true;
+      DocumentReference data = await firestore.collection("groups").add(groupModel.toJson());
+      groupModel.id = data.id;
+      return groupModel;
     } catch (e) {
       throw SaveNewGroupException();
     }

@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 
+import 'core/bloc/global_bloc.dart';
+import 'features/list_chat/presentation/bloc/list_chat_bloc.dart';
 import 'features/new_group/presentation/bloc/new_group_bloc.dart';
 import 'features/save_group/presentation/bloc/save_group_bloc.dart';
 import 'features/user_configuration/presentation/bloc/user_configuration_bloc.dart';
@@ -28,7 +30,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => sl<AuthBloc>()),
+          BlocProvider(create: (context) => sl<GlobalBloc>()),
           BlocProvider(create: (context) => sl<NewUserBloc>()),
+          BlocProvider(create: (context) => sl<ListChatBloc>()),
           BlocProvider(create: (context) => sl<NewGroupBloc>()),
           BlocProvider(create: (context) => sl<SaveGroupBloc>()),
           BlocProvider(create: (context) => sl<UserConfigurationBloc>()),

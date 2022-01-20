@@ -1,4 +1,16 @@
+import 'package:almanubis/core/bloc/global_bloc.dart';
+import 'package:almanubis/core/data/data_sources/global_data_source.dart';
+import 'package:almanubis/core/data/repositories/global_repository_impl.dart';
+import 'package:almanubis/core/domain/repositories/global_repository.dart';
+import 'package:almanubis/core/domain/use_cases/save_image.dart';
+import 'package:almanubis/core/domain/use_cases/take_photo.dart';
+import 'package:almanubis/core/domain/use_cases/update_image.dart';
 import 'package:almanubis/features/auth/domain/usecases/save_user_logged.dart';
+import 'package:almanubis/features/list_chat/data/data_sources/list_chat_data_source.dart';
+import 'package:almanubis/features/list_chat/data/repositories/list_chat_repository_impl.dart';
+import 'package:almanubis/features/list_chat/domain/repositories/list_chat_repository.dart';
+import 'package:almanubis/features/list_chat/domain/use_cases/get_list_chat_data.dart';
+import 'package:almanubis/features/list_chat/presentation/bloc/list_chat_bloc.dart';
 import 'package:almanubis/features/new_group/data/data_sources/new_group_data_source.dart';
 import 'package:almanubis/features/new_group/data/repositories/new_group_repository_impl.dart';
 import 'package:almanubis/features/new_group/domain/repositories/new_group_repository.dart';
@@ -50,18 +62,30 @@ init() async {
   sl.registerFactory(() => NewGroupBloc(
     getAllUser: sl(),
   ));
+  sl.registerFactory(() => GlobalBloc(
+    takePhoto: sl(),
+    saveImage: sl(),
+    updateImage: sl(),
+  ));
   sl.registerFactory(() => SaveGroupBloc(
-    saveNewGroup: sl()
+    saveNewGroup: sl(),
   ));
   sl.registerFactory(() => UserConfigurationBloc(
     updateUser: sl()
+  ));
+  sl.registerFactory(() => ListChatBloc(
+    getListChat: sl()
   ));
 
 // Use cases
   sl.registerLazySingleton(() => LoginEmail(authRepository: sl()));
   sl.registerLazySingleton(() => GetUserData(authRepository: sl()));
+  sl.registerLazySingleton(() => SaveImage(globalRepository: sl()));
+  sl.registerLazySingleton(() => TakePhoto(globalRepository: sl()));
+  sl.registerLazySingleton(() => UpdateImage(globalRepository: sl()));
   sl.registerLazySingleton(() => GetAllUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => SaveUserLogged(authRepository: sl()));
+  sl.registerLazySingleton(() => GetListChat(listChatRepository: sl()));
   sl.registerLazySingleton(() => RegisterEmail(newUserRepository: sl()));
   sl.registerLazySingleton(() => SaveNewGroup(saveGroupRepository: sl()));
   sl.registerLazySingleton(() => RegisterUserDb(newUserRepository: sl()));
@@ -70,7 +94,9 @@ init() async {
 
 //Repositories
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(authDataSource: sl()));
+  sl.registerLazySingleton<GlobalRepository>(() => GlobalRepositoryImpl(globalDataSource: sl()));
   sl.registerLazySingleton<NewUserRepository>(() => NewUserRepositoryImpl(newUserDataSource: sl()));
+  sl.registerLazySingleton<ListChatRepository>(() => ListChatRepositoryImpl(listChatDataSource: sl()));
   sl.registerLazySingleton<NewGroupRepository>(() => NewGroupRepositoryImpl(newGroupDataSource: sl()));
   sl.registerLazySingleton<SaveGroupRepository>(() => SaveGroupRepositoryImpl(saveGroupDataSource: sl()));
   sl.registerLazySingleton<UserConfigurationRepository>(() => UserConfigurationRepositoryImpl(userConfigurationDataSource: sl()));
@@ -81,6 +107,8 @@ init() async {
   sl.registerLazySingleton<SaveGroupDataSource>(() => SaveGroupDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<AuthDataSource>(() => AuthDataSourceImpl(firestore: sl(),firebaseAuth: sl(), sharedPreferences: sl()));
   sl.registerLazySingleton<UserConfigurationDataSource>(() => UserConfigurationDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
+  sl.registerLazySingleton<GlobalDataSource>(() => GlobalDataSourceImpl(firestore: sl(),firebaseAuth: sl(), firebaseStorage: sl()));
+  sl.registerLazySingleton<ListChatDataSource>(() => ListChatDataSourceImpl(sharedPreferences: sl(), firestore: sl()));
 
 //Firebase
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);

@@ -12,7 +12,12 @@ class ChangeStateState extends SaveGroupState {
   ChangeStateState(this.userModel);
 }
 
-class SaveNewGroupState extends SaveGroupState {}
+class SaveNewGroupState extends SaveGroupState {
+
+  final GroupModel groupModel;
+
+  SaveNewGroupState({required this.groupModel});
+}
 
 class SaveNewGroupErrorState extends SaveGroupState {}
 
