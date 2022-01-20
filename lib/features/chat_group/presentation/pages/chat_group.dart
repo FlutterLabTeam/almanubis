@@ -1,13 +1,28 @@
-import 'package:almanubis/features/chat_group/presentation/widgets/chat_input.dart';
-import 'package:almanubis/core/components/custom_chat/custom_chat.dart';
-import 'package:almanubis/core/components/header_chat/header_chat.dart';
+import 'package:almanubis/features/information_panel_groups/presentation/pages/information_panel_groups.dart';
+import 'package:flutter/material.dart';
 import 'package:almanubis/core/model/chat_model.dart';
 import 'package:almanubis/core/model/user_model.dart';
-import 'package:flutter/material.dart';
+import 'package:almanubis/core/model/group_model.dart';
+import 'package:almanubis/core/components/header_chat/header_chat.dart';
+import 'package:almanubis/core/components/custom_chat/custom_chat.dart';
+import 'package:almanubis/features/chat_group/presentation/widgets/chat_input.dart';
+
+class ChatGroupModel {
+  final UserModel? userModel;
+  final GroupModel? groupModel;
+
+  ChatGroupModel({
+    this.userModel,
+    this.groupModel,
+  });
+}
 
 class ChatGroup extends StatefulWidget {
+  final ChatGroupModel model;
+
   const ChatGroup({
     Key? key,
+    required this.model,
   }) : super(key: key);
 
   @override
@@ -34,14 +49,21 @@ class _ChatGroupState extends State<ChatGroup> {
           children: [
             HeaderChat(
               model: HeaderChatModel(
-                  image:
-                      "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
-                  description:
-                      "Juan, Raúl, Fernando, Pol, Marta Juan, Raúl, Fernando, Pol, Marta",
-                  title: "Reiki Usui",
-                  handledMenu: () {
-                    Navigator.pushNamed(context, '/informationPanelGroups');
-                  }),
+                image: widget.model.groupModel!.image,
+                title: widget.model.groupModel!.title,
+                description: widget.model.groupModel!.description,
+                handledMenu: () => Navigator.pushNamed(
+                  context,
+                  '/informationPanelGroups',
+                  arguments: InformationPanelGroupsModel(
+                    userModel: widget.model.userModel,
+                    groupModel: widget.model.groupModel,
+                    typeUser: widget.model.userModel!.rol == "USER"
+                        ? InformationPanelGroupsEnum.user
+                        : InformationPanelGroupsEnum.admin,
+                  ),
+                ),
+              ),
             ),
             Flexible(
               child: ListView.builder(
@@ -55,15 +77,15 @@ class _ChatGroupState extends State<ChatGroup> {
                       ),
                       child: CustomChat(
                         model: CustomChatModel(
-                          color: CustomChatColor.light,
+                          color: CustomChatColor.dark,
                           userModel: UserModel(
-                            image: "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
-                            name: "Jeison",
-                            email: "",
-                            dateCreate: DateTime.now(),
-                            query: [],
-                            rol: ""
-                          ),
+                              image:
+                                  "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/98.jpg",
+                              name: "Jeison",
+                              email: "",
+                              dateCreate: DateTime.now(),
+                              query: [],
+                              rol: ""),
                           chatModel: ChatModel(
                             label:
                                 "Hola mundo Como estan todos,  estan todos mundo Como Hola  ",

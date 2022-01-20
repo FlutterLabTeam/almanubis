@@ -28,10 +28,8 @@ class CustomSwitch extends StatelessWidget {
               .textCartWhiteStyle,
         ),
         Switch(
-          value: true,
-          activeColor: CompanyColor
-              .color()
-              .second,
+          value: state,
+          activeColor: CompanyColor.color().second,
           onChanged: handledSwitch,
         ),
       ],

@@ -32,6 +32,7 @@ class SaveGroupStateView extends State<SaveGroup> {
   static late Size size;
   static late String path = "";
   static late bool isPath = false;
+  static late bool isSubmit = true;
   static late bool loadingButton = false;
   static late GlobalKey<FormState> _formKey;
   static late List<UserModel> listUserModel;
@@ -60,12 +61,17 @@ class SaveGroupStateView extends State<SaveGroup> {
           );
         }
         if (state is SaveNewGroupState) {
+          descriptionGroupController.text = "";
+          titleGroupController.text = "";
+          loadingButton = false;
+          path = "";
           snackBarMessage(
             context,
             message: "La operación se realizó con éxito",
           );
           Navigator.pop(context);
           Navigator.pop(context);
+          isSubmit = true;
         }
       },
       child: SafeArea(child: BlocBuilder<SaveGroupBloc, SaveGroupState>(
@@ -197,7 +203,7 @@ class SaveGroupStateView extends State<SaveGroup> {
             floatingActionButton: BlocBuilder<GlobalBloc, GlobalState>(
               builder: (context, state) {
                 if (state is SaveImageLoadingState) {
-                  isPath = true;
+                  loadingButton = true;
                 }
                 if (state is SaveImageState) {
                   saveNewGroup(state.link);
@@ -206,7 +212,7 @@ class SaveGroupStateView extends State<SaveGroup> {
                   model: CustomFloatingButtonModel(
                     icon: Icons.arrow_forward,
                     loadingButton: loadingButton,
-                    handledIcon: () => saveImage(),
+                    handledIcon: () => loadingButton ? (){} : saveImage(),
                   ),
                 );
               },
@@ -244,16 +250,19 @@ class SaveGroupStateView extends State<SaveGroup> {
   }
 
   saveNewGroup(String link) {
-    GroupModel groupModel = GroupModel(
-      title: titleGroupController.text,
-      description: descriptionGroupController.text,
-      listUser: listUserModel,
-      query: generateQuery(titleGroupController.text),
-      image: link,
-      dateCreate: DateTime.now(),
-    );
+    if(isSubmit){
+      isSubmit = false;
+      GroupModel groupModel = GroupModel(
+        image: link,
+        listUser: listUserModel,
+        dateCreate: DateTime.now(),
+        title: titleGroupController.text,
+        description: descriptionGroupController.text,
+        query: generateQuery(titleGroupController.text),
+        listUserNotify: listUserModel.map((e) => e.uid!).toList(),
+      );
 
-    BlocProvider.of<SaveGroupBloc>(context)
-        .add(SaveNewGroupEvent(groupModel: groupModel));
+      BlocProvider.of<SaveGroupBloc>(context).add(SaveNewGroupEvent(groupModel: groupModel));
+    }
   }
 }

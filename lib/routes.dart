@@ -15,14 +15,25 @@ class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
 
     List<UserModel> listUserModel = [];
+    ChatGroupModel groupModel = ChatGroupModel();
     UserModel userModel= UserModel.fromJsonNoData();
+    InformationPanelGroupsModel informationPanelGroupsModel = InformationPanelGroupsModel();
     final argument  = settings.arguments;
 
     if(argument is List<UserModel>){
       listUserModel = argument;
     }
+    if(argument is InformationPanelGroupsModel){
+      informationPanelGroupsModel = argument;
+    }
     if(argument is UserModel){
       userModel = argument;
+    }
+    if(argument is ChatGroupModel){
+      groupModel = argument;
+    }
+    if(argument is InformationPanelGroupsModel){
+      informationPanelGroupsModel = argument;
     }
 
     switch (settings.name) {
@@ -30,12 +41,12 @@ class Routes {
       case '/newUser': return MaterialPageRoute(builder: (_) => const NewUser());
       case '/authPage': return MaterialPageRoute(builder: (_) => const AuthPage());
       case '/newGroup': return MaterialPageRoute(builder: (_) => const NewGroup());
+      case '/chatGroup': return MaterialPageRoute(builder: (_) => ChatGroup(model: groupModel,));
       case '/listChat': return MaterialPageRoute(builder: (_) =>  ListChat(userModel: userModel));
-      case '/chatGroup': return MaterialPageRoute(builder: (_) => const ChatGroup());
       case '/adminPanel': return MaterialPageRoute(builder: (_) => AdminPanel(userModel: userModel,));
       case '/saveGroup': return MaterialPageRoute(builder: (_) =>  SaveGroup(listUser: listUserModel));
       case '/userConfiguration': return MaterialPageRoute(builder: (_) => UserConfiguration(userModel: userModel));
-      case '/informationPanelGroups': return MaterialPageRoute(builder: (_) => const InformationPanelGroups(typeUser: InformationPanelGroupsEnum.admin));
+      case '/informationPanelGroups': return MaterialPageRoute(builder: (_) => InformationPanelGroups(model: informationPanelGroupsModel,));
       default: return MaterialPageRoute(builder: (_) => const AuthPage());
     }
   }}

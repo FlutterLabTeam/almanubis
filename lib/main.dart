@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 
 import 'core/bloc/global_bloc.dart';
+import 'features/information_panel_groups/presentation/bloc/information_panel_bloc.dart';
 import 'features/list_chat/presentation/bloc/list_chat_bloc.dart';
 import 'features/new_group/presentation/bloc/new_group_bloc.dart';
 import 'features/save_group/presentation/bloc/save_group_bloc.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => sl<NewGroupBloc>()),
           BlocProvider(create: (context) => sl<SaveGroupBloc>()),
           BlocProvider(create: (context) => sl<UserConfigurationBloc>()),
+          BlocProvider(create: (context) => sl<InformationPanelBloc>()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

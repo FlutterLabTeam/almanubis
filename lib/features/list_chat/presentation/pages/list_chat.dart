@@ -1,3 +1,4 @@
+import 'package:almanubis/features/chat_group/presentation/pages/chat_group.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/constant.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,8 +33,8 @@ class _ListChatState extends State<ListChat> {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     DateTime dateTime = DateTime.now();
-    return BlocBuilder<ListChatBloc, ListChatState>(builder: (context, state){
-      if(state is GetAllListChatState){
+    return BlocBuilder<ListChatBloc, ListChatState>(builder: (context, state) {
+      if (state is GetAllListChatState) {
         listChat = state.listChatModel;
       }
       return SafeArea(
@@ -60,23 +61,25 @@ class _ListChatState extends State<ListChat> {
               SizedBox(
                 height: size.height * 0.7115,
                 child: ListView.builder(
-                    itemCount: listChat.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      GroupModel chat = listChat[index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: CardChatHome(
-                          model: CardChatHomeModel(
-                            title: chat.title,
-                            dateTime: dateTime,
-                            description: chat.description,
-                            counter: 3,
-                            imageUrl: chat.image.isEmpty ? noImage : chat.image,
-                          ),
+                  itemCount: listChat.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    GroupModel chat = listChat[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: CardChatHome(
+                        model: CardChatHomeModel(
+                          title: chat.title,
+                          dateTime: dateTime,
+                          description: chat.description,
+                          counter: 3,
+                          imageUrl: chat.image.isEmpty ? noImage : chat.image,
+                          handledCart: () => handledPushChat(chat)
                         ),
-                      );
-                    }),
+                      ),
+                    );
+                  },
+                ),
               )
             ],
           ),
@@ -90,4 +93,13 @@ class _ListChatState extends State<ListChat> {
       );
     });
   }
+
+  handledPushChat(GroupModel groupModel) =>
+    Navigator.of(context).pushNamed(
+      '/chatGroup',
+      arguments: ChatGroupModel(
+        groupModel: groupModel,
+        userModel: widget.userModel,
+      ),
+    );
 }

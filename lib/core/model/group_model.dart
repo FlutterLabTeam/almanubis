@@ -10,6 +10,7 @@ class GroupModel {
     required this.listUser,
     required this.dateCreate,
     required this.description,
+    required this.listUserNotify,
   });
 
   String? id;
@@ -20,6 +21,7 @@ class GroupModel {
   DateTime dateCreate;
   DateTime? dateUpdate;
   List<UserModel> listUser;
+  List<String> listUserNotify;
 
   factory GroupModel.fromJson(json, String id) => GroupModel(
     id: id,
@@ -28,7 +30,8 @@ class GroupModel {
     description: json["description"],
     dateCreate: json["dateCreate"].toDate(),
     query: List<String>.from(json["query"].map((x) => x)),
-    listUser: List<UserModel>.from(json["listUser"].map((x) => UserModel.fromJson(x, ""))),
+    listUserNotify: json["listUserNotify"] != null ?  List<String>.from(json["listUserNotify"].map((x) => x)) : [],
+    listUser: List<UserModel>.from(json["listUser"].map((x) => UserModel.fromJson(x, x["uid"]))),
     // ignore: prefer_null_aware_operators
     dateUpdate: json["dateUpdate"] != null ? json["dateUpdate"].toDate() : null,
   );
@@ -40,6 +43,7 @@ class GroupModel {
     "dateCreate": dateCreate,
     "description": description,
     "query": List<dynamic>.from(query.map((x) => x)),
-    "listUser": List<dynamic>.from(listUser.map((x) => x.toJson())),
+    "listUser": List<dynamic>.from(listUser.map((x) => x.toJsonGroup())),
+    "listUserNotify": listUserNotify.isNotEmpty ? List<dynamic>.from(listUserNotify.map((x) => x)) : [],
   };
 }

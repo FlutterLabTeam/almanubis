@@ -61,4 +61,16 @@ class UserModel {
     "description": description,
     "query": List<dynamic>.from(query.map((x) => x)),
   };
+
+  Map<String, dynamic> toJsonGroup() => {
+    "rol": rol,
+    "uid": uid,
+    "name": name,
+    "email": email,
+    "image": image,
+    "dateUpdate": dateUpdate,
+    "dateCreate": dateCreate,
+    "description": description,
+    "query": List<dynamic>.from(query.map((x) => x)),
+  };
 }

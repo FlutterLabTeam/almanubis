@@ -52,7 +52,7 @@ class _AdminPanelState extends State<AdminPanel> {
       ),
       bottomNavigationBar: CustomNavigationBar(
         onTapPlus: () {},
-        onTapMessage: () => Navigator.of(context).pushNamed('/listChat'),
+        onTapMessage: () => Navigator.of(context).pushNamed('/listChat', arguments: widget.userModel),
         onTapPerson: () => Navigator.of(context).pushNamed('/userConfiguration', arguments: widget.userModel),
         model: CustomNavigationBarModel(
           color: CustomNavigationBarColors.black,

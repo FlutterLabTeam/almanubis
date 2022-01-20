@@ -27,6 +27,4 @@ class ListChatDataSourceImpl implements ListChatDataSource {
       throw GetListGroupException();
     }
   }
-
-
 }

@@ -10,6 +10,7 @@ class CardChatHomeModel {
   final String imageUrl;
   final DateTime dateTime;
   final String description;
+  final Function handledCart;
 
   CardChatHomeModel({
     required this.title,
@@ -17,6 +18,7 @@ class CardChatHomeModel {
     required this.dateTime,
     required this.imageUrl,
     required this.description,
+    required this.handledCart,
   });
 }
 
@@ -31,7 +33,7 @@ class CardChatHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()=> Navigator.of(context).pushNamed('/chatGroup'),
+      onTap: ()=> model.handledCart(),
       child: SizedBox(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 15),
@@ -54,6 +56,8 @@ class CardChatHome extends StatelessWidget {
                       Text(
                         model.title,
                         style: CompanyFontStyle.style().titleStyleDark,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 5),
                       Text(
