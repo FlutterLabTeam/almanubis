@@ -54,5 +54,24 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
         yield SaveImageState(link: link);
       });
     }
+    if (event is UpdateImageEvent) {
+      yield SaveImageLoadingState();
+      final result = await updateImage(
+        UpdateImageParams(
+          folderDB: event.folderDB,
+          linkImage: event.link,
+          path: event.path,
+          idUser: event.idUser,
+        ),
+      );
+      yield* result.fold((failure) async* {
+        yield SaveImageErrorState();
+      }, (String link) async* {
+        yield SaveImageState(link: link);
+      });
+    }
+    if (event is DisposeEvent) {
+      yield GlobalInitial();
+    }
   }
 }

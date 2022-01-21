@@ -41,7 +41,7 @@ class GlobalRepositoryImpl implements GlobalRepository {
   Future<Either<Failure, String>> updateImage({
     required String path,
     required String linkImage,
-    required String idUser,
+    required String? idUser,
     required String folderDB,
   }) async {
     try {

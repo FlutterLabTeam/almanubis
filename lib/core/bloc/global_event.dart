@@ -20,3 +20,19 @@ class SaveImageEvent implements GlobalEvent {
     required this.folderDB,
   });
 }
+
+class UpdateImageEvent implements GlobalEvent {
+  final String path;
+  final String? idUser;
+  final String folderDB;
+  final String link;
+
+  UpdateImageEvent({
+    this.idUser,
+    required this.path,
+    required this.link,
+    required this.folderDB,
+  });
+}
+
+class DisposeEvent implements GlobalEvent {}

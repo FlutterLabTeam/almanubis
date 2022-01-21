@@ -10,24 +10,25 @@ class UpdateImage extends UseCase<String, UpdateImageParams> {
 
   @override
   Future<Either<Failure, String>> call(UpdateImageParams params) {
-    return globalRepository.saveImage(
+    return globalRepository.updateImage(
       path: params.path,
       idUser: params.idUser,
       folderDB: params.folderDB,
+      linkImage: params.linkImage,
     );
   }
 }
 
 class UpdateImageParams {
   String path;
-  String idUser;
+  String? idUser;
   String folderDB;
   String linkImage;
 
   UpdateImageParams({
-    required this.folderDB,
-    required this.idUser,
+    this.idUser,
     required this.path,
+    required this.folderDB,
     required this.linkImage,
   });
 }

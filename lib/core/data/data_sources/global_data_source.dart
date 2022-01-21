@@ -16,8 +16,8 @@ abstract class GlobalDataSource {
   });
 
   Future<String> updateImage({
+    String? idUser,
     required String path,
-    required String idUser,
     required String folderDB,
     required String linkImage,
   });
@@ -51,19 +51,16 @@ class GlobalDataSourceImpl implements GlobalDataSource {
 
   @override
   Future<String> updateImage({
+    String? idUser,
     required String path,
-    required String idUser,
     required String folderDB,
     required String linkImage,
   }) async {
     try {
-      await firebaseStorage.refFromURL(linkImage).delete();
       final Reference reference = firebaseStorage.ref().child(folderDB);
-      TaskSnapshot saveImage =
-          await reference.child('$idUser.jpg').putFile(File(path));
-      String urlImage = await saveImage.ref.getDownloadURL();
-      firestore.collection("users").doc(idUser).update({"photoUrl": urlImage});
-      return urlImage;
+      TaskSnapshot updateImage = await reference.child('$idUser.jpg').putFile(File(path));
+      String link = await updateImage.ref.getDownloadURL();
+      return link;
     } catch (e) {
       throw SaveImageException();
     }

@@ -111,19 +111,20 @@ class SaveGroupStateView extends State<SaveGroup> {
                       child: Column(
                         children: [
                           BlocBuilder<GlobalBloc, GlobalState>(
-                              builder: (context, state) {
-                            if (state is TakeImageState) {
-                              isPath = true;
-                              path = state.path;
-                            }
-                            return ImageUser(
-                              typeImage: isPath
-                                  ? TypeImage.fileType
-                                  : TypeImage.networkType,
-                              handledTakeImage: () => handledTakeImage(),
-                              image: path,
-                            );
-                          }),
+                            builder: (context, state) {
+                              if (state is TakeImageState) {
+                                isPath = true;
+                                path = state.path;
+                              }
+                              return ImageUser(
+                                typeImage: isPath
+                                    ? TypeImage.fileType
+                                    : TypeImage.networkType,
+                                handledTakeImage: () => handledTakeImage(),
+                                image: path,
+                              );
+                            },
+                          ),
                           Container(
                             margin: const EdgeInsets.symmetric(
                               horizontal: 30,
@@ -212,7 +213,7 @@ class SaveGroupStateView extends State<SaveGroup> {
                   model: CustomFloatingButtonModel(
                     icon: Icons.arrow_forward,
                     loadingButton: loadingButton,
-                    handledIcon: () => loadingButton ? (){} : saveImage(),
+                    handledIcon: () => loadingButton ? () {} : saveImage(),
                   ),
                 );
               },
@@ -250,7 +251,7 @@ class SaveGroupStateView extends State<SaveGroup> {
   }
 
   saveNewGroup(String link) {
-    if(isSubmit){
+    if (isSubmit) {
       isSubmit = false;
       GroupModel groupModel = GroupModel(
         image: link,
@@ -262,7 +263,8 @@ class SaveGroupStateView extends State<SaveGroup> {
         listUserNotify: listUserModel.map((e) => e.uid!).toList(),
       );
 
-      BlocProvider.of<SaveGroupBloc>(context).add(SaveNewGroupEvent(groupModel: groupModel));
+      BlocProvider.of<SaveGroupBloc>(context)
+          .add(SaveNewGroupEvent(groupModel: groupModel));
     }
   }
 }

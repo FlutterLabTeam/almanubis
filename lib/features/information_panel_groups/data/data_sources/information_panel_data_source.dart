@@ -1,7 +1,7 @@
-import 'package:almanubis/core/model/user_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:almanubis/core/errors/exceptions.dart';
+import 'package:almanubis/core/model/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class InformationPanelDataSource {
   Future<bool> activeNotification({
@@ -63,6 +63,7 @@ class InformationPanelDataSourceImpl implements InformationPanelDataSource {
   }) async {
     try {
       await firestore.collection("groups").doc(idGroup).update({"listUser": FieldValue.arrayRemove([user.toJsonGroup()])});
+      await firestore.collection("groups").doc(idGroup).update({"listUserNotify": FieldValue.arrayRemove([user.uid])});
 
       return user;
     } catch (e) {
