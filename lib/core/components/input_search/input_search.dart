@@ -5,12 +5,14 @@ enum InputSearchType { number, string, password, email }
 
 class InputSearchColorModel {
   final TextEditingController? controller;
+  final Function(String) onChanged;
   final InputSearchType typeInput;
   final String label;
   final bool isObscure;
 
   InputSearchColorModel({
     this.typeInput = InputSearchType.string,
+    required this.onChanged,
     this.controller,
     this.isObscure = false,
     this.label = "",
@@ -30,6 +32,7 @@ class InputSearch extends StatelessWidget {
     return TextFormField(
       autofocus: false,
       obscureText: model.isObscure,
+      onChanged: (String text) => model.onChanged(text),
       style: TextStyle(
         fontSize: 17.0,
         color: CompanyColor.color().third,

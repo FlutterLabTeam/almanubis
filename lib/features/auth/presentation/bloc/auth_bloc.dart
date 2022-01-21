@@ -5,6 +5,7 @@ import 'package:almanubis/features/auth/data/models/credentials_model.dart';
 import 'package:almanubis/features/auth/domain/usecases/get_user_data.dart';
 import 'package:almanubis/features/auth/domain/usecases/login_email.dart';
 import 'package:almanubis/features/auth/domain/usecases/save_user_logged.dart';
+import 'package:almanubis/features/auth/domain/usecases/set_data_user.dart';
 import 'package:almanubis/features/auth/domain/usecases/validate_user_logged.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
@@ -17,12 +18,14 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginEmail loginEmail;
   final GetUserData getUserData;
+  final SetDataUSer setDataUSer;
   final SaveUserLogged saveUserLogged;
   final ValidateUserLogged validateUserLogged;
 
   AuthBloc({
     required this.loginEmail,
     required this.getUserData,
+    required this.setDataUSer,
     required this.saveUserLogged,
     required this.validateUserLogged,
   }) : super(AuthInitial());
@@ -61,9 +64,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           }, (bool okSaveCredential) async* {
           yield GetUserDataLoadedState(userModel: userModel);
           });
-
-
-
         });
       });
     }
@@ -81,6 +81,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         } else {
           yield ExistCredentialState(dataCredential: credential);
         }
+      });
+    }
+    if (event is SetDataUserEvent) {
+      final result = await setDataUSer(event.userModel);
+      yield* result.fold((error) async* {
+        yield SetDataUserErrorState();
+      }, (res) async* {
+        yield LoginLoaded(userModel: event.userModel);
       });
     }
   }

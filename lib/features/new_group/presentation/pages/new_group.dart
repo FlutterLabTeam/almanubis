@@ -7,6 +7,7 @@ import 'package:almanubis/core/components/navigation/navigation_bar.dart';
 import 'package:almanubis/core/components/appbar/custom_appbar.dart';
 import 'package:almanubis/core/util/company_fonts.dart';
 import 'package:almanubis/core/model/user_model.dart';
+import 'package:almanubis/core/util/debouncer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,8 @@ class _NewGroupState extends State<NewGroup> {
   static late Size size;
   List<UserModel> listAllUser = [];
   List<UserModel> listUserData = [];
+  List<UserModel> listStaticUser = [];
+  static final _debouncer = HandledDebouncer(milliseconds: 700);
 
   @override
   void initState() {
@@ -36,18 +39,13 @@ class _NewGroupState extends State<NewGroup> {
         body: BlocBuilder<NewGroupBloc, NewGroupState>(
           builder: (context, state) {
             if (state is ChangeStateState) {
-              listAllUser.map((element) {
-                if (element.uid == state.userModel.uid) {
-                  element.state = !element.state!;
-                }
-              }).toList();
-              listUserData = listAllUser
-                  .where((element) => element.state == true)
-                  .toList();
+              changeStateState(state);
             }
             if (state is GetAllUserState) {
-              state.listUserModel.sort((a,b) => a.name.compareTo(b.name));
-              listAllUser = state.listUserModel;
+              getAllUserState(state);
+            }
+            if (state is GetSearchUserState) {
+              getSearchUserState(state);
             }
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -76,7 +74,11 @@ class _NewGroupState extends State<NewGroup> {
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   child: InputSearch(
-                    model: InputSearchColorModel(label: "Buscar usuario"),
+                    model: InputSearchColorModel(
+                      label: "Buscar usuario",
+                      onChanged: (String text) =>
+                          _debouncer.run(() => handledSearch(text)),
+                    ),
                   ),
                 ),
                 Flexible(
@@ -107,17 +109,58 @@ class _NewGroupState extends State<NewGroup> {
           onTapPlus: () {},
           model: CustomNavigationBarModel(),
           onTapMessage: () => Navigator.of(context).pushNamed('/listChat'),
-          onTapPerson: () => Navigator.of(context).pushNamed('/userConfiguration'),
+          onTapPerson: () =>
+              Navigator.of(context).pushNamed('/userConfiguration'),
         ),
         floatingActionButton: CustomFloatingButton(
           model: CustomFloatingButtonModel(
             icon: Icons.arrow_forward,
-            handledIcon: () => Navigator.of(context).pushNamed('/saveGroup', arguments: listUserData),
+            handledIcon: () => Navigator.of(context)
+                .pushNamed('/saveGroup', arguments: listUserData),
           ),
         ),
       ),
     );
   }
 
-  handledSelectedUser(UserModel userModel) => BlocProvider.of<NewGroupBloc>(context).add(ChangeStateEvent(userModel: userModel));
+  handledSelectedUser(UserModel userModel) =>
+      BlocProvider.of<NewGroupBloc>(context)
+          .add(ChangeStateEvent(userModel: userModel));
+
+  handledSearch(String text) => BlocProvider.of<NewGroupBloc>(context).add(
+        SearchUserEvent(
+          userText: text,
+          listStaticUserModel: listStaticUser,
+        ),
+      );
+
+  getAllUserState(GetAllUserState state) {
+    state.listUserModel.sort((a, b) => a.name.compareTo(b.name));
+    listAllUser = state.listUserModel;
+    listStaticUser = state.listUserModel;
+  }
+
+  getSearchUserState(GetSearchUserState state) {
+    state.listUserModel.sort((a, b) => a.name.compareTo(b.name));
+    listAllUser = state.listUserModel.map((elementMap) {
+      UserModel user = listUserData.firstWhere(
+          (elementFirst) => elementFirst.uid == elementMap.uid,
+          orElse: () => UserModel.fromJsonNoData());
+      if (user.uid!.isNotEmpty) {
+        elementMap = user;
+      }
+      return elementMap;
+    }).toList();
+  }
+
+  changeStateState(ChangeStateState state) {
+    if(!state.userModel.state!){
+      state.userModel.state = true;
+      listUserData.add(state.userModel);
+    }else{
+      state.userModel.state = false;
+      listUserData.removeWhere((e)=> e.uid == state.userModel.uid);
+    }
+    BlocProvider.of<NewGroupBloc>(context).add(NewGroupInitEvent());
+  }
 }

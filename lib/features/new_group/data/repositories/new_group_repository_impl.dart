@@ -19,4 +19,14 @@ class NewGroupRepositoryImpl implements NewGroupRepository {
       return Left(RegisterUserDbFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, List<UserModel>>> searchUser(String text) async {
+    try {
+      final response = await newGroupDataSource.searchUser(text);
+      return Right(response);
+    } on RegisterEmailException {
+      return Left(RegisterUserDbFailure());
+    }
+  }
 }

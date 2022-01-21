@@ -5,6 +5,7 @@ import 'package:almanubis/core/errors/exceptions.dart';
 
 abstract class NewGroupDataSource {
   Future<List<UserModel>> getAllUser();
+  Future<List<UserModel>> searchUser(String text);
 }
 
 class NewGroupDataSourceImpl implements NewGroupDataSource {
@@ -17,6 +18,17 @@ class NewGroupDataSourceImpl implements NewGroupDataSource {
   Future<List<UserModel>> getAllUser() async {
     try {
       QuerySnapshot data = await firestore.collection("users").where("rol", isEqualTo:  "USER").get();
+      List<UserModel> listUser = data.docs.map((e) => UserModel.fromJson(e, e.id)).toList();
+      return listUser;
+    } catch (e) {
+      throw GetAllUserByNewGroupException();
+    }
+  }
+
+  @override
+  Future<List<UserModel>> searchUser(String text) async {
+    try {
+      QuerySnapshot data = await firestore.collection("users").where("query", arrayContains: text).get();
       List<UserModel> listUser = data.docs.map((e) => UserModel.fromJson(e, e.id)).toList();
       return listUser;
     } catch (e) {

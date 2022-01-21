@@ -1,3 +1,4 @@
+import 'package:almanubis/core/util/firebaseNotificationHandler.dart';
 import 'package:almanubis/features/chat_group/presentation/pages/chat_group.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/constant.dart';
@@ -22,9 +23,11 @@ class ListChat extends StatefulWidget {
 class _ListChatState extends State<ListChat> {
   static late Size size;
   static late List<GroupModel> listChat = [];
+  FirebaseNotifications firebaseNotifications = FirebaseNotifications();
 
   @override
   void initState() {
+    firebaseNotifications.setUpFirebase(context: context, userModel: widget.userModel);
     BlocProvider.of<ListChatBloc>(context).add(GetAllListChat());
     super.initState();
   }

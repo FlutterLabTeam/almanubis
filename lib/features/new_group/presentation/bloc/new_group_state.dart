@@ -19,4 +19,10 @@ class GetAllUserState extends NewGroupState {
   GetAllUserState(this.listUserModel);
 }
 
+class GetSearchUserState extends NewGroupState {
+  final List<UserModel> listUserModel;
+
+  GetSearchUserState(this.listUserModel);
+}
+
 class GetAllUserErrorState extends NewGroupState {}

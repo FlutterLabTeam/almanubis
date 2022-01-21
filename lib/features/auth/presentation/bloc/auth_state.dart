@@ -24,10 +24,18 @@ class ChangePasswordState implements AuthState {
 
 class NoExistCredentialErrorState extends AuthState {}
 
+class SetDataUserErrorState extends AuthState {}
+
 class SaveCredentialErrorState extends AuthState {}
 
 class ExistCredentialState extends AuthState {
   final CredentialsModel dataCredential;
 
   ExistCredentialState({required this.dataCredential});
+}
+
+class LoginLoaded extends AuthState {
+  final UserModel userModel;
+
+  LoginLoaded({required this.userModel});
 }

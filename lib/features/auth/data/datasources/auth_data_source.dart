@@ -13,6 +13,7 @@ abstract class AuthDataSource {
   Future<CredentialsModel> validateUserLogged();
   Future<User> loginEmail(String email, String password);
   Future<bool> saveUserLogged(CredentialsModel credentialsModel);
+  Future<bool> setDataUSer(UserModel userModel);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -74,6 +75,17 @@ class AuthDataSourceImpl implements AuthDataSource {
       return true;
     } on Exception {
       throw ValidateUserLoggedException();
+    }
+  }
+
+  @override
+  Future<bool> setDataUSer(UserModel userModel) async {
+    try {
+      DocumentReference documentReference = firestore.collection("users").doc(userModel.uid);
+      await documentReference.update(userModel.toJson());
+      return true;
+    } on Exception {
+      throw SaveCredentialsException();
     }
   }
 }

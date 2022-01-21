@@ -19,3 +19,9 @@ class ChangePasswordEvent implements AuthEvent {
 }
 
 class ValidateUserLoggedEvent extends AuthEvent {}
+
+class SetDataUserEvent extends AuthEvent {
+  final UserModel userModel;
+
+  SetDataUserEvent({required this.userModel});
+}

@@ -1,6 +1,7 @@
 class UserModel {
   UserModel({
     this.uid,
+    this.token = "",
     this.image,
     this.dateUpdate,
     this.description,
@@ -16,6 +17,7 @@ class UserModel {
   bool? state;
   String name;
   String? uid;
+  String? token;
   String email;
   String? image;
   List<String> query;
@@ -28,6 +30,7 @@ class UserModel {
     rol: json["rol"],
     name: json["name"],
     email: json["email"],
+    token: json["token"],
     image: json["image"],
     // ignore: prefer_null_aware_operators
     dateCreate: json["dateCreate"] != null ? json["dateCreate"].toDate() : null,
@@ -42,6 +45,7 @@ class UserModel {
     rol: "",
     name: "",
     email: "",
+    token: "",
     image: "",
     // ignore: prefer_null_aware_operators
     dateCreate: DateTime.now(),
@@ -54,6 +58,7 @@ class UserModel {
   Map<String, dynamic> toJson() => {
     "rol": rol,
     "name": name,
+    "token": token,
     "email": email,
     "image": image,
     "dateUpdate": dateUpdate,
@@ -67,6 +72,7 @@ class UserModel {
     "uid": uid,
     "name": name,
     "email": email,
+    "token": token,
     "image": image,
     "dateUpdate": dateUpdate,
     "dateCreate": dateCreate,

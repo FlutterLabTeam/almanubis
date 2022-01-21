@@ -15,3 +15,5 @@ class SaveNewGroupException implements Exception {}
 class SaveImageException implements Exception {}
 
 class GetListGroupException implements Exception {}
+
+class SaveCredentialsException implements Exception {}

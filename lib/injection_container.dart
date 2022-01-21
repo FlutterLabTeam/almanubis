@@ -6,6 +6,7 @@ import 'package:almanubis/core/domain/use_cases/save_image.dart';
 import 'package:almanubis/core/domain/use_cases/take_photo.dart';
 import 'package:almanubis/core/domain/use_cases/update_image.dart';
 import 'package:almanubis/features/auth/domain/usecases/save_user_logged.dart';
+import 'package:almanubis/features/auth/domain/usecases/set_data_user.dart';
 import 'package:almanubis/features/information_panel_groups/data/data_sources/information_panel_data_source.dart';
 import 'package:almanubis/features/information_panel_groups/data/repositories/information_panel_group_repository_impl.dart';
 import 'package:almanubis/features/information_panel_groups/domain/repositories/information_panel_repository.dart';
@@ -22,6 +23,7 @@ import 'package:almanubis/features/new_group/data/data_sources/new_group_data_so
 import 'package:almanubis/features/new_group/data/repositories/new_group_repository_impl.dart';
 import 'package:almanubis/features/new_group/domain/repositories/new_group_repository.dart';
 import 'package:almanubis/features/new_group/domain/use_cases/get_all_user.dart';
+import 'package:almanubis/features/new_group/domain/use_cases/search_user.dart';
 import 'package:almanubis/features/new_group/presentation/bloc/new_group_bloc.dart';
 import 'package:almanubis/features/save_group/data/data_sources/save_group_data_source.dart';
 import 'package:almanubis/features/save_group/data/repositories/save_group_repository_impl.dart';
@@ -61,6 +63,7 @@ init() async {
         getUserData: sl(),
         saveUserLogged: sl(),
         validateUserLogged: sl(),
+        setDataUSer: sl(),
       ));
   sl.registerFactory(() => NewUserBloc(
         registerEmail: sl(),
@@ -68,6 +71,7 @@ init() async {
       ));
   sl.registerFactory(() => NewGroupBloc(
     getAllUser: sl(),
+    searchUser: sl(),
   ));
   sl.registerFactory(() => GlobalBloc(
     takePhoto: sl(),
@@ -94,7 +98,9 @@ init() async {
   sl.registerLazySingleton(() => GetUserData(authRepository: sl()));
   sl.registerLazySingleton(() => SaveImage(globalRepository: sl()));
   sl.registerLazySingleton(() => TakePhoto(globalRepository: sl()));
+  sl.registerLazySingleton(() => SetDataUSer(authRepository: sl()));
   sl.registerLazySingleton(() => UpdateImage(globalRepository: sl()));
+  sl.registerLazySingleton(() => SearchUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => GetAllUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => SaveUserLogged(authRepository: sl()));
   sl.registerLazySingleton(() => GetListChat(listChatRepository: sl()));

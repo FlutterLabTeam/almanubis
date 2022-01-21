@@ -9,3 +9,5 @@ class GetUserDbFailure extends Failure {}
 class LoginEmailFailure extends Failure {}
 
 class ValidateUserLoggedFailure extends Failure {}
+
+class SaveCredentialsFailure extends Failure {}

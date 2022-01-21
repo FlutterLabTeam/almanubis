@@ -171,6 +171,7 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   handledGoHome(UserModel userModel) {
+    /*firebaseNotifications.setUpFirebase(context: context, userModel: widget.myUserModel);*/
     if (userModel.rol == adminConstant) {
       Navigator.pushReplacementNamed(context, "/adminPanel", arguments: userModel);
     } else {
