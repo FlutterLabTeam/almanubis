@@ -5,6 +5,12 @@ import 'package:almanubis/core/domain/repositories/global_repository.dart';
 import 'package:almanubis/core/domain/use_cases/save_image.dart';
 import 'package:almanubis/core/domain/use_cases/take_photo.dart';
 import 'package:almanubis/core/domain/use_cases/update_image.dart';
+import 'package:almanubis/features/add_new_group/data/data_sources/add_new_user_data_source.dart';
+import 'package:almanubis/features/add_new_group/data/repositories/add_new_user_repository_impl.dart';
+import 'package:almanubis/features/add_new_group/domain/repositories/add_new_user_repository.dart';
+import 'package:almanubis/features/add_new_group/domain/use_cases/get_all_user.dart';
+import 'package:almanubis/features/add_new_group/domain/use_cases/search_user.dart';
+import 'package:almanubis/features/add_new_group/presentation/bloc/add_new_user_bloc.dart';
 import 'package:almanubis/features/auth/domain/usecases/save_user_logged.dart';
 import 'package:almanubis/features/auth/domain/usecases/set_data_user.dart';
 import 'package:almanubis/features/information_panel_groups/data/data_sources/information_panel_data_source.dart';
@@ -73,6 +79,10 @@ init() async {
     getAllUser: sl(),
     searchUser: sl(),
   ));
+  sl.registerFactory(() => AddNewUserBloc(
+    getAllUserAdd: sl(),
+    searchUserAdd: sl(),
+  ));
   sl.registerFactory(() => GlobalBloc(
     takePhoto: sl(),
     saveImage: sl(),
@@ -108,6 +118,8 @@ init() async {
   sl.registerLazySingleton(() => SaveNewGroup(saveGroupRepository: sl()));
   sl.registerLazySingleton(() => RegisterUserDb(newUserRepository: sl()));
   sl.registerLazySingleton(() => ValidateUserLogged(authRepository: sl()));
+  sl.registerLazySingleton(() => GetAllUserAdd(addNewUserRepository: sl()));
+  sl.registerLazySingleton(() => SearchUserAdd(addNewUserRepository: sl()));
   sl.registerLazySingleton(() => DeleteUser(informationPanelRepository: sl()));
   sl.registerLazySingleton(() => UpdateUser(userConfigurationRepository: sl()));
   sl.registerLazySingleton(() => ActiveNotification(informationPanelRepository: sl()));
@@ -120,6 +132,7 @@ init() async {
   sl.registerLazySingleton<ListChatRepository>(() => ListChatRepositoryImpl(listChatDataSource: sl()));
   sl.registerLazySingleton<NewGroupRepository>(() => NewGroupRepositoryImpl(newGroupDataSource: sl()));
   sl.registerLazySingleton<SaveGroupRepository>(() => SaveGroupRepositoryImpl(saveGroupDataSource: sl()));
+  sl.registerLazySingleton<AddNewUserRepository>(() => AddNewUserRepositoryImpl(addNewUserDataSource: sl()));
   sl.registerLazySingleton<InformationPanelRepository>(() => InformationPanelRepositoryImpl(informationPanelDataSource: sl()));
   sl.registerLazySingleton<UserConfigurationRepository>(() => UserConfigurationRepositoryImpl(userConfigurationDataSource: sl()));
 
@@ -127,6 +140,7 @@ init() async {
   sl.registerLazySingleton<NewUserDataSource>(() => NewUserDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<NewGroupDataSource>(() => NewGroupDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<SaveGroupDataSource>(() => SaveGroupDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
+  sl.registerLazySingleton<AddNewUserDataSource>(() => AddNewUserDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<ListChatDataSource>(() => ListChatDataSourceImpl(sharedPreferences: sl(), firestore: sl()));
   sl.registerLazySingleton<InformationPanelDataSource>(() => InformationPanelDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<AuthDataSource>(() => AuthDataSourceImpl(firestore: sl(),firebaseAuth: sl(), sharedPreferences: sl()));
