@@ -1,3 +1,4 @@
+import 'package:almanubis/core/model/group_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:almanubis/core/util/debouncer.dart';
@@ -12,7 +13,10 @@ import 'package:almanubis/features/add_new_group/presentation/bloc/add_new_user_
 import 'package:almanubis/core/components/custom_floating_button/custom_floating_button.dart';
 
 class AddNewUser extends StatefulWidget {
-  const AddNewUser({Key? key}) : super(key: key);
+
+  final GroupModel model;
+
+  const AddNewUser({Key? key, required this.model}) : super(key: key);
 
   @override
   State<AddNewUser> createState() => _AddNewUserState();
@@ -115,7 +119,7 @@ class _AddNewUserState extends State<AddNewUser> {
         floatingActionButton: CustomFloatingButton(
           model: CustomFloatingButtonModel(
             icon: Icons.check,
-            handledIcon: () {} /*Navigator.of(context).pushNamed('/saveGroup', arguments: listUserData),*/
+            handledIcon: () => handledAddNewUser()
           ),
         ),
       ),
@@ -133,10 +137,19 @@ class _AddNewUserState extends State<AddNewUser> {
         ),
       );
 
+  handledAddNewUser() =>
+      BlocProvider.of<AddNewUserBloc>(context).add(
+        AddNewUserDataEvent(
+          idGroup: widget.model.id!,
+          userModel: listUserData,
+        ),
+      );
+
   getAllUserState(GetAllUserState state) {
     state.listUserModel.sort((a, b) => a.name.compareTo(b.name));
     listAllUser = state.listUserModel;
     listStaticUser = state.listUserModel;
+    handledSelectedUserPreLoading();
   }
 
   getSearchUserState(GetSearchUserState state) {
@@ -160,6 +173,20 @@ class _AddNewUserState extends State<AddNewUser> {
       state.userModel.state = false;
       listUserData.removeWhere((e)=> e.uid == state.userModel.uid);
     }
+    BlocProvider.of<AddNewUserBloc>(context).add(AddNewUserInitEvent());
+  }
+
+  handledSelectedUserPreLoading(){
+    listUserData = widget.model.listUser;
+    listUserData.map((e) => e.state = true).toList();
+    listUserData.forEach((element) {
+      listAllUser.map((e) {
+        if(e.uid == element.uid){
+          e.state = true;
+        }
+       return e;
+      }).toList();
+    });
     BlocProvider.of<AddNewUserBloc>(context).add(AddNewUserInitEvent());
   }
 }

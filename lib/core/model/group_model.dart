@@ -36,6 +36,18 @@ class GroupModel {
     dateUpdate: json["dateUpdate"] != null ? json["dateUpdate"].toDate() : null,
   );
 
+  factory GroupModel.fromNoDataJson() => GroupModel(
+    id: "",
+    image: "",
+    title: "",
+    query: [],
+    listUser: [],
+    description: "",
+    listUserNotify: [],
+    dateCreate: DateTime.now(),
+    dateUpdate: DateTime.now(),
+  );
+
   Map<String, dynamic> toJson() => {
     "title": title,
     "image": image,

@@ -1,7 +1,7 @@
-import 'package:almanubis/core/model/user_model.dart';
 import 'package:dartz/dartz.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/exceptions.dart';
+import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/features/information_panel_groups/data/data_sources/information_panel_data_source.dart';
 import 'package:almanubis/features/information_panel_groups/domain/repositories/information_panel_repository.dart';
 

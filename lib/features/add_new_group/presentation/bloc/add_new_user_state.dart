@@ -5,6 +5,7 @@ abstract class AddNewUserState {}
 class AddNewUserInitial extends AddNewUserState {}
 
 class ChangeStateLoading extends AddNewUserState {}
+
 class GetAllUserFinalStare extends AddNewUserState {}
 
 class ChangeStateState extends AddNewUserState {
@@ -26,3 +27,7 @@ class GetSearchUserState extends AddNewUserState {
 }
 
 class GetAllUserErrorState extends AddNewUserState {}
+
+class AddNewUserDataState extends AddNewUserState {}
+class AddNewUserDataLoadingState extends AddNewUserState {}
+class AddNewUserDataErrorState extends AddNewUserState {}

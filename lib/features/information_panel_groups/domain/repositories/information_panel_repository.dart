@@ -7,10 +7,12 @@ abstract class InformationPanelRepository {
     required String idGroup,
     required String idUser,
   });
+
   Future<Either<Failure, bool>> disableNotification({
     required String idGroup,
     required String idUser,
   });
+
   Future<Either<Failure, UserModel>> deleteUser({
     required String idGroup,
     required UserModel user,

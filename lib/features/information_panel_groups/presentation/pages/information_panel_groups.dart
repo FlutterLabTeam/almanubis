@@ -148,7 +148,7 @@ class _InformationPanelGroupsState extends State<InformationPanelGroups> {
         floatingActionButton: CustomFloatingButton(
           model: CustomFloatingButtonModel(
             handledIcon: () {
-              Navigator.pushNamed(context, '/addNewUser');
+              Navigator.pushNamed(context, '/addNewUser', arguments: widget.model.groupModel);
             },
             icon: Icons.add,
           ),

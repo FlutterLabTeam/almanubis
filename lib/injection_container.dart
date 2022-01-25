@@ -8,6 +8,7 @@ import 'package:almanubis/core/domain/use_cases/update_image.dart';
 import 'package:almanubis/features/add_new_group/data/data_sources/add_new_user_data_source.dart';
 import 'package:almanubis/features/add_new_group/data/repositories/add_new_user_repository_impl.dart';
 import 'package:almanubis/features/add_new_group/domain/repositories/add_new_user_repository.dart';
+import 'package:almanubis/features/add_new_group/domain/use_cases/add_new_user.dart';
 import 'package:almanubis/features/add_new_group/domain/use_cases/get_all_user.dart';
 import 'package:almanubis/features/add_new_group/domain/use_cases/search_user.dart';
 import 'package:almanubis/features/add_new_group/presentation/bloc/add_new_user_bloc.dart';
@@ -82,6 +83,7 @@ init() async {
   sl.registerFactory(() => AddNewUserBloc(
     getAllUserAdd: sl(),
     searchUserAdd: sl(),
+    addNewUserUseCase: sl(),
   ));
   sl.registerFactory(() => GlobalBloc(
     takePhoto: sl(),
@@ -121,6 +123,7 @@ init() async {
   sl.registerLazySingleton(() => GetAllUserAdd(addNewUserRepository: sl()));
   sl.registerLazySingleton(() => SearchUserAdd(addNewUserRepository: sl()));
   sl.registerLazySingleton(() => DeleteUser(informationPanelRepository: sl()));
+  sl.registerLazySingleton(() => AddNewUserUseCase(addNewUserRepository: sl()));
   sl.registerLazySingleton(() => UpdateUser(userConfigurationRepository: sl()));
   sl.registerLazySingleton(() => ActiveNotification(informationPanelRepository: sl()));
   sl.registerLazySingleton(() => DisableNotification(informationPanelRepository: sl()));

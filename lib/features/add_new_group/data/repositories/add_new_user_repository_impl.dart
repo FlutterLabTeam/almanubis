@@ -29,4 +29,14 @@ class AddNewUserRepositoryImpl implements AddNewUserRepository {
       return Left(RegisterUserDbFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> addNewUser({required List<UserModel> user, required String idGroup}) async {
+    try {
+      final response = await addNewUserDataSource.addNewUser(user: user, idGroup: idGroup);
+      return Right(response);
+    } on GetAllUserException {
+      return Left(RegisterUserDbFailure());
+    }
+  }
 }

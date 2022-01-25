@@ -23,4 +23,14 @@ class SearchUserEvent implements AddNewUserEvent {
   });
 }
 
+class AddNewUserDataEvent implements AddNewUserEvent {
+  final String idGroup;
+  final List<UserModel> userModel;
+
+  AddNewUserDataEvent({
+    required this.idGroup,
+    required this.userModel,
+  });
+}
+
 

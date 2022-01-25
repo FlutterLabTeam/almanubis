@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'package:almanubis/features/add_new_group/domain/use_cases/get_all_user.dart';
-import 'package:almanubis/features/add_new_group/domain/use_cases/search_user.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/core/usecases/use_cases.dart';
+import 'package:almanubis/features/add_new_group/domain/use_cases/search_user.dart';
+import 'package:almanubis/features/add_new_group/domain/use_cases/get_all_user.dart';
+import 'package:almanubis/features/add_new_group/domain/use_cases/add_new_user.dart';
 
 part 'add_new_user_event.dart';
 
@@ -13,10 +14,12 @@ part 'add_new_user_state.dart';
 class AddNewUserBloc extends Bloc<AddNewUserEvent, AddNewUserState> {
   final GetAllUserAdd getAllUserAdd;
   final SearchUserAdd searchUserAdd;
+  final AddNewUserUseCase addNewUserUseCase;
 
   AddNewUserBloc({
-    required this.getAllUserAdd,
     required this.searchUserAdd,
+    required this.getAllUserAdd,
+    required this.addNewUserUseCase,
   }) : super(AddNewUserInitial());
 
   @override
@@ -52,6 +55,18 @@ class AddNewUserBloc extends Bloc<AddNewUserEvent, AddNewUserState> {
       } else {
         yield GetSearchUserState(event.listStaticUserModel);
       }
+    }
+    if (event is AddNewUserDataEvent) {
+        yield AddNewUserDataLoadingState();
+        final result = await addNewUserUseCase(AddNewUserParams(
+          user: event.userModel,
+          idGroup: event.idGroup,
+        ));
+        yield* result.fold((failure) async* {
+          yield AddNewUserDataErrorState();
+        }, (bool listUser) async* {
+          yield AddNewUserDataState();
+        });
     }
   }
 }
