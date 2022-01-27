@@ -39,6 +39,7 @@ class InputChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       autofocus: false,
+      controller: model.controller,
       obscureText: model.isObscure,
       style: TextStyle(
         fontSize: 17.0,

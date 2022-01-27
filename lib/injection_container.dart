@@ -14,6 +14,12 @@ import 'package:almanubis/features/add_new_group/domain/use_cases/search_user.da
 import 'package:almanubis/features/add_new_group/presentation/bloc/add_new_user_bloc.dart';
 import 'package:almanubis/features/auth/domain/usecases/save_user_logged.dart';
 import 'package:almanubis/features/auth/domain/usecases/set_data_user.dart';
+import 'package:almanubis/features/chat_group/data/data_sources/chat_group_data_source.dart';
+import 'package:almanubis/features/chat_group/data/repositories/chat_group_user_repository_impl.dart';
+import 'package:almanubis/features/chat_group/domain/repositories/chat_group_user_repository.dart';
+import 'package:almanubis/features/chat_group/domain/use_cases/create_chat.dart';
+import 'package:almanubis/features/chat_group/domain/use_cases/get_chat_stream.dart';
+import 'package:almanubis/features/chat_group/presentation/bloc/chat_group_bloc.dart';
 import 'package:almanubis/features/information_panel_groups/data/data_sources/information_panel_data_source.dart';
 import 'package:almanubis/features/information_panel_groups/data/repositories/information_panel_group_repository_impl.dart';
 import 'package:almanubis/features/information_panel_groups/domain/repositories/information_panel_repository.dart';
@@ -99,6 +105,10 @@ init() async {
   sl.registerFactory(() => ListChatBloc(
     getListChat: sl()
   ));
+  sl.registerFactory(() => ChatGroupBloc(
+    getChatStream: sl(),
+    createChat: sl(),
+  ));
   sl.registerFactory(() => InformationPanelBloc(
     activeNotification: sl(),
     disableNotification: sl(),
@@ -115,11 +125,13 @@ init() async {
   sl.registerLazySingleton(() => SearchUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => GetAllUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => SaveUserLogged(authRepository: sl()));
+  sl.registerLazySingleton(() => CreateChat(chatGroupRepository: sl()));
   sl.registerLazySingleton(() => GetListChat(listChatRepository: sl()));
   sl.registerLazySingleton(() => RegisterEmail(newUserRepository: sl()));
   sl.registerLazySingleton(() => SaveNewGroup(saveGroupRepository: sl()));
   sl.registerLazySingleton(() => RegisterUserDb(newUserRepository: sl()));
   sl.registerLazySingleton(() => ValidateUserLogged(authRepository: sl()));
+  sl.registerLazySingleton(() => GetChatStream(chatGroupRepository: sl()));
   sl.registerLazySingleton(() => GetAllUserAdd(addNewUserRepository: sl()));
   sl.registerLazySingleton(() => SearchUserAdd(addNewUserRepository: sl()));
   sl.registerLazySingleton(() => DeleteUser(informationPanelRepository: sl()));
@@ -134,6 +146,7 @@ init() async {
   sl.registerLazySingleton<NewUserRepository>(() => NewUserRepositoryImpl(newUserDataSource: sl()));
   sl.registerLazySingleton<ListChatRepository>(() => ListChatRepositoryImpl(listChatDataSource: sl()));
   sl.registerLazySingleton<NewGroupRepository>(() => NewGroupRepositoryImpl(newGroupDataSource: sl()));
+  sl.registerLazySingleton<ChatGroupRepository>(() => ChatGroupRepositoryImpl(chatGroupDataSource: sl()));
   sl.registerLazySingleton<SaveGroupRepository>(() => SaveGroupRepositoryImpl(saveGroupDataSource: sl()));
   sl.registerLazySingleton<AddNewUserRepository>(() => AddNewUserRepositoryImpl(addNewUserDataSource: sl()));
   sl.registerLazySingleton<InformationPanelRepository>(() => InformationPanelRepositoryImpl(informationPanelDataSource: sl()));
@@ -142,6 +155,7 @@ init() async {
   //DataSource
   sl.registerLazySingleton<NewUserDataSource>(() => NewUserDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<NewGroupDataSource>(() => NewGroupDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
+  sl.registerLazySingleton<ChatGroupDataSource>(() => ChatGroupDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<SaveGroupDataSource>(() => SaveGroupDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<AddNewUserDataSource>(() => AddNewUserDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<ListChatDataSource>(() => ListChatDataSourceImpl(sharedPreferences: sl(), firestore: sl()));

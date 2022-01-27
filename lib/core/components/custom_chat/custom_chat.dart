@@ -1,7 +1,6 @@
-import 'package:almanubis/core/model/chat_model.dart';
-import 'package:almanubis/core/model/user_model.dart';
-import 'package:almanubis/core/util/date_format.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:almanubis/core/model/chat_model.dart';
+import 'package:almanubis/core/util/date_format.dart';
 import 'package:almanubis/core/components/cart_chat/cart_chat.dart';
 import 'package:almanubis/core/components/square_image/square_image.dart';
 
@@ -13,12 +12,10 @@ enum CustomChatColor {
 class CustomChatModel {
   final CustomChatColor? color;
   final ChatModel chatModel;
-  final UserModel userModel;
 
   CustomChatModel({
     this.color = CustomChatColor.dark,
     required this.chatModel,
-    required this.userModel,
   });
 }
 
@@ -42,7 +39,7 @@ class CustomChat extends StatelessWidget {
                 flex: 0,
                 child: SquareImage(
                   model: SquareImageModel(
-                    urlImage: model.userModel.image!,
+                    urlImage: model.chatModel.imageUser,
                     size: size.width * 0.12,
                   ),
                 ),

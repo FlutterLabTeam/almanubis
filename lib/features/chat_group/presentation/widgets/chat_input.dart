@@ -7,6 +7,7 @@ class ChatInput extends StatelessWidget {
   static late Size size;
   final String? labelInput;
   final Function(String) handledChangeInput;
+  final Function() handledSubmitChat;
   final TextEditingController controller;
 
   const ChatInput({
@@ -14,6 +15,7 @@ class ChatInput extends StatelessWidget {
     this.labelInput,
     required this.isSend,
     required this.controller,
+    required this.handledSubmitChat,
     required this.handledChangeInput
   }) : super(key: key);
 
@@ -72,7 +74,7 @@ class ChatInput extends StatelessWidget {
               height: size.width * 0.17,
               child: isSend
                   ? IconButton(
-                      onPressed: () {},
+                      onPressed: () => handledSubmitChat(),
                       icon: const Icon(
                         Icons.send,
                         size: 30,

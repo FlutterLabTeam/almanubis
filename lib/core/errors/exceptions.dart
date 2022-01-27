@@ -19,3 +19,7 @@ class GetListGroupException implements Exception {}
 class SaveCredentialsException implements Exception {}
 
 class GetAllUserException implements Exception {}
+
+class GetStreamChatException implements Exception {}
+
+class CreateChatException implements Exception {}
