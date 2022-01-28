@@ -4,6 +4,7 @@ class ChatModel {
     required this.label,
     required this.idGroup,
     required this.nameUser,
+    required this.pathImage,
     required this.imageUser,
     required this.dateCreate,
     required this.idUserCreate,
@@ -15,6 +16,7 @@ class ChatModel {
   String label;
   String idGroup;
   String nameUser;
+  String pathImage;
   String imageUser;
   DateTime dateCreate;
   String idUserCreate;
@@ -26,6 +28,7 @@ class ChatModel {
     label: json["label"],
     idGroup: json["idGroup"],
     nameUser: json["nameUser"],
+    pathImage: json["pathImage"],
     imageUser: json["imageUser"],
     dateCreate: json["dateCreate"].toDate(),
     idUserCreate: json["idUserCreate"],
@@ -37,6 +40,7 @@ class ChatModel {
     "label": label,
     "idGroup": idGroup,
     "nameUser": nameUser,
+    "pathImage": pathImage,
     "imageUser": imageUser,
     "dateCreate": dateCreate,
     "idUserCreate": idUserCreate,

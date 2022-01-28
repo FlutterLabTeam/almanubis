@@ -27,8 +27,7 @@ class _UserConfigurationState extends State<UserConfiguration> {
   static late bool loadingButton = false;
   static late GlobalKey<FormState> _formKey;
   static late TextEditingController nameController = TextEditingController();
-  static late TextEditingController descriptionController =
-      TextEditingController();
+  static late TextEditingController descriptionController = TextEditingController();
 
   @override
   void initState() {
