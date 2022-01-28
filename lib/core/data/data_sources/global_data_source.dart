@@ -38,7 +38,7 @@ class GlobalDataSourceImpl implements GlobalDataSource {
   Future<String> takePhoto() async {
     try {
       final ImagePicker _picker = ImagePicker();
-      XFile? image = await _picker.pickImage(source: ImageSource.camera);
+      XFile? image = await _picker.pickImage(source: ImageSource.camera, maxHeight: 300, maxWidth: 150);
       if (image != null) {
         return image.path;
       } else {

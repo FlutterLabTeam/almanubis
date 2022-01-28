@@ -72,6 +72,7 @@ class _ChatGroupState extends State<ChatGroup> {
               isStream = true;
             }
             if (state is CreateChatState) {
+              path = "";
               isSubmitHandled = true;
               controller.text = "";
               BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
@@ -158,15 +159,18 @@ class _ChatGroupState extends State<ChatGroup> {
                     BlocProvider.of<GlobalBloc>(context).add(DisposeEvent());
                   }
                   return ChatInput(
-                    isSend: isSend,
-                    mediaList: listPath,
-                    controller: controller,
-                    loadingButton: loadingButton,
-                    handledTapCamara: handledTakeImage,
-                    handledChangeInput: handledChangeInput,
-                    handledDeleteImage: handledDeleteImage,
-                    handledSubmitChat: () => listPath.isNotEmpty ? saveImage() : handledSaveMessage(),
-                  );
+                      isSend: isSend,
+                      mediaList: listPath,
+                      controller: controller,
+                      loadingButton: loadingButton,
+                      handledTapCamara: handledTakeImage,
+                      handledChangeInput: handledChangeInput,
+                      handledDeleteImage: handledDeleteImage,
+                      handledSubmitChat: () {
+                        listPath.isNotEmpty
+                            ? saveImage()
+                            : handledSaveMessage();
+                      });
                 })
               ],
             );
