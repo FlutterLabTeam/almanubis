@@ -5,8 +5,12 @@ abstract class GlobalEvent {}
 
 class TakeImageEvent implements GlobalEvent {
   final bool? isPhoto;
+  final ImageQualityModel imageQualityModel;
 
-  TakeImageEvent({this.isPhoto = true});
+  TakeImageEvent({
+    this.isPhoto = true,
+    required this.imageQualityModel
+  });
 }
 
 class SaveImageEvent implements GlobalEvent {
@@ -18,6 +22,16 @@ class SaveImageEvent implements GlobalEvent {
     this.idUser,
     required this.path,
     required this.folderDB,
+  });
+}
+
+class DownloadImageEvent implements GlobalEvent {
+  final String folderDB;
+  final String path;
+
+  DownloadImageEvent({
+    required this.folderDB,
+    required this.path,
   });
 }
 

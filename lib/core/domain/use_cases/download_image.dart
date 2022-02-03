@@ -3,28 +3,25 @@ import '../../../../core/errors/failure.dart';
 import 'package:almanubis/core/usecases/use_cases.dart';
 import 'package:almanubis/core/domain/repositories/global_repository.dart';
 
-class SaveImage extends UseCase<String, SaveImageParams> {
+class DownloadImage extends UseCase<bool, DownloadImageParams> {
   final GlobalRepository globalRepository;
 
-  SaveImage({required this.globalRepository});
+  DownloadImage({required this.globalRepository});
 
   @override
-  Future<Either<Failure, String>> call(SaveImageParams params) {
-    return globalRepository.saveImage(
+  Future<Either<Failure, bool>> call(DownloadImageParams params) {
+    return globalRepository.downloadImage(
       path: params.path,
-      idUser: params.idUser,
-      folderDB: params.folderDB,
+      folderDB: params.folderDB
     );
   }
 }
 
-class SaveImageParams {
-  String path;
-  String? idUser;
+class DownloadImageParams {
   String folderDB;
+  String path;
 
-  SaveImageParams({
-    this.idUser,
+  DownloadImageParams({
     required this.path,
     required this.folderDB,
   });

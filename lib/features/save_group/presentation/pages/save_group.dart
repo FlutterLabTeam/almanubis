@@ -1,3 +1,4 @@
+import 'package:almanubis/core/data/model/image_quality_model.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/constant.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -237,7 +238,7 @@ class SaveGroupStateView extends State<SaveGroup> {
           .add(ChangeStateEvent(userModel: userModel));
 
   handledTakeImage() =>
-      BlocProvider.of<GlobalBloc>(context).add(TakeImageEvent());
+      BlocProvider.of<GlobalBloc>(context).add(TakeImageEvent(imageQualityModel: ImageQualityModel()));
 
   saveImage() {
     if (_formKey.currentState!.validate()) {

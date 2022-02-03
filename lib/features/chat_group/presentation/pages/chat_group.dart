@@ -1,4 +1,6 @@
 import 'package:almanubis/core/bloc/global_bloc.dart';
+import 'package:almanubis/core/data/model/image_quality_model.dart';
+import 'package:almanubis/core/util/snack_bar_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -62,119 +64,133 @@ class _ChatGroupState extends State<ChatGroup> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-        //GetChatGroupStreamState
-        body: BlocBuilder<ChatGroupBloc, ChatGroupState>(
-          builder: (context, state) {
-            if (state is GetChatGroupStreamState) {
-              dataStream = state.stream;
-              isStream = true;
-            }
-            if (state is CreateChatState) {
-              path = "";
-              isSubmitHandled = true;
-              controller.text = "";
-              BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
-            }
-            return Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                HeaderChat(
-                  model: HeaderChatModel(
-                    image: widget.model.groupModel!.image,
-                    title: widget.model.groupModel!.title,
-                    description: widget.model.groupModel!.description,
-                    handledMenu: () => Navigator.pushNamed(
-                      context,
-                      '/informationPanelGroups',
-                      arguments: InformationPanelGroupsModel(
-                        userModel: widget.model.userModel,
-                        groupModel: widget.model.groupModel,
-                        typeUser: widget.model.userModel!.rol == "USER"
-                            ? InformationPanelGroupsEnum.user
-                            : InformationPanelGroupsEnum.admin,
+    return BlocListener<GlobalBloc, GlobalState>(
+        listener: (context, state){
+          if(state is DownloadImageLoadingState){
+            snackBarMessage(context, message: "Descargando Imagen...");
+          }
+          if(state is DownloadImageErrorState){
+            snackBarMessage(context, message: "Ha fallado la descarga de la imagen.");
+          }
+          if(state is DownloadImageState){
+            snackBarMessage(context, message: "La imagen fue descargada exitosamente.");
+            BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+          }
+        },
+      child: SafeArea(
+        child: Scaffold(
+          //GetChatGroupStreamState
+          body: BlocBuilder<ChatGroupBloc, ChatGroupState>(
+            builder: (context, state) {
+              if (state is GetChatGroupStreamState) {
+                dataStream = state.stream;
+                isStream = true;
+              }
+              if (state is CreateChatState) {
+                path = "";
+                isSubmitHandled = true;
+                controller.text = "";
+                BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+              }
+              return Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  HeaderChat(
+                    model: HeaderChatModel(
+                      image: widget.model.groupModel!.image,
+                      title: widget.model.groupModel!.title,
+                      description: widget.model.groupModel!.description,
+                      handledMenu: () => Navigator.pushNamed(
+                        context,
+                        '/informationPanelGroups',
+                        arguments: InformationPanelGroupsModel(
+                          userModel: widget.model.userModel,
+                          groupModel: widget.model.groupModel,
+                          typeUser: widget.model.userModel!.rol == "USER"
+                              ? InformationPanelGroupsEnum.user
+                              : InformationPanelGroupsEnum.admin,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Flexible(
-                  fit: FlexFit.tight,
-                  flex: 1,
-                  child: isStream
-                      ? StreamBuilder(
-                          stream: dataStream,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<QuerySnapshot> snapShot) {
-                            if (snapShot.hasData) {
-                              handledMapData(snapShot.data!);
-                            }
-                            return listChats.isNotEmpty
-                                ? ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: listChats.length,
-                                    reverse: true,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      ChatModel chat = listChats[index];
-                                      return Container(
-                                        margin: const EdgeInsets.symmetric(
-                                          vertical: 10,
-                                        ),
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: size.width * 0.05,
-                                        ),
-                                        child: CustomChat(
-                                          model: CustomChatModel(
-                                            color: chat.idUserCreate ==
-                                                    widget.model.userModel!.uid!
-                                                ? CustomChatColor.light
-                                                : CustomChatColor.dark,
-                                            chatModel: chat,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : Container(
-                                    margin: EdgeInsets.symmetric(
-                                      vertical: size.height * 0.12,
-                                    ),
-                                    child: const NoData(),
-                                  );
+                  Flexible(
+                    fit: FlexFit.tight,
+                    flex: 1,
+                    child: isStream
+                        ? StreamBuilder(
+                      stream: dataStream,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapShot) {
+                        if (snapShot.hasData) {
+                          handledMapData(snapShot.data!);
+                        }
+                        return listChats.isNotEmpty
+                            ? ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: listChats.length,
+                          reverse: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            ChatModel chat = listChats[index];
+                            return Container(
+                              margin: const EdgeInsets.symmetric(
+                                vertical: 10,
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.05,
+                              ),
+                              child: CustomChat(
+                                model: CustomChatModel(
+                                    color: chat.idUserCreate ==
+                                        widget.model.userModel!.uid!
+                                        ? CustomChatColor.light
+                                        : CustomChatColor.dark,
+                                    chatModel: chat,
+                                    downloadImage: downloadImage
+                                ),
+                              ),
+                            );
                           },
                         )
-                      : const Center(child: CircularProgressIndicator()),
-                ),
-                BlocBuilder<GlobalBloc, GlobalState>(builder: (context, state) {
-                  if (state is TakeImageState) {
-                    listPath = [state.path];
-                    BlocProvider.of<GlobalBloc>(context).add(DisposeEvent());
-                  }
-                  if (state is SaveImageState) {
-                    listPath = [];
-                    path = state.link;
-                    loadingButton = false;
-                    handledSaveMessage();
-                    BlocProvider.of<GlobalBloc>(context).add(DisposeEvent());
-                  }
-                  return ChatInput(
-                      isSend: isSend,
-                      mediaList: listPath,
-                      controller: controller,
-                      loadingButton: loadingButton,
-                      handledTapCamara: handledTakeImage,
-                      handledChangeInput: handledChangeInput,
-                      handledDeleteImage: handledDeleteImage,
-                      handledSubmitChat: () {
-                        listPath.isNotEmpty
-                            ? saveImage()
-                            : handledSaveMessage();
-                      });
-                })
-              ],
-            );
-          },
+                            : Container(
+                          margin: EdgeInsets.symmetric(
+                            vertical: size.height * 0.12,
+                          ),
+                          child: const NoData(),
+                        );
+                      },
+                    )
+                        : const Center(child: CircularProgressIndicator()),
+                  ),
+                  BlocBuilder<GlobalBloc, GlobalState>(builder: (context, state) {
+                    if (state is TakeImageState) {
+                      listPath = [state.path];
+                      BlocProvider.of<GlobalBloc>(context).add(DisposeEvent());
+                    }
+                    if (state is SaveImageState) {
+                      listPath = [];
+                      path = state.link;
+                      loadingButton = false;
+                      handledSaveMessage();
+                      BlocProvider.of<GlobalBloc>(context).add(DisposeEvent());
+                    }
+                    return ChatInput(
+                        isSend: isSend,
+                        mediaList: listPath,
+                        controller: controller,
+                        loadingButton: loadingButton,
+                        handledTapCamara: handledTakeImage,
+                        handledChangeInput: handledChangeInput,
+                        handledDeleteImage: handledDeleteImage,
+                        handledSubmitChat: () {
+                          listPath.isNotEmpty
+                              ? saveImage()
+                              : handledSaveMessage();
+                        });
+                  })
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
@@ -221,8 +237,8 @@ class _ChatGroupState extends State<ChatGroup> {
     BlocProvider.of<GlobalBloc>(context).add(DisposeEvent());
   }
 
-  handledTakeImage() =>
-      BlocProvider.of<GlobalBloc>(context).add(TakeImageEvent());
+  handledTakeImage() => BlocProvider.of<GlobalBloc>(context)
+      .add(TakeImageEvent(imageQualityModel: ImageQualityModel(size: ImageSizeEnum.xxl)));
 
   saveImage() {
     loadingButton = true;
@@ -231,4 +247,10 @@ class _ChatGroupState extends State<ChatGroup> {
       path: listPath[0],
     ));
   }
+
+  downloadImage(String url) =>
+      BlocProvider.of<GlobalBloc>(context).add(DownloadImageEvent(
+        folderDB: "imageChat",
+        path: url,
+      ));
 }

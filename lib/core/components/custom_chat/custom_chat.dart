@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:almanubis/core/model/chat_model.dart';
 import 'package:almanubis/core/util/date_format.dart';
 import 'package:almanubis/core/components/cart_chat/cart_chat.dart';
 import 'package:almanubis/core/components/square_image/square_image.dart';
-import 'package:flutter/material.dart';
+import 'package:almanubis/features/chat_group/presentation/widgets/download_image_widget.dart';
 
 enum CustomChatColor {
   light,
@@ -11,12 +12,14 @@ enum CustomChatColor {
 }
 
 class CustomChatModel {
-  final CustomChatColor? color;
   final ChatModel chatModel;
+  final CustomChatColor? color;
+  final Function(String) downloadImage;
 
   CustomChatModel({
-    this.color = CustomChatColor.dark,
     required this.chatModel,
+    required this.downloadImage,
+    this.color = CustomChatColor.dark,
   });
 }
 
@@ -33,25 +36,27 @@ class CustomChat extends StatelessWidget {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return Column(
-      crossAxisAlignment: model.color == CustomChatColor.light ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      crossAxisAlignment: model.color == CustomChatColor.light
+          ? CrossAxisAlignment.end
+          : CrossAxisAlignment.start,
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             model.color == CustomChatColor.dark
                 ? Expanded(
-              flex: 0,
-              child: SquareImage(
-                model: SquareImageModel(
-                  urlImage: model.chatModel.imageUser,
-                  size: size.width * 0.12,
-                ),
-              ),
-            )
+                    flex: 0,
+                    child: SquareImage(
+                      model: SquareImageModel(
+                        urlImage: model.chatModel.imageUser,
+                        size: size.width * 0.12,
+                      ),
+                    ),
+                  )
                 : Expanded(
-              flex: 0,
-              child: Text(dateFormatHour(model.chatModel.dateCreate)),
-            ),
+                    flex: 0,
+                    child: Text(dateFormatHour(model.chatModel.dateCreate)),
+                  ),
             Expanded(
               flex: 4,
               child: Container(
@@ -66,27 +71,22 @@ class CustomChat extends StatelessWidget {
             ),
             model.color == CustomChatColor.dark
                 ? Expanded(
-              flex: 0,
-              child: Text(dateFormatHour(model.chatModel.dateCreate)),
-            )
+                    flex: 0,
+                    child: Text(dateFormatHour(model.chatModel.dateCreate)),
+                  )
                 : Container(),
           ],
         ),
-        model.chatModel.pathImage.isNotEmpty ? Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: size.width * 0.1,
-            vertical: size.height * 0.01,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: NetworkImage(model.chatModel.pathImage)
-            )
-          ),
-          height: size.height * 0.3,
-          width: size.width * 0.4,
-        ) : Container()
+        model.chatModel.pathImage.isNotEmpty
+            ? DownloadImageWidget(
+                model: DownloadImageWidgetModel(
+                  downloadImage: model.downloadImage,
+                  image: model.chatModel.pathImage,
+                  color: handledGenerateAssetsColor(model.color!),
+                  elementToDownload: ElementToDownload.image,
+                ),
+              )
+            : Container()
       ],
     );
   }
@@ -97,6 +97,15 @@ class CustomChat extends StatelessWidget {
         return CartChatColor.light;
       case CustomChatColor.dark:
         return CartChatColor.dark;
+    }
+  }
+
+  DownloadImageWidgetColor handledGenerateAssetsColor(CustomChatColor customChatColor) {
+    switch (customChatColor) {
+      case CustomChatColor.light:
+        return DownloadImageWidgetColor.light;
+      case CustomChatColor.dark:
+        return DownloadImageWidgetColor.dark;
     }
   }
 }

@@ -1,19 +1,25 @@
 import 'dart:io';
 
+import 'package:almanubis/core/data/model/image_quality_model.dart';
+import 'package:almanubis/core/util/generate_size_image.dart';
+import 'package:almanubis/core/util/link_image_to_name.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:almanubis/core/errors/exceptions.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 abstract class GlobalDataSource {
-  Future<String> takePhoto();
+  Future<String> takePhoto({required ImageQualityModel imageQualityModel});
 
   Future<String> saveImage({
     String? idUser,
     required String path,
     required String folderDB,
   });
+
+  Future<bool> downloadImage({required String folderDB, required String path});
 
   Future<String> updateImage({
     String? idUser,
@@ -29,16 +35,21 @@ class GlobalDataSourceImpl implements GlobalDataSource {
   final FirebaseStorage firebaseStorage;
 
   GlobalDataSourceImpl({
-    required this.firebaseAuth,
     required this.firestore,
+    required this.firebaseAuth,
     required this.firebaseStorage,
   });
 
   @override
-  Future<String> takePhoto() async {
+  Future<String> takePhoto(
+      {required ImageQualityModel imageQualityModel}) async {
     try {
       final ImagePicker _picker = ImagePicker();
-      XFile? image = await _picker.pickImage(source: ImageSource.camera, maxHeight: 300, maxWidth: 150);
+      XFile? image = await _picker.pickImage(
+          source: ImageSource.camera,
+          maxHeight: generateSizeImage(imageQualityModel.size!)["height"],
+          maxWidth: generateSizeImage(imageQualityModel.size!)["width"],
+          imageQuality: imageQualityModel.imageQuality);
       if (image != null) {
         return image.path;
       } else {
@@ -74,15 +85,30 @@ class GlobalDataSourceImpl implements GlobalDataSource {
   }) async {
     try {
       String name;
-      if(idUser == null) {
+      if (idUser == null) {
         name = path.split("/").last;
-      }else{
+      } else {
         name = idUser;
       }
       final Reference reference = firebaseStorage.ref().child(folderDB);
-      TaskSnapshot saveImage = await reference.child("$name.jpg").putFile(File(path));
+      TaskSnapshot saveImage =
+          await reference.child(name).putFile(File(path));
       String link = await saveImage.ref.getDownloadURL();
       return link;
+    } catch (e) {
+      throw SaveImageException();
+    }
+  }
+
+  @override
+  Future<bool> downloadImage({required String folderDB, required String path}) async {
+    try {
+      path = linkImageToName(path);
+      final Reference reference = firebaseStorage.ref().child(path);
+      final Directory dir = await getApplicationDocumentsDirectory();
+      String link = "${dir.path}/${reference.name}";
+      await reference.writeToFile(File(link));
+      return true;
     } catch (e) {
       throw SaveImageException();
     }

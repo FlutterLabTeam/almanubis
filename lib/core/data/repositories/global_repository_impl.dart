@@ -1,3 +1,4 @@
+import 'package:almanubis/core/data/model/image_quality_model.dart';
 import 'package:dartz/dartz.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/exceptions.dart';
@@ -10,9 +11,9 @@ class GlobalRepositoryImpl implements GlobalRepository {
   GlobalRepositoryImpl({required this.globalDataSource});
 
   @override
-  Future<Either<Failure, String>> takePhoto() async {
+  Future<Either<Failure, String>> takePhoto({required ImageQualityModel imageQualityModel}) async {
     try {
-      final response = await globalDataSource.takePhoto();
+      final response = await globalDataSource.takePhoto(imageQualityModel: imageQualityModel);
       return Right(response);
     } on RegisterEmailException {
       return Left(RegisterEmailFailure());
@@ -47,8 +48,21 @@ class GlobalRepositoryImpl implements GlobalRepository {
     try {
       final response = await globalDataSource.updateImage(
         path: path,
-        linkImage: linkImage,
         idUser: idUser,
+        folderDB: folderDB,
+        linkImage: linkImage,
+      );
+      return Right(response);
+    } on RegisterEmailException {
+      return Left(RegisterEmailFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> downloadImage({required String folderDB,required String path}) async {
+    try {
+      final response = await globalDataSource.downloadImage(
+        path: path,
         folderDB: folderDB,
       );
       return Right(response);

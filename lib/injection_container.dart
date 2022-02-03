@@ -2,6 +2,7 @@ import 'package:almanubis/core/bloc/global_bloc.dart';
 import 'package:almanubis/core/data/data_sources/global_data_source.dart';
 import 'package:almanubis/core/data/repositories/global_repository_impl.dart';
 import 'package:almanubis/core/domain/repositories/global_repository.dart';
+import 'package:almanubis/core/domain/use_cases/download_image.dart';
 import 'package:almanubis/core/domain/use_cases/save_image.dart';
 import 'package:almanubis/core/domain/use_cases/take_photo.dart';
 import 'package:almanubis/core/domain/use_cases/update_image.dart';
@@ -95,6 +96,7 @@ init() async {
     takePhoto: sl(),
     saveImage: sl(),
     updateImage: sl(),
+    downloadImage: sl()
   ));
   sl.registerFactory(() => SaveGroupBloc(
     saveNewGroup: sl(),
@@ -125,6 +127,7 @@ init() async {
   sl.registerLazySingleton(() => SearchUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => GetAllUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => SaveUserLogged(authRepository: sl()));
+  sl.registerLazySingleton(() => DownloadImage(globalRepository: sl()));
   sl.registerLazySingleton(() => CreateChat(chatGroupRepository: sl()));
   sl.registerLazySingleton(() => GetListChat(listChatRepository: sl()));
   sl.registerLazySingleton(() => RegisterEmail(newUserRepository: sl()));

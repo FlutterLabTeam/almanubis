@@ -20,9 +20,14 @@ class SaveImageState extends GlobalState {
   final String link;
 
   SaveImageState({required this.link});
-
 }
 
 class SaveImageErrorState extends GlobalState {}
 
 class SaveImageLoadingState extends GlobalState {}
+
+class DownloadImageState extends GlobalState {}
+
+class DownloadImageErrorState extends GlobalState {}
+
+class DownloadImageLoadingState extends GlobalState {}
