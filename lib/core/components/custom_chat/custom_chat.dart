@@ -40,7 +40,7 @@ class CustomChat extends StatelessWidget {
           ? CrossAxisAlignment.end
           : CrossAxisAlignment.start,
       children: [
-        Row(
+        model.chatModel.label.isNotEmpty ? Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             model.color == CustomChatColor.dark
@@ -76,14 +76,14 @@ class CustomChat extends StatelessWidget {
                   )
                 : Container(),
           ],
-        ),
+        ) : Container(),
         model.chatModel.pathImage.isNotEmpty
             ? DownloadImageWidget(
                 model: DownloadImageWidgetModel(
                   downloadImage: model.downloadImage,
                   image: model.chatModel.pathImage,
                   color: handledGenerateAssetsColor(model.color!),
-                  elementToDownload: ElementToDownload.image,
+                  elementToDownload: handledGenerateAssetsType(model.chatModel.typeAssetsChat!),
                 ),
               )
             : Container()
@@ -106,6 +106,19 @@ class CustomChat extends StatelessWidget {
         return DownloadImageWidgetColor.light;
       case CustomChatColor.dark:
         return DownloadImageWidgetColor.dark;
+    }
+  }
+
+  ElementToDownload handledGenerateAssetsType(String type) {
+    switch (type) {
+      case "IMAGE":
+        return ElementToDownload.image;
+      case "AUDIO":
+        return ElementToDownload.audio;
+      case "VIDEO":
+        return ElementToDownload.video;
+      default:
+        return ElementToDownload.image;
     }
   }
 }

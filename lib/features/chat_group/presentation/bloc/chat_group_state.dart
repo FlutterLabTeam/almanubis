@@ -19,3 +19,13 @@ class CreateChatState extends ChatGroupState {}
 class CreateChatLoadingState extends ChatGroupState {}
 
 class CreateChatErrorState extends ChatGroupState {}
+
+class SaveAudioState extends ChatGroupState {
+  final String path;
+
+  SaveAudioState({required this.path});
+}
+
+class SaveAudioLoadingState extends ChatGroupState {}
+
+class SaveAudioErrorState extends ChatGroupState {}

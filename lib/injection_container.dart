@@ -20,6 +20,7 @@ import 'package:almanubis/features/chat_group/data/repositories/chat_group_user_
 import 'package:almanubis/features/chat_group/domain/repositories/chat_group_user_repository.dart';
 import 'package:almanubis/features/chat_group/domain/use_cases/create_chat.dart';
 import 'package:almanubis/features/chat_group/domain/use_cases/get_chat_stream.dart';
+import 'package:almanubis/features/chat_group/domain/use_cases/save_audio.dart';
 import 'package:almanubis/features/chat_group/presentation/bloc/chat_group_bloc.dart';
 import 'package:almanubis/features/information_panel_groups/data/data_sources/information_panel_data_source.dart';
 import 'package:almanubis/features/information_panel_groups/data/repositories/information_panel_group_repository_impl.dart';
@@ -110,6 +111,7 @@ init() async {
   sl.registerFactory(() => ChatGroupBloc(
     getChatStream: sl(),
     createChat: sl(),
+    saveAudio: sl(),
   ));
   sl.registerFactory(() => InformationPanelBloc(
     activeNotification: sl(),
@@ -127,6 +129,7 @@ init() async {
   sl.registerLazySingleton(() => SearchUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => GetAllUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => SaveUserLogged(authRepository: sl()));
+  sl.registerLazySingleton(() => SaveAudio(chatGroupRepository:  sl()));
   sl.registerLazySingleton(() => DownloadImage(globalRepository: sl()));
   sl.registerLazySingleton(() => CreateChat(chatGroupRepository: sl()));
   sl.registerLazySingleton(() => GetListChat(listChatRepository: sl()));
@@ -158,7 +161,6 @@ init() async {
   //DataSource
   sl.registerLazySingleton<NewUserDataSource>(() => NewUserDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<NewGroupDataSource>(() => NewGroupDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
-  sl.registerLazySingleton<ChatGroupDataSource>(() => ChatGroupDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<SaveGroupDataSource>(() => SaveGroupDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<AddNewUserDataSource>(() => AddNewUserDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<ListChatDataSource>(() => ListChatDataSourceImpl(sharedPreferences: sl(), firestore: sl()));
@@ -166,6 +168,7 @@ init() async {
   sl.registerLazySingleton<AuthDataSource>(() => AuthDataSourceImpl(firestore: sl(),firebaseAuth: sl(), sharedPreferences: sl()));
   sl.registerLazySingleton<UserConfigurationDataSource>(() => UserConfigurationDataSourceImpl(firestore: sl(),firebaseAuth: sl()));
   sl.registerLazySingleton<GlobalDataSource>(() => GlobalDataSourceImpl(firestore: sl(),firebaseAuth: sl(), firebaseStorage: sl()));
+  sl.registerLazySingleton<ChatGroupDataSource>(() => ChatGroupDataSourceImpl(firestore: sl(),firebaseAuth: sl(), firebaseStorage: sl()));
 
 //Firebase
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);

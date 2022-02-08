@@ -1,14 +1,13 @@
-import 'dart:io';
-
 import 'package:almanubis/core/data/model/image_quality_model.dart';
 import 'package:almanubis/core/util/generate_size_image.dart';
 import 'package:almanubis/core/util/link_image_to_name.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:almanubis/core/errors/exceptions.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:almanubis/core/errors/exceptions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 abstract class GlobalDataSource {
   Future<String> takePhoto({required ImageQualityModel imageQualityModel});
@@ -91,8 +90,7 @@ class GlobalDataSourceImpl implements GlobalDataSource {
         name = idUser;
       }
       final Reference reference = firebaseStorage.ref().child(folderDB);
-      TaskSnapshot saveImage =
-          await reference.child(name).putFile(File(path));
+      TaskSnapshot saveImage = await reference.child(name).putFile(File(path));
       String link = await saveImage.ref.getDownloadURL();
       return link;
     } catch (e) {

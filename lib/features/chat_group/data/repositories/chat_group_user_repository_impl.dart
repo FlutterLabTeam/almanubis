@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:almanubis/core/model/chat_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:almanubis/core/errors/failure.dart';
@@ -28,6 +30,19 @@ class ChatGroupRepositoryImpl implements ChatGroupRepository {
       return Right(response);
     } on CreateChatException {
       return Left(RegisterUserDbFailure());
+    }
+  }
+
+
+  @override
+  Future<Either<Failure, String>> saveAudio({required File file}) async {
+    try {
+      final response = await chatGroupDataSource.setAudio(
+        file: file
+      );
+      return Right(response);
+    } on RegisterEmailException {
+      return Left(RegisterEmailFailure());
     }
   }
 }

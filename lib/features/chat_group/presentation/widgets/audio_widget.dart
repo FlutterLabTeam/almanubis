@@ -1,4 +1,5 @@
 import 'package:almanubis/core/util/company_colors.dart';
+import 'package:almanubis/core/util/company_fonts.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/download_image_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,27 +39,19 @@ class AudioWidget extends StatelessWidget {
             ),
             Expanded(
               flex: 1,
-              child: Container(
-                height: 5,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                color: _getColorLine(color),
-                  borderRadius: BorderRadius.circular(5)
-                ),
-                margin: const EdgeInsets.only(right: 10),
-              ),
+              child: Text('00:00:00', style: _getColorLine(color),),
             )
           ],
       ),
     );
   }
 
-  Color _getColorLine(DownloadImageWidgetColor color) {
+  TextStyle _getColorLine(DownloadImageWidgetColor color) {
     switch (color) {
       case DownloadImageWidgetColor.dark:
-        return CompanyColor.color().second;
+        return CompanyFontStyle.style().titleStyleLight;
       case DownloadImageWidgetColor.light:
-        return CompanyColor.color().primary;
+        return CompanyFontStyle.style().titleStyleDark;
     }
   }
 

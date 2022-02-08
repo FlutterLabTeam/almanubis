@@ -1,6 +1,7 @@
 class ChatModel {
   ChatModel({
     this.id,
+    this.typeAssetsChat,
     required this.label,
     required this.idGroup,
     required this.nameUser,
@@ -20,6 +21,7 @@ class ChatModel {
   String imageUser;
   DateTime dateCreate;
   String idUserCreate;
+  String? typeAssetsChat;
   List<String> listUserViewed;
   List<String> listUserReceiver;
 
@@ -30,8 +32,9 @@ class ChatModel {
     nameUser: json["nameUser"],
     pathImage: json["pathImage"],
     imageUser: json["imageUser"],
-    dateCreate: json["dateCreate"].toDate(),
     idUserCreate: json["idUserCreate"],
+    typeAssetsChat: json["typeAssetsChat"],
+    dateCreate: json["dateCreate"].toDate(),
     listUserViewed: List<String>.from(json["listUserViewed"].map((x) => x)),
     listUserReceiver: List<String>.from(json["listUserReceiver"].map((x) => x)),
   );
@@ -44,6 +47,7 @@ class ChatModel {
     "imageUser": imageUser,
     "dateCreate": dateCreate,
     "idUserCreate": idUserCreate,
+    "typeAssetsChat": typeAssetsChat,
     "listUserReceiver": List<dynamic>.from(listUserReceiver.map((x) => x)),
     "listUserViewed": List<dynamic>.from(listUserViewed.map((x) => x)),
   };

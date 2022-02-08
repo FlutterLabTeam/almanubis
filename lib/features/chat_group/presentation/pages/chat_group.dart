@@ -1,17 +1,28 @@
-import 'package:almanubis/core/bloc/global_bloc.dart';
-import 'package:almanubis/core/data/model/image_quality_model.dart';
-import 'package:almanubis/core/util/snack_bar_message.dart';
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart' show DateFormat;
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:audio_session/audio_session.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:almanubis/core/model/chat_model.dart';
+import 'package:almanubis/core/bloc/global_bloc.dart';
 import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/core/model/group_model.dart';
+import 'package:almanubis/core/util/snack_bar_message.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:almanubis/core/components/noData/no_data.dart';
+import 'package:almanubis/core/data/model/image_quality_model.dart';
 import 'package:almanubis/core/components/header_chat/header_chat.dart';
 import 'package:almanubis/core/components/custom_chat/custom_chat.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/chat_input.dart';
 import 'package:almanubis/features/chat_group/presentation/bloc/chat_group_bloc.dart';
+import 'package:almanubis/features/chat_group/presentation/widgets/audio_input_option.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:almanubis/features/information_panel_groups/presentation/pages/information_panel_groups.dart';
 
 class ChatGroupModel {
@@ -40,43 +51,66 @@ class _ChatGroupState extends State<ChatGroup> {
   late Size size;
   late String path = "";
   late bool isSend = false;
+  late bool isAudio = false;
   late bool isStream = false;
+  int tSTREAMSAMPLERATE = 44000;
   late bool loadingButton = false;
   late List<String> listPath = [];
+  late String _typeAssetsChat = "";
   late bool isSubmitHandled = true;
+  String _recorderTxt = '00:00:00';
+  final Codec _codec = Codec.aacMP4;
   late List<ChatModel> listChats = [];
+  late String _mPath;
   late Stream<QuerySnapshot> dataStream;
+  final theSource = AudioSource.microphone;
+  StreamController<Food>? recordingDataController;
+  final FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
+  final FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
   late TextEditingController controller = TextEditingController();
+  static late ChatInputType chatInputType = ChatInputType.textOption;
+  static late AudioInputState audioInputState = AudioInputState.recording;
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<ChatGroupBloc>(context)
-        .add(GetChatStreamEvent(idGroup: widget.model.groupModel!.id!));
+    _mPlayer.openPlayer();
+    openTheRecorder();
+    BlocProvider.of<ChatGroupBloc>(context).add(GetChatStreamEvent(idGroup: widget.model.groupModel!.id!));
+  }
+
+  Future<void> generatePath() async{
+    final Directory dir = await getApplicationDocumentsDirectory();
+    _mPath =  dir.path + "/" + DateTime.now().millisecondsSinceEpoch.toString() +'.aac';
   }
 
   @override
   void dispose() {
     super.dispose();
     isStream = false;
+    _mPlayer.closePlayer();
+    _mRecorder.closeRecorder();
+    _mRecorder.closeRecorder();
   }
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return BlocListener<GlobalBloc, GlobalState>(
-        listener: (context, state){
-          if(state is DownloadImageLoadingState){
-            snackBarMessage(context, message: "Descargando Imagen...");
-          }
-          if(state is DownloadImageErrorState){
-            snackBarMessage(context, message: "Ha fallado la descarga de la imagen.");
-          }
-          if(state is DownloadImageState){
-            snackBarMessage(context, message: "La imagen fue descargada exitosamente.");
-            BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
-          }
-        },
+      listener: (context, state) {
+        if (state is DownloadImageLoadingState) {
+          snackBarMessage(context, message: "Descargando Imagen...");
+        }
+        if (state is DownloadImageErrorState) {
+          snackBarMessage(context,
+              message: "Ha fallado la descarga de la imagen.");
+        }
+        if (state is DownloadImageState) {
+          snackBarMessage(context,
+              message: "La imagen fue descargada exitosamente.");
+          BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+        }
+      },
       child: SafeArea(
         child: Scaffold(
           //GetChatGroupStreamState
@@ -88,9 +122,19 @@ class _ChatGroupState extends State<ChatGroup> {
               }
               if (state is CreateChatState) {
                 path = "";
-                isSubmitHandled = true;
+                isAudio = false;
                 controller.text = "";
+                _typeAssetsChat = "";
+                isSubmitHandled = true;
                 BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+              }
+              if (state is SaveAudioState) {
+                isAudio = true;
+                path = state.path;
+                _typeAssetsChat = "AUDIO";
+                chatInputType = ChatInputType.textOption;
+                audioInputState = AudioInputState.recording;
+                handledSaveMessage();
               }
               return Column(
                 mainAxisSize: MainAxisSize.max,
@@ -118,50 +162,52 @@ class _ChatGroupState extends State<ChatGroup> {
                     flex: 1,
                     child: isStream
                         ? StreamBuilder(
-                      stream: dataStream,
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapShot) {
-                        if (snapShot.hasData) {
-                          handledMapData(snapShot.data!);
-                        }
-                        return listChats.isNotEmpty
-                            ? ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: listChats.length,
-                          reverse: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            ChatModel chat = listChats[index];
-                            return Container(
-                              margin: const EdgeInsets.symmetric(
-                                vertical: 10,
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: size.width * 0.05,
-                              ),
-                              child: CustomChat(
-                                model: CustomChatModel(
-                                    color: chat.idUserCreate ==
-                                        widget.model.userModel!.uid!
-                                        ? CustomChatColor.light
-                                        : CustomChatColor.dark,
-                                    chatModel: chat,
-                                    downloadImage: downloadImage
-                                ),
-                              ),
-                            );
-                          },
-                        )
-                            : Container(
-                          margin: EdgeInsets.symmetric(
-                            vertical: size.height * 0.12,
-                          ),
-                          child: const NoData(),
-                        );
-                      },
-                    )
+                            stream: dataStream,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapShot) {
+                              if (snapShot.hasData) {
+                                handledMapData(snapShot.data!);
+                              }
+                              return listChats.isNotEmpty
+                                  ? ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: listChats.length,
+                                      reverse: true,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        ChatModel chat = listChats[index];
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(
+                                            vertical: 10,
+                                          ),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: size.width * 0.05,
+                                          ),
+                                          child: CustomChat(
+                                            model: CustomChatModel(
+                                                color: chat.idUserCreate ==
+                                                        widget.model.userModel!
+                                                            .uid!
+                                                    ? CustomChatColor.light
+                                                    : CustomChatColor.dark,
+                                                chatModel: chat,
+                                                downloadImage: downloadImage),
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  : Container(
+                                      margin: EdgeInsets.symmetric(
+                                        vertical: size.height * 0.12,
+                                      ),
+                                      child: const NoData(),
+                                    );
+                            },
+                          )
                         : const Center(child: CircularProgressIndicator()),
                   ),
-                  BlocBuilder<GlobalBloc, GlobalState>(builder: (context, state) {
+                  BlocBuilder<GlobalBloc, GlobalState>(
+                      builder: (context, state) {
                     if (state is TakeImageState) {
                       listPath = [state.path];
                       BlocProvider.of<GlobalBloc>(context).add(DisposeEvent());
@@ -170,17 +216,26 @@ class _ChatGroupState extends State<ChatGroup> {
                       listPath = [];
                       path = state.link;
                       loadingButton = false;
+                      _typeAssetsChat = "IMAGE";
                       handledSaveMessage();
                       BlocProvider.of<GlobalBloc>(context).add(DisposeEvent());
                     }
                     return ChatInput(
                         isSend: isSend,
                         mediaList: listPath,
+                        saveAudio: saveAudio,
+                        counter: _recorderTxt,
                         controller: controller,
                         loadingButton: loadingButton,
+                        typeInputChat: chatInputType,
+                        audioInputState: audioInputState,
                         handledTapCamara: handledTakeImage,
+                        handledPlayAudio: handledPlayAudio,
+                        handledDeleteAudio: handledDeleteAudio,
                         handledChangeInput: handledChangeInput,
                         handledDeleteImage: handledDeleteImage,
+                        handledListenAudio: handledListenAudio,
+                        handledStopRecorder: handledStopRecorder,
                         handledSubmitChat: () {
                           listPath.isNotEmpty
                               ? saveImage()
@@ -203,7 +258,7 @@ class _ChatGroupState extends State<ChatGroup> {
   }
 
   handledSaveMessage() {
-    if (controller.text.isNotEmpty && isSubmitHandled) {
+    if ((controller.text.isNotEmpty && isSubmitHandled) || isAudio) {
       isSubmitHandled = false;
       List<String> listUser = [];
       listUser = widget.model.groupModel!.listUser.map((e) => e.uid!).toList();
@@ -214,6 +269,7 @@ class _ChatGroupState extends State<ChatGroup> {
             pathImage: path,
             listUserViewed: [],
             label: controller.text,
+            typeAssetsChat: _typeAssetsChat,
             dateCreate: DateTime.now(),
             listUserReceiver: listUser,
             idGroup: widget.model.groupModel!.id!,
@@ -237,20 +293,124 @@ class _ChatGroupState extends State<ChatGroup> {
     BlocProvider.of<GlobalBloc>(context).add(DisposeEvent());
   }
 
-  handledTakeImage() => BlocProvider.of<GlobalBloc>(context)
-      .add(TakeImageEvent(imageQualityModel: ImageQualityModel(size: ImageSizeEnum.xxl)));
+  handledTakeImage() => BlocProvider.of<GlobalBloc>(context).add(
+        TakeImageEvent(
+          imageQualityModel: ImageQualityModel(size: ImageSizeEnum.xxl),
+        ),
+      );
 
   saveImage() {
     loadingButton = true;
-    BlocProvider.of<GlobalBloc>(context).add(SaveImageEvent(
-      folderDB: "imageChat",
-      path: listPath[0],
+    BlocProvider.of<GlobalBloc>(context).add(
+      SaveImageEvent(
+        folderDB: "imageChat",
+        path: listPath[0],
+      ),
+    );
+  }
+
+  downloadImage(String url) => BlocProvider.of<GlobalBloc>(context).add(
+        DownloadImageEvent(
+          folderDB: "imageChat",
+          path: url,
+        ),
+      );
+
+  handledDeleteAudio() async {
+    await _mRecorder.stopRecorder();
+    audioInputState = AudioInputState.recording;
+    chatInputType = ChatInputType.textOption;
+    BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+  }
+
+  handledStopRecorder() async {
+    await _mRecorder.stopRecorder();
+    audioInputState = AudioInputState.slow;
+    BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+  }
+
+  handledPlayAudio() async {
+    chatInputType = ChatInputType.audioOption;
+    audioInputState = AudioInputState.recording;
+    await generatePath();
+    BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+    timeRecorder();
+    await _mRecorder.startRecorder(
+      codec: _codec,
+      toFile: _mPath,
+      audioSource: theSource,
+    );
+  }
+
+  handledListenAudio() {
+    if (_mPlayer.isPlaying) {
+      stopPlayer();
+    } else {
+      play();
+    }
+  }
+
+  void play() async {
+    assert(_mRecorder.isStopped && _mPlayer.isStopped);
+    audioInputState = AudioInputState.listening;
+    BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+    await _mPlayer.startPlayer(
+      fromURI: _mPath,
+      whenFinished: (){
+        audioInputState = AudioInputState.slow;
+        BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+      }
+    );
+  }
+
+  void stopPlayer() async {
+    await _mPlayer.stopPlayer();
+    audioInputState = AudioInputState.slow;
+    BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+  }
+
+  Future<void> openTheRecorder() async {
+    if (!kIsWeb) {
+      var status = await Permission.microphone.request();
+      if (status != PermissionStatus.granted) {
+        throw RecordingPermissionException('Microphone permission not granted');
+      }
+    }
+    await _mRecorder.openRecorder();
+    await initializeDateFormatting();
+    _mRecorder.setSubscriptionDuration(const Duration(milliseconds: 10));
+    final session = await AudioSession.instance;
+    await session.configure(AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+      avAudioSessionCategoryOptions:
+          AVAudioSessionCategoryOptions.allowBluetooth |
+              AVAudioSessionCategoryOptions.defaultToSpeaker,
+      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
+      avAudioSessionRouteSharingPolicy:
+          AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+      androidAudioAttributes: const AndroidAudioAttributes(
+        contentType: AndroidAudioContentType.speech,
+        flags: AndroidAudioFlags.none,
+        usage: AndroidAudioUsage.voiceCommunication,
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+      androidWillPauseWhenDucked: true,
     ));
   }
 
-  downloadImage(String url) =>
-      BlocProvider.of<GlobalBloc>(context).add(DownloadImageEvent(
-        folderDB: "imageChat",
-        path: url,
-      ));
+  timeRecorder() async {
+    _mRecorder.onProgress!.listen((e) {
+      var date = DateTime.fromMillisecondsSinceEpoch(
+          e.duration.inMilliseconds,
+          isUtc: true);
+      var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
+        _recorderTxt = txt.substring(0, 8);
+      BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+    });
+  }
+
+  saveAudio() async {
+    BlocProvider.of<ChatGroupBloc>(context).add(SaveAudioEvent(file: File(_mPath)));
+  }
 }
