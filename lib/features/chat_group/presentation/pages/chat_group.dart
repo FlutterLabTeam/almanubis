@@ -442,8 +442,8 @@ class _ChatGroupState extends State<ChatGroup> {
   }
 
   saveAudio() async {
-    BlocProvider.of<ChatGroupBloc>(context)
-        .add(SaveAudioEvent(file: File(_mPath)));
+    loadingButton = true;
+    BlocProvider.of<ChatGroupBloc>(context).add(SaveAudioEvent(file: File(_mPath)));
   }
 
   void playAudio(ChatModel chatModel) async {

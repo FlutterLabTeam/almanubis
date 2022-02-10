@@ -45,6 +45,7 @@ dependencies:
   path_provider: ^2.0.8
   permission_handler: ^8.3.0
   audio_session: ^0.1.6+1
+  flutter_launcher_icons: ^0.9.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -61,6 +62,12 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+
+#flutter packages pub run flutter_launcher_icons:main //comando para correr
+flutter_icons:
+  ios: true
+  android: true
+  image_path: "assets/image/iconApp.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
