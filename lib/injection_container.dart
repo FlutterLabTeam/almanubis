@@ -97,7 +97,7 @@ init() async {
     takePhoto: sl(),
     saveImage: sl(),
     updateImage: sl(),
-    downloadImage: sl()
+    downloadAssets: sl()
   ));
   sl.registerFactory(() => SaveGroupBloc(
     saveNewGroup: sl(),
@@ -130,7 +130,7 @@ init() async {
   sl.registerLazySingleton(() => GetAllUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => SaveUserLogged(authRepository: sl()));
   sl.registerLazySingleton(() => SaveAudio(chatGroupRepository:  sl()));
-  sl.registerLazySingleton(() => DownloadImage(globalRepository: sl()));
+  sl.registerLazySingleton(() => DownloadAssets(globalRepository: sl()));
   sl.registerLazySingleton(() => CreateChat(chatGroupRepository: sl()));
   sl.registerLazySingleton(() => GetListChat(listChatRepository: sl()));
   sl.registerLazySingleton(() => RegisterEmail(newUserRepository: sl()));

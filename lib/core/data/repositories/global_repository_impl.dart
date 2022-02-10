@@ -59,9 +59,9 @@ class GlobalRepositoryImpl implements GlobalRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> downloadImage({required String folderDB,required String path}) async {
+  Future<Either<Failure, bool>> downloadAssets({required String folderDB,required String path}) async {
     try {
-      final response = await globalDataSource.downloadImage(
+      final response = await globalDataSource.downloadAssets(
         path: path,
         folderDB: folderDB,
       );

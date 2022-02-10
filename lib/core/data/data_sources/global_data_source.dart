@@ -18,7 +18,7 @@ abstract class GlobalDataSource {
     required String folderDB,
   });
 
-  Future<bool> downloadImage({required String folderDB, required String path});
+  Future<bool> downloadAssets({required String folderDB, required String path});
 
   Future<String> updateImage({
     String? idUser,
@@ -99,7 +99,7 @@ class GlobalDataSourceImpl implements GlobalDataSource {
   }
 
   @override
-  Future<bool> downloadImage({required String folderDB, required String path}) async {
+  Future<bool> downloadAssets({required String folderDB, required String path}) async {
     try {
       path = linkImageToName(path);
       final Reference reference = firebaseStorage.ref().child(path);

@@ -14,11 +14,15 @@ enum CustomChatColor {
 class CustomChatModel {
   final ChatModel chatModel;
   final CustomChatColor? color;
+  final Function(ChatModel) playAudio;
   final Function(String) downloadImage;
+  final Function(String) downloadAudio;
 
   CustomChatModel({
     required this.chatModel,
+    required this.playAudio,
     required this.downloadImage,
+    required this.downloadAudio,
     this.color = CustomChatColor.dark,
   });
 }
@@ -77,13 +81,16 @@ class CustomChat extends StatelessWidget {
                 : Container(),
           ],
         ) : Container(),
-        model.chatModel.pathImage.isNotEmpty
+        model.chatModel.dataAsset.urlAsset.isNotEmpty
             ? DownloadImageWidget(
                 model: DownloadImageWidgetModel(
+                  chatModel: model.chatModel,
+                  playAudio: model.playAudio,
+                  downloadAudio: model.downloadAudio,
                   downloadImage: model.downloadImage,
-                  image: model.chatModel.pathImage,
+                  image: model.chatModel.dataAsset.urlAsset,
                   color: handledGenerateAssetsColor(model.color!),
-                  elementToDownload: handledGenerateAssetsType(model.chatModel.typeAssetsChat!),
+                  elementToDownload: handledGenerateAssetsType(model.chatModel.dataAsset.typeAsset),
                 ),
               )
             : Container()

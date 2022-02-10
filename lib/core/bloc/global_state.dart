@@ -26,8 +26,19 @@ class SaveImageErrorState extends GlobalState {}
 
 class SaveImageLoadingState extends GlobalState {}
 
-class DownloadImageState extends GlobalState {}
+class DownloadAssetsState extends GlobalState {
+  final String assetsImage;
 
-class DownloadImageErrorState extends GlobalState {}
+  DownloadAssetsState({required this.assetsImage});}
 
-class DownloadImageLoadingState extends GlobalState {}
+class DownloadAssetsErrorState extends GlobalState {
+  final String assetsImage;
+
+  DownloadAssetsErrorState({required this.assetsImage});}
+
+class DownloadAssetsLoadingState extends GlobalState {
+
+  final String assetsImage;
+
+  DownloadAssetsLoadingState({required this.assetsImage});
+}

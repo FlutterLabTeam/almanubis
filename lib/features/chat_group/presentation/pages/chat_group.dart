@@ -1,11 +1,13 @@
-import 'dart:async';
 import 'dart:io';
+import 'dart:async';
+import 'package:almanubis/features/chat_group/data/models/audio_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:almanubis/core/model/chat_model.dart';
@@ -13,7 +15,6 @@ import 'package:almanubis/core/bloc/global_bloc.dart';
 import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/core/model/group_model.dart';
 import 'package:almanubis/core/util/snack_bar_message.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:almanubis/core/components/noData/no_data.dart';
 import 'package:almanubis/core/data/model/image_quality_model.dart';
@@ -49,11 +50,13 @@ class ChatGroup extends StatefulWidget {
 
 class _ChatGroupState extends State<ChatGroup> {
   late Size size;
+  late String _mPath;
   late String path = "";
   late bool isSend = false;
   late bool isAudio = false;
+  late bool isPlayingAudio = true;
+  late int assetMilliseconds = 0;
   late bool isStream = false;
-  int tSTREAMSAMPLERATE = 44000;
   late bool loadingButton = false;
   late List<String> listPath = [];
   late String _typeAssetsChat = "";
@@ -61,10 +64,8 @@ class _ChatGroupState extends State<ChatGroup> {
   String _recorderTxt = '00:00:00';
   final Codec _codec = Codec.aacMP4;
   late List<ChatModel> listChats = [];
-  late String _mPath;
   late Stream<QuerySnapshot> dataStream;
   final theSource = AudioSource.microphone;
-  StreamController<Food>? recordingDataController;
   final FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
   final FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
   late TextEditingController controller = TextEditingController();
@@ -76,12 +77,16 @@ class _ChatGroupState extends State<ChatGroup> {
     super.initState();
     _mPlayer.openPlayer();
     openTheRecorder();
-    BlocProvider.of<ChatGroupBloc>(context).add(GetChatStreamEvent(idGroup: widget.model.groupModel!.id!));
+    BlocProvider.of<ChatGroupBloc>(context)
+        .add(GetChatStreamEvent(idGroup: widget.model.groupModel!.id!));
   }
 
-  Future<void> generatePath() async{
+  Future<void> generatePath() async {
     final Directory dir = await getApplicationDocumentsDirectory();
-    _mPath =  dir.path + "/" + DateTime.now().millisecondsSinceEpoch.toString() +'.aac';
+    _mPath = dir.path +
+        "/" +
+        DateTime.now().millisecondsSinceEpoch.toString() +
+        '.aac';
   }
 
   @override
@@ -98,16 +103,17 @@ class _ChatGroupState extends State<ChatGroup> {
     size = MediaQuery.of(context).size;
     return BlocListener<GlobalBloc, GlobalState>(
       listener: (context, state) {
-        if (state is DownloadImageLoadingState) {
-          snackBarMessage(context, message: "Descargando Imagen...");
-        }
-        if (state is DownloadImageErrorState) {
+        if (state is DownloadAssetsLoadingState) {
           snackBarMessage(context,
-              message: "Ha fallado la descarga de la imagen.");
+              message: "Descargando ${state.assetsImage}...");
         }
-        if (state is DownloadImageState) {
+        if (state is DownloadAssetsErrorState) {
           snackBarMessage(context,
-              message: "La imagen fue descargada exitosamente.");
+              message: "Ha fallado la descarga de la ${state.assetsImage}.");
+        }
+        if (state is DownloadAssetsState) {
+          snackBarMessage(context,
+              message: "La ${state.assetsImage} fue descargada exitosamente.");
           BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
         }
       },
@@ -125,6 +131,16 @@ class _ChatGroupState extends State<ChatGroup> {
                 isAudio = false;
                 controller.text = "";
                 _typeAssetsChat = "";
+                assetMilliseconds = 0;
+                isSubmitHandled = true;
+                BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+              }
+              if (state is CreateChatErrorState) {
+                path = "";
+                isAudio = false;
+                controller.text = "";
+                _typeAssetsChat = "";
+                assetMilliseconds = 0;
                 isSubmitHandled = true;
                 BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
               }
@@ -165,14 +181,15 @@ class _ChatGroupState extends State<ChatGroup> {
                             stream: dataStream,
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapShot) {
-                              if (snapShot.hasData) {
+                              bool pause = _mPlayer.isPaused;
+                              if ((snapShot.hasData && pause) || (snapShot.hasData && isPlayingAudio)) {
                                 handledMapData(snapShot.data!);
                               }
                               return listChats.isNotEmpty
                                   ? ListView.builder(
+                                      reverse: true,
                                       shrinkWrap: true,
                                       itemCount: listChats.length,
-                                      reverse: true,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         ChatModel chat = listChats[index];
@@ -191,7 +208,9 @@ class _ChatGroupState extends State<ChatGroup> {
                                                     ? CustomChatColor.light
                                                     : CustomChatColor.dark,
                                                 chatModel: chat,
-                                                downloadImage: downloadImage),
+                                                playAudio: playAudio,
+                                                downloadImage: downloadImage,
+                                                downloadAudio: downloadAudio),
                                           ),
                                         );
                                       },
@@ -266,10 +285,13 @@ class _ChatGroupState extends State<ChatGroup> {
       BlocProvider.of<ChatGroupBloc>(context).add(
         CreateChatEvent(
           chatModel: ChatModel(
-            pathImage: path,
+            dataAsset: AssetModel(
+              urlAsset: path,
+              typeAsset: _typeAssetsChat,
+              millisecondTime: assetMilliseconds,
+            ),
             listUserViewed: [],
             label: controller.text,
-            typeAssetsChat: _typeAssetsChat,
             dateCreate: DateTime.now(),
             listUserReceiver: listUser,
             idGroup: widget.model.groupModel!.id!,
@@ -310,9 +332,17 @@ class _ChatGroupState extends State<ChatGroup> {
   }
 
   downloadImage(String url) => BlocProvider.of<GlobalBloc>(context).add(
-        DownloadImageEvent(
-          folderDB: "imageChat",
+        DownloadAssetsEvent(
           path: url,
+          folderDB: "imageChat",
+        ),
+      );
+
+  downloadAudio(String url) => BlocProvider.of<GlobalBloc>(context).add(
+        DownloadAssetsEvent(
+          path: url,
+          folderDB: "audio",
+          assetsName: "audio",
         ),
       );
 
@@ -355,12 +385,11 @@ class _ChatGroupState extends State<ChatGroup> {
     audioInputState = AudioInputState.listening;
     BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
     await _mPlayer.startPlayer(
-      fromURI: _mPath,
-      whenFinished: (){
-        audioInputState = AudioInputState.slow;
-        BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
-      }
-    );
+        fromURI: _mPath,
+        whenFinished: () {
+          audioInputState = AudioInputState.slow;
+          BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+        });
   }
 
   void stopPlayer() async {
@@ -401,16 +430,51 @@ class _ChatGroupState extends State<ChatGroup> {
 
   timeRecorder() async {
     _mRecorder.onProgress!.listen((e) {
+      assetMilliseconds = e.duration.inMilliseconds;
       var date = DateTime.fromMillisecondsSinceEpoch(
-          e.duration.inMilliseconds,
-          isUtc: true);
+        e.duration.inMilliseconds,
+        isUtc: true,
+      );
       var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
-        _recorderTxt = txt.substring(0, 8);
+      _recorderTxt = txt.substring(0, 8);
       BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
     });
   }
 
   saveAudio() async {
-    BlocProvider.of<ChatGroupBloc>(context).add(SaveAudioEvent(file: File(_mPath)));
+    BlocProvider.of<ChatGroupBloc>(context)
+        .add(SaveAudioEvent(file: File(_mPath)));
+  }
+
+  void playAudio(ChatModel chatModel) async {
+    _mPlayer.openPlayer();
+    await _mPlayer.setSubscriptionDuration(const Duration(milliseconds: 10));
+    await _mPlayer.startPlayer(
+        fromURI: chatModel.dataAsset.urlAsset,
+        whenFinished: () {
+          listChats.map((e) {
+            if (e.id == chatModel.id) {
+              e.dataAsset.counted = 0;
+            }
+            return e;
+          }).toList();
+          BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+        });
+    timeRecorderPlay(chatModel);
+  }
+
+  timeRecorderPlay(ChatModel chatModel) async {
+    BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+    isPlayingAudio = false;
+    _mPlayer.onProgress!.listen((e) {
+      int count = chatModel.dataAsset.counted! + 10;
+      listChats = listChats.map((e) {
+        if (e.id == chatModel.id) {
+          e.dataAsset.counted = count;
+        }
+        return e;
+      }).toList();
+      BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+    });
   }
 }

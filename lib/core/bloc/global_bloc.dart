@@ -15,13 +15,13 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
   final TakePhoto takePhoto;
   final SaveImage saveImage;
   final UpdateImage updateImage;
-  final DownloadImage downloadImage;
+  final DownloadAssets downloadAssets;
 
   GlobalBloc({
     required this.takePhoto,
     required this.saveImage,
     required this.updateImage,
-    required this.downloadImage,
+    required this.downloadAssets,
   }) : super(GlobalInitial());
 
   @override
@@ -76,16 +76,22 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
     if (event is DisposeEvent) {
       yield GlobalInitial();
     }
-    if (event is DownloadImageEvent) {
-      yield DownloadImageLoadingState();
-      final result = await downloadImage(DownloadImageParams(
+    if (event is DownloadAssetsEvent) {
+      yield DownloadAssetsLoadingState(
+        assetsImage: event.assetsName!
+      );
+      final result = await downloadAssets(DownloadAssetsParams(
         folderDB: event.folderDB,
         path: event.path,
       ));
       yield* result.fold((failure) async* {
-        yield DownloadImageErrorState();
+        yield DownloadAssetsErrorState(
+            assetsImage: event.assetsName!
+        );
       }, (bool link) async* {
-        yield DownloadImageState();
+        yield DownloadAssetsState(
+            assetsImage: event.assetsName!
+        );
       });
     }
   }

@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:almanubis/core/model/chat_model.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:almanubis/core/util/link_image_to_name.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/audio_widget.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/image_widget.dart';
+import 'package:almanubis/features/chat_group/presentation/widgets/presentation_audio_assets.dart';
+import 'package:almanubis/features/chat_group/presentation/widgets/presentation_image_assets.dart';
 
 enum ElementToDownload {
   image,
@@ -19,13 +22,19 @@ enum DownloadImageWidgetColor {
 
 class DownloadImageWidgetModel {
   final String image;
+  final ChatModel chatModel;
+  final Function(ChatModel) playAudio;
   final Function(String) downloadImage;
+  final Function(String) downloadAudio;
   final DownloadImageWidgetColor color;
   final ElementToDownload? elementToDownload;
 
   DownloadImageWidgetModel({
     required this.image,
     required this.color,
+    required this.chatModel,
+    required this.playAudio,
+    required this.downloadAudio,
     required this.downloadImage,
     this.elementToDownload = ElementToDownload.image,
   });
@@ -47,29 +56,28 @@ class DownloadImageWidget extends StatelessWidget {
         future: getImage(),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData) {
-            if(snapshot.data!.isEmpty){
+            if (snapshot.data!.isEmpty) {
               return GestureDetector(
-                onTap: ()=> model.downloadImage(model.image),
-                child: handledGenerateWidgetDownload(model.elementToDownload!, size),
+                onTap: () {
+                  if (model.elementToDownload == ElementToDownload.image) {
+                    model.downloadImage(model.image);
+                  }
+                  if (model.elementToDownload == ElementToDownload.audio) {
+                    model.downloadAudio(model.image);
+                  }
+                },
+                child: handledGenerateWidgetDownload(
+                  size: size,
+                  elementToDownload: model.elementToDownload!,
+                ),
               );
             }
-            String urlImage = snapshot.data!;
-            return Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: size.width * 0.1,
-                vertical: size.height * 0.01,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: FileImage(
-                    File(urlImage),
-                  ),
-                ),
-              ),
-              height: size.height * 0.3,
-              width: size.width * 0.4,
+            String urlAssets = snapshot.data!;
+            return handledGenerateWidgetAssets(
+              size: size,
+              context: context,
+              urlAssets: urlAssets,
+              elementToDownload: model.elementToDownload!,
             );
           }
           return const CircularProgressIndicator();
@@ -80,8 +88,10 @@ class DownloadImageWidget extends StatelessWidget {
     final Directory dir = await getApplicationDocumentsDirectory();
     String link = "${dir.path}/${linkImageToName(model.image)}";
     link = link.replaceAll("/imageChat", "");
+    link = link.replaceAll("/audio", "");
+    link = link.replaceAll("/video", "");
     bool validate = await File(link).exists();
-    if(!validate) link = "";
+    if (!validate) link = "";
     return link;
   }
 
@@ -94,8 +104,10 @@ class DownloadImageWidget extends StatelessWidget {
     }
   }
 
-  Widget handledGenerateWidgetDownload(
-      ElementToDownload elementToDownload, Size size) {
+  Widget handledGenerateWidgetDownload({
+    required Size size,
+    required ElementToDownload elementToDownload,
+  }) {
     switch (elementToDownload) {
       case ElementToDownload.image:
         return ImageWidget(
@@ -111,4 +123,33 @@ class DownloadImageWidget extends StatelessWidget {
         return AudioWidget(size: size, color: model.color);
     }
   }
+
+  Widget handledGenerateWidgetAssets({
+    required Size size,
+    required String urlAssets,
+    required BuildContext context,
+    required ElementToDownload elementToDownload,
+  }) {
+    switch (elementToDownload) {
+      case ElementToDownload.image:
+        return PresentationImageAssets(
+          size: size,
+          urlAssets: urlAssets,
+        );
+      case ElementToDownload.video:
+        return ImageWidget(
+            elementToDownload: elementToDownload,
+            size: size,
+            color: _getColor(model.color));
+      case ElementToDownload.audio:
+        return PresentationAudioAssets(
+          size: size,
+          color: model.color,
+          playAudio: model.playAudio,
+          chatModel: model.chatModel,
+        );
+    }
+  }
+
+
 }

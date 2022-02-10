@@ -25,13 +25,15 @@ class SaveImageEvent implements GlobalEvent {
   });
 }
 
-class DownloadImageEvent implements GlobalEvent {
+class DownloadAssetsEvent implements GlobalEvent {
   final String folderDB;
   final String path;
+  final String? assetsName;
 
-  DownloadImageEvent({
+  DownloadAssetsEvent({
     required this.folderDB,
     required this.path,
+    this.assetsName = "imagen",
   });
 }
 

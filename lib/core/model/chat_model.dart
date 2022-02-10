@@ -1,12 +1,13 @@
+import 'package:almanubis/features/chat_group/data/models/audio_model.dart';
+
 class ChatModel {
   ChatModel({
     this.id,
-    this.typeAssetsChat,
     required this.label,
     required this.idGroup,
     required this.nameUser,
-    required this.pathImage,
     required this.imageUser,
+    required this.dataAsset,
     required this.dateCreate,
     required this.idUserCreate,
     required this.listUserViewed,
@@ -17,11 +18,10 @@ class ChatModel {
   String label;
   String idGroup;
   String nameUser;
-  String pathImage;
   String imageUser;
   DateTime dateCreate;
   String idUserCreate;
-  String? typeAssetsChat;
+  AssetModel dataAsset;
   List<String> listUserViewed;
   List<String> listUserReceiver;
 
@@ -30,10 +30,9 @@ class ChatModel {
     label: json["label"],
     idGroup: json["idGroup"],
     nameUser: json["nameUser"],
-    pathImage: json["pathImage"],
+    dataAsset: AssetModel.fromJson(json["dataAsset"]),
     imageUser: json["imageUser"],
     idUserCreate: json["idUserCreate"],
-    typeAssetsChat: json["typeAssetsChat"],
     dateCreate: json["dateCreate"].toDate(),
     listUserViewed: List<String>.from(json["listUserViewed"].map((x) => x)),
     listUserReceiver: List<String>.from(json["listUserReceiver"].map((x) => x)),
@@ -43,11 +42,10 @@ class ChatModel {
     "label": label,
     "idGroup": idGroup,
     "nameUser": nameUser,
-    "pathImage": pathImage,
     "imageUser": imageUser,
     "dateCreate": dateCreate,
     "idUserCreate": idUserCreate,
-    "typeAssetsChat": typeAssetsChat,
+    "dataAsset": dataAsset.toJson(),
     "listUserReceiver": List<dynamic>.from(listUserReceiver.map((x) => x)),
     "listUserViewed": List<dynamic>.from(listUserViewed.map((x) => x)),
   };

@@ -1,8 +1,8 @@
-import 'package:almanubis/core/util/company_colors.dart';
-import 'package:almanubis/core/util/company_fonts.dart';
-import 'package:almanubis/features/chat_group/presentation/widgets/download_image_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:almanubis/core/util/company_fonts.dart';
+import 'package:almanubis/core/util/company_colors.dart';
+import 'package:almanubis/features/chat_group/presentation/widgets/download_image_widget.dart';
 
 class AudioWidget extends StatelessWidget {
 
