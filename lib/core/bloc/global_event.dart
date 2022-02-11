@@ -25,6 +25,8 @@ class SaveImageEvent implements GlobalEvent {
   });
 }
 
+class TakeVideoEvent implements GlobalEvent {}
+
 class DownloadAssetsEvent implements GlobalEvent {
   final String folderDB;
   final String path;

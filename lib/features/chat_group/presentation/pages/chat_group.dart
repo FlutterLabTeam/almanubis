@@ -77,6 +77,7 @@ class _ChatGroupState extends State<ChatGroup> {
     super.initState();
     _mPlayer.openPlayer();
     openTheRecorder();
+
     BlocProvider.of<ChatGroupBloc>(context)
         .add(GetChatStreamEvent(idGroup: widget.model.groupModel!.id!));
   }
@@ -182,7 +183,8 @@ class _ChatGroupState extends State<ChatGroup> {
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapShot) {
                               bool pause = _mPlayer.isPaused;
-                              if ((snapShot.hasData && pause) || (snapShot.hasData && isPlayingAudio)) {
+                              if ((snapShot.hasData && pause) ||
+                                  (snapShot.hasData && isPlayingAudio)) {
                                 handledMapData(snapShot.data!);
                               }
                               return listChats.isNotEmpty
@@ -239,6 +241,10 @@ class _ChatGroupState extends State<ChatGroup> {
                       handledSaveMessage();
                       BlocProvider.of<GlobalBloc>(context).add(DisposeEvent());
                     }
+                    if (state is TakeVideoState) {
+                      listPath = [state.path];
+                      BlocProvider.of<GlobalBloc>(context).add(DisposeEvent());
+                    }
                     return ChatInput(
                         isSend: isSend,
                         mediaList: listPath,
@@ -248,13 +254,14 @@ class _ChatGroupState extends State<ChatGroup> {
                         loadingButton: loadingButton,
                         typeInputChat: chatInputType,
                         audioInputState: audioInputState,
-                        handledTapCamara: handledTakeImage,
+                        handledTapOption: handledTapOption,
                         handledPlayAudio: handledPlayAudio,
                         handledDeleteAudio: handledDeleteAudio,
                         handledChangeInput: handledChangeInput,
                         handledDeleteImage: handledDeleteImage,
                         handledListenAudio: handledListenAudio,
                         handledStopRecorder: handledStopRecorder,
+                        handledTapCamara: ()=> handledTakeImage(isPhoto: true),
                         handledSubmitChat: () {
                           listPath.isNotEmpty
                               ? saveImage()
@@ -315,9 +322,10 @@ class _ChatGroupState extends State<ChatGroup> {
     BlocProvider.of<GlobalBloc>(context).add(DisposeEvent());
   }
 
-  handledTakeImage() => BlocProvider.of<GlobalBloc>(context).add(
+  handledTakeImage({required bool isPhoto}) => BlocProvider.of<GlobalBloc>(context).add(
         TakeImageEvent(
           imageQualityModel: ImageQualityModel(size: ImageSizeEnum.xxl),
+          isPhoto: isPhoto,
         ),
       );
 
@@ -443,7 +451,8 @@ class _ChatGroupState extends State<ChatGroup> {
 
   saveAudio() async {
     loadingButton = true;
-    BlocProvider.of<ChatGroupBloc>(context).add(SaveAudioEvent(file: File(_mPath)));
+    BlocProvider.of<ChatGroupBloc>(context)
+        .add(SaveAudioEvent(file: File(_mPath)));
   }
 
   void playAudio(ChatModel chatModel) async {
@@ -476,5 +485,13 @@ class _ChatGroupState extends State<ChatGroup> {
       }).toList();
       BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
     });
+  }
+
+  handledTapOption(e) {
+    if (e == Icons.image) {
+      handledTakeImage(isPhoto: false);
+    } else {
+      BlocProvider.of<GlobalBloc>(context).add(TakeVideoEvent());
+    }
   }
 }

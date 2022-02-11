@@ -10,16 +10,15 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 abstract class GlobalDataSource {
+  Future<String> takeVideo();
   Future<String> takePhoto({required ImageQualityModel imageQualityModel});
-
+  Future<String> takeImage({required ImageQualityModel imageQualityModel});
+  Future<bool> downloadAssets({required String folderDB, required String path});
   Future<String> saveImage({
     String? idUser,
     required String path,
     required String folderDB,
   });
-
-  Future<bool> downloadAssets({required String folderDB, required String path});
-
   Future<String> updateImage({
     String? idUser,
     required String path,
@@ -68,7 +67,8 @@ class GlobalDataSourceImpl implements GlobalDataSource {
   }) async {
     try {
       final Reference reference = firebaseStorage.ref().child(folderDB);
-      TaskSnapshot updateImage = await reference.child('$idUser.jpg').putFile(File(path));
+      TaskSnapshot updateImage =
+          await reference.child('$idUser.jpg').putFile(File(path));
       String link = await updateImage.ref.getDownloadURL();
       return link;
     } catch (e) {
@@ -99,7 +99,8 @@ class GlobalDataSourceImpl implements GlobalDataSource {
   }
 
   @override
-  Future<bool> downloadAssets({required String folderDB, required String path}) async {
+  Future<bool> downloadAssets(
+      {required String folderDB, required String path}) async {
     try {
       path = linkImageToName(path);
       final Reference reference = firebaseStorage.ref().child(path);
@@ -109,6 +110,42 @@ class GlobalDataSourceImpl implements GlobalDataSource {
       return true;
     } catch (e) {
       throw SaveImageException();
+    }
+  }
+
+  @override
+  Future<String> takeImage({
+    required ImageQualityModel imageQualityModel,
+  }) async {
+    try {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(
+          source: ImageSource.gallery,
+          maxHeight: generateSizeImage(imageQualityModel.size!)["height"],
+          maxWidth: generateSizeImage(imageQualityModel.size!)["width"],
+          imageQuality: imageQualityModel.imageQuality);
+      if (image != null) {
+        return image.path;
+      } else {
+        throw SaveNewGroupException();
+      }
+    } catch (e) {
+      throw SaveNewGroupException();
+    }
+  }
+
+  @override
+  Future<String> takeVideo() async {
+    try {
+      final ImagePicker _picker = ImagePicker();
+      XFile? video = await _picker.pickVideo(source: ImageSource.gallery);
+      if (video != null) {
+        return video.path;
+      } else {
+        throw SaveNewGroupException();
+      }
+    } catch (e) {
+      throw SaveNewGroupException();
     }
   }
 }

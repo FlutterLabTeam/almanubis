@@ -19,6 +19,7 @@ class ChatInput extends StatelessWidget {
   final List<String> mediaList;
   final Function handledTapCamara;
   final Function handledPlayAudio;
+  final Function handledTapOption;
   final ChatInputType typeInputChat;
   final Function handledDeleteAudio;
   final Function handledListenAudio;
@@ -40,6 +41,7 @@ class ChatInput extends StatelessWidget {
     required this.loadingButton,
     required this.typeInputChat,
     required this.audioInputState,
+    required this.handledTapOption,
     required this.handledPlayAudio,
     required this.handledTapCamara,
     required this.handledSubmitChat,
@@ -90,9 +92,10 @@ class ChatInput extends StatelessWidget {
           isSend: isSend,
           mediaList: mediaList,
           controller: controller,
-          labelInput: labelInput??"Mensaje",
           loadingButton: loadingButton,
+          labelInput: labelInput??"Mensaje",
           handledPlayAudio: handledPlayAudio,
+          handledTapOption: handledTapOption,
           handledTapCamara: handledTapCamara,
           handledSubmitChat: handledSubmitChat,
           handledChangeInput: handledChangeInput,

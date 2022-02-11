@@ -11,7 +11,16 @@ class TakeImageState extends GlobalState {
   TakeImageState({required this.path});
 }
 
+class TakeVideoState extends GlobalState {
+
+  final String path;
+
+  TakeVideoState({required this.path});
+}
+
 class TakeImageErrorState extends GlobalState {}
+
+class TakeVideoErrorState extends GlobalState {}
 
 class TakeImageLoadingState extends GlobalState {}
 

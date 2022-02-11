@@ -1,6 +1,7 @@
-import 'package:almanubis/core/components/input_chat/input_chat.dart';
-import 'package:almanubis/core/util/company_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:almanubis/core/util/company_colors.dart';
+import 'package:almanubis/core/components/input_chat/input_chat.dart';
+import 'package:almanubis/features/chat_group/presentation/widgets/dropdown_button_widget.dart';
 
 class TextInputOption extends StatelessWidget {
   final Size size;
@@ -9,6 +10,7 @@ class TextInputOption extends StatelessWidget {
   final bool loadingButton;
   final List<String> mediaList;
   final Function handledTapCamara;
+  final Function handledTapOption;
   final Function handledPlayAudio;
   final Function handledSubmitChat;
   final TextEditingController controller;
@@ -23,6 +25,7 @@ class TextInputOption extends StatelessWidget {
     required this.labelInput,
     required this.loadingButton,
     required this.handledPlayAudio,
+    required this.handledTapOption,
     required this.handledTapCamara,
     required this.handledSubmitChat,
     required this.handledChangeInput,
@@ -32,14 +35,13 @@ class TextInputOption extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(
+         Expanded(
           flex: 0,
-          child: IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.link,
-              size: 30,
-              color: Colors.white,
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 15),
+            child: DropdownButtonWidget(
+              handledTapInOption: handledTapOption,
+              listElement: const [Icons.image, Icons.videocam],
             ),
           ),
         ),

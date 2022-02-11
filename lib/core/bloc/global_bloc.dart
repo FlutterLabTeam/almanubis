@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:almanubis/core/usecases/use_cases.dart';
+import 'package:almanubis/core/domain/use_cases/take_image.dart';
+import 'package:almanubis/core/domain/use_cases/take_video.dart';
 import 'package:almanubis/core/domain/use_cases/save_image.dart';
 import 'package:almanubis/core/domain/use_cases/take_photo.dart';
 import 'package:almanubis/core/domain/use_cases/update_image.dart';
@@ -13,13 +16,17 @@ part 'global_state.dart';
 
 class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
   final TakePhoto takePhoto;
+  final TakeImage takeImage;
   final SaveImage saveImage;
+  final TakeVideo takeVideo;
   final UpdateImage updateImage;
   final DownloadAssets downloadAssets;
 
   GlobalBloc({
     required this.takePhoto,
     required this.saveImage,
+    required this.takeImage,
+    required this.takeVideo,
     required this.updateImage,
     required this.downloadAssets,
   }) : super(GlobalInitial());
@@ -34,12 +41,21 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
       if (event.isPhoto!) {
         result = await takePhoto(event.imageQualityModel);
       } else {
-        /*result = await takeImage();*/
+        result = await takeImage(event.imageQualityModel);
       }
       yield* result.fold((failure) async* {
         yield TakeImageErrorState();
       }, (String path) async* {
         yield TakeImageState(path: path);
+      });
+    }
+    if (event is TakeVideoEvent) {
+      yield TakeImageLoadingState();
+      dynamic result = await takeVideo(NoParams());
+      yield* result.fold((failure) async* {
+        yield TakeVideoErrorState();
+      }, (String path) async* {
+        yield TakeVideoState(path: path);
       });
     }
     if (event is SaveImageEvent) {

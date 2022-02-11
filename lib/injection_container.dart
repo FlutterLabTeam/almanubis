@@ -4,7 +4,9 @@ import 'package:almanubis/core/data/repositories/global_repository_impl.dart';
 import 'package:almanubis/core/domain/repositories/global_repository.dart';
 import 'package:almanubis/core/domain/use_cases/download_image.dart';
 import 'package:almanubis/core/domain/use_cases/save_image.dart';
+import 'package:almanubis/core/domain/use_cases/take_image.dart';
 import 'package:almanubis/core/domain/use_cases/take_photo.dart';
+import 'package:almanubis/core/domain/use_cases/take_video.dart';
 import 'package:almanubis/core/domain/use_cases/update_image.dart';
 import 'package:almanubis/features/add_new_group/data/data_sources/add_new_user_data_source.dart';
 import 'package:almanubis/features/add_new_group/data/repositories/add_new_user_repository_impl.dart';
@@ -96,8 +98,10 @@ init() async {
   sl.registerFactory(() => GlobalBloc(
     takePhoto: sl(),
     saveImage: sl(),
+    takeVideo: sl(),
+    takeImage: sl(),
     updateImage: sl(),
-    downloadAssets: sl()
+    downloadAssets: sl(),
   ));
   sl.registerFactory(() => SaveGroupBloc(
     saveNewGroup: sl(),
@@ -124,15 +128,17 @@ init() async {
   sl.registerLazySingleton(() => GetUserData(authRepository: sl()));
   sl.registerLazySingleton(() => SaveImage(globalRepository: sl()));
   sl.registerLazySingleton(() => TakePhoto(globalRepository: sl()));
+  sl.registerLazySingleton(() => TakeImage(globalRepository: sl()));
+  sl.registerLazySingleton(() => TakeVideo(globalRepository: sl()));
   sl.registerLazySingleton(() => SetDataUSer(authRepository: sl()));
   sl.registerLazySingleton(() => UpdateImage(globalRepository: sl()));
   sl.registerLazySingleton(() => SearchUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => GetAllUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => SaveUserLogged(authRepository: sl()));
   sl.registerLazySingleton(() => SaveAudio(chatGroupRepository:  sl()));
-  sl.registerLazySingleton(() => DownloadAssets(globalRepository: sl()));
   sl.registerLazySingleton(() => CreateChat(chatGroupRepository: sl()));
   sl.registerLazySingleton(() => GetListChat(listChatRepository: sl()));
+  sl.registerLazySingleton(() => DownloadAssets(globalRepository: sl()));
   sl.registerLazySingleton(() => RegisterEmail(newUserRepository: sl()));
   sl.registerLazySingleton(() => SaveNewGroup(saveGroupRepository: sl()));
   sl.registerLazySingleton(() => RegisterUserDb(newUserRepository: sl()));
