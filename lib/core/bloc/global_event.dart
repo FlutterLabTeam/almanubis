@@ -25,6 +25,18 @@ class SaveImageEvent implements GlobalEvent {
   });
 }
 
+class SaveVideoFileEvent implements GlobalEvent {
+  final String path;
+  final String? idUser;
+  final String folderDB;
+
+  SaveVideoFileEvent({
+    this.idUser,
+    required this.path,
+    required this.folderDB,
+  });
+}
+
 class TakeVideoEvent implements GlobalEvent {}
 
 class DownloadAssetsEvent implements GlobalEvent {

@@ -45,4 +45,16 @@ class ChatGroupRepositoryImpl implements ChatGroupRepository {
       return Left(RegisterEmailFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, String>> saveVideo({required File file}) async {
+    try {
+      final response = await chatGroupDataSource.saveVideo(
+        file: file
+      );
+      return Right(response);
+    } on RegisterEmailException {
+      return Left(RegisterEmailFailure());
+    }
+  }
 }

@@ -1,11 +1,12 @@
-import 'dart:async';
 import 'dart:io';
-import 'package:almanubis/core/model/chat_model.dart';
-import 'package:almanubis/features/chat_group/domain/use_cases/create_chat.dart';
-import 'package:almanubis/features/chat_group/domain/use_cases/save_audio.dart';
+import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:almanubis/core/model/chat_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:almanubis/features/chat_group/domain/use_cases/create_chat.dart';
+import 'package:almanubis/features/chat_group/domain/use_cases/save_audio.dart';
+import 'package:almanubis/features/chat_group/domain/use_cases/save_video.dart';
 import 'package:almanubis/features/chat_group/domain/use_cases/get_chat_stream.dart';
 
 part 'chat_group_state.dart';
@@ -15,11 +16,13 @@ class ChatGroupBloc extends Bloc<ChatGroupEvent, ChatGroupState> {
   final GetChatStream getChatStream;
   final CreateChat createChat;
   final SaveAudio saveAudio;
+  final SaveVideo saveVideo;
 
   ChatGroupBloc({
+    required this.saveAudio,
     required this.createChat,
     required this.getChatStream,
-    required this.saveAudio,
+    required this.saveVideo,
   }) : super(ChatGroupInitial());
 
   @override
@@ -51,6 +54,15 @@ class ChatGroupBloc extends Bloc<ChatGroupEvent, ChatGroupState> {
         yield SaveAudioErrorState();
       }, (String url) async* {
         yield SaveAudioState(path: url);
+      });
+    }
+    if (event is SaveVideoEvent) {
+      yield SaveVideoLoadingState();
+      final result = await saveVideo(event.file);
+      yield* result.fold((failure) async* {
+        yield SaveVideoErrorState();
+      }, (String url) async* {
+        yield SaveVideoState(path: url);
       });
     }
     if (event is InitBlocEvent) {

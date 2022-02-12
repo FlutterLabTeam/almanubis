@@ -1,5 +1,5 @@
 import 'package:almanubis/core/util/company_colors.dart';
-import 'package:almanubis/features/chat_group/presentation/widgets/download_image_widget.dart';
+import 'package:almanubis/features/chat_group/data/models/element_to_download.dart';
 import 'package:flutter/cupertino.dart';
 
 class ImageWidget extends StatelessWidget {

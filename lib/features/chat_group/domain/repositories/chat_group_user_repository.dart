@@ -9,4 +9,5 @@ abstract class ChatGroupRepository {
   Future<Either<Failure, Stream<QuerySnapshot>>> getStreamChat({required String idGroup});
   Future<Either<Failure, bool>> createChat({required ChatModel chatModel});
   Future<Either<Failure, String>> saveAudio({required File file});
+  Future<Either<Failure, String>> saveVideo({required File file});
 }

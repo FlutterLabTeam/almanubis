@@ -29,3 +29,14 @@ class SaveAudioState extends ChatGroupState {
 class SaveAudioLoadingState extends ChatGroupState {}
 
 class SaveAudioErrorState extends ChatGroupState {}
+
+
+class SaveVideoState extends ChatGroupState {
+  final String path;
+
+  SaveVideoState({required this.path});
+}
+
+class SaveVideoLoadingState extends ChatGroupState {}
+
+class SaveVideoErrorState extends ChatGroupState {}

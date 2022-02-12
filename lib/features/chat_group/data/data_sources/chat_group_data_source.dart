@@ -7,9 +7,10 @@ import 'package:almanubis/core/errors/exceptions.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 abstract class ChatGroupDataSource {
+  Future<String> setAudio({required File file});
+  Future<String> saveVideo({required File file});
   Future<bool> createChat({required ChatModel chatModel});
   Future<Stream<QuerySnapshot>> getStreamChat({required String idGroup});
-  Future<String> setAudio({required File file});
 }
 
 class ChatGroupDataSourceImpl implements ChatGroupDataSource {
@@ -45,6 +46,19 @@ class ChatGroupDataSourceImpl implements ChatGroupDataSource {
       String audioPath = file.path;
       Reference storageReference = FirebaseStorage.instance.ref("audio");
       TaskSnapshot saveAudio = await storageReference.child(audioPath.substring(audioPath.lastIndexOf("/"), audioPath.length)).putFile(file, SettableMetadata(contentType: 'audio/wav'));
+      String url =  await saveAudio.ref.getDownloadURL();
+      return url;
+    } catch (e) {
+      throw CreateChatException();
+    }
+  }
+
+  @override
+  Future<String> saveVideo({required File file}) async {
+    try {
+      String name = file.path.split("/").last;
+      Reference storageReference = FirebaseStorage.instance.ref("video");
+      TaskSnapshot saveAudio = await storageReference.child(name).putFile(file);
       String url =  await saveAudio.ref.getDownloadURL();
       return url;
     } catch (e) {

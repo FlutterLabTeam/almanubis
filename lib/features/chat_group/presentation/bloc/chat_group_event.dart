@@ -27,4 +27,12 @@ class SaveAudioEvent implements ChatGroupEvent {
   });
 }
 
+class SaveVideoEvent implements ChatGroupEvent {
+  final File file;
+
+  SaveVideoEvent({
+    required this.file,
+  });
+}
+
 class InitBlocEvent implements ChatGroupEvent {}

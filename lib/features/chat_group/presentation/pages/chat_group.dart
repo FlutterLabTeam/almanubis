@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:almanubis/features/chat_group/data/models/element_to_download.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -66,6 +67,7 @@ class _ChatGroupState extends State<ChatGroup> {
   late List<ChatModel> listChats = [];
   late Stream<QuerySnapshot> dataStream;
   final theSource = AudioSource.microphone;
+  static late ElementToDownload elementToSelected;
   final FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
   final FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
   late TextEditingController controller = TextEditingController();
@@ -77,7 +79,7 @@ class _ChatGroupState extends State<ChatGroup> {
     super.initState();
     _mPlayer.openPlayer();
     openTheRecorder();
-
+    elementToSelected = ElementToDownload.image;
     BlocProvider.of<ChatGroupBloc>(context)
         .add(GetChatStreamEvent(idGroup: widget.model.groupModel!.id!));
   }
@@ -120,7 +122,6 @@ class _ChatGroupState extends State<ChatGroup> {
       },
       child: SafeArea(
         child: Scaffold(
-          //GetChatGroupStreamState
           body: BlocBuilder<ChatGroupBloc, ChatGroupState>(
             builder: (context, state) {
               if (state is GetChatGroupStreamState) {
@@ -151,6 +152,13 @@ class _ChatGroupState extends State<ChatGroup> {
                 _typeAssetsChat = "AUDIO";
                 chatInputType = ChatInputType.textOption;
                 audioInputState = AudioInputState.recording;
+                handledSaveMessage();
+              }
+              if (state is SaveAudioState) {
+                isAudio = true;
+                path = state.path;
+                _typeAssetsChat = "VIDEO";
+                chatInputType = ChatInputType.textOption;
                 handledSaveMessage();
               }
               return Column(
@@ -204,15 +212,15 @@ class _ChatGroupState extends State<ChatGroup> {
                                           ),
                                           child: CustomChat(
                                             model: CustomChatModel(
-                                                color: chat.idUserCreate ==
-                                                        widget.model.userModel!
-                                                            .uid!
-                                                    ? CustomChatColor.light
-                                                    : CustomChatColor.dark,
-                                                chatModel: chat,
-                                                playAudio: playAudio,
-                                                downloadImage: downloadImage,
-                                                downloadAudio: downloadAudio),
+                                              color: chat.idUserCreate == widget.model.userModel!.uid!
+                                                  ? CustomChatColor.light
+                                                  : CustomChatColor.dark,
+                                              chatModel: chat,
+                                              playAudio: playAudio,
+                                              downloadImage: downloadImage,
+                                              downloadAudio: downloadAudio,
+                                              downloadVideo: downloadVideo,
+                                            ),
                                           ),
                                         );
                                       },
@@ -249,6 +257,7 @@ class _ChatGroupState extends State<ChatGroup> {
                         isSend: isSend,
                         mediaList: listPath,
                         saveAudio: saveAudio,
+                        saveVideo: saveVideo,
                         counter: _recorderTxt,
                         controller: controller,
                         loadingButton: loadingButton,
@@ -256,12 +265,13 @@ class _ChatGroupState extends State<ChatGroup> {
                         audioInputState: audioInputState,
                         handledTapOption: handledTapOption,
                         handledPlayAudio: handledPlayAudio,
+                        elementToDownload: elementToSelected,
                         handledDeleteAudio: handledDeleteAudio,
                         handledChangeInput: handledChangeInput,
                         handledDeleteImage: handledDeleteImage,
                         handledListenAudio: handledListenAudio,
                         handledStopRecorder: handledStopRecorder,
-                        handledTapCamara: ()=> handledTakeImage(isPhoto: true),
+                        handledTapCamara: () => handledTakeImage(isPhoto: true),
                         handledSubmitChat: () {
                           listPath.isNotEmpty
                               ? saveImage()
@@ -322,12 +332,15 @@ class _ChatGroupState extends State<ChatGroup> {
     BlocProvider.of<GlobalBloc>(context).add(DisposeEvent());
   }
 
-  handledTakeImage({required bool isPhoto}) => BlocProvider.of<GlobalBloc>(context).add(
-        TakeImageEvent(
-          imageQualityModel: ImageQualityModel(size: ImageSizeEnum.xxl),
-          isPhoto: isPhoto,
-        ),
-      );
+  handledTakeImage({required bool isPhoto}) {
+    elementToSelected = ElementToDownload.image;
+    BlocProvider.of<GlobalBloc>(context).add(
+      TakeImageEvent(
+        imageQualityModel: ImageQualityModel(size: ImageSizeEnum.xxl),
+        isPhoto: isPhoto,
+      ),
+    );
+  }
 
   saveImage() {
     loadingButton = true;
@@ -335,6 +348,15 @@ class _ChatGroupState extends State<ChatGroup> {
       SaveImageEvent(
         folderDB: "imageChat",
         path: listPath[0],
+      ),
+    );
+  }
+
+  saveVideo() {
+    loadingButton = true;
+    BlocProvider.of<ChatGroupBloc>(context).add(
+      SaveVideoEvent(
+        file: File(listPath[0]),
       ),
     );
   }
@@ -351,6 +373,13 @@ class _ChatGroupState extends State<ChatGroup> {
           path: url,
           folderDB: "audio",
           assetsName: "audio",
+        ),
+      );
+
+  downloadVideo(String url) => BlocProvider.of<GlobalBloc>(context).add(
+        DownloadAssetsEvent(
+          path: url,
+          folderDB: "video",
         ),
       );
 
@@ -491,6 +520,7 @@ class _ChatGroupState extends State<ChatGroup> {
     if (e == Icons.image) {
       handledTakeImage(isPhoto: false);
     } else {
+      elementToSelected = ElementToDownload.video;
       BlocProvider.of<GlobalBloc>(context).add(TakeVideoEvent());
     }
   }

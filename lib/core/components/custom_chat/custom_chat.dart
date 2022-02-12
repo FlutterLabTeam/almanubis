@@ -4,6 +4,7 @@ import 'package:almanubis/core/model/chat_model.dart';
 import 'package:almanubis/core/util/date_format.dart';
 import 'package:almanubis/core/components/cart_chat/cart_chat.dart';
 import 'package:almanubis/core/components/square_image/square_image.dart';
+import 'package:almanubis/features/chat_group/data/models/element_to_download.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/download_image_widget.dart';
 
 enum CustomChatColor {
@@ -17,12 +18,14 @@ class CustomChatModel {
   final Function(ChatModel) playAudio;
   final Function(String) downloadImage;
   final Function(String) downloadAudio;
+  final Function(String) downloadVideo;
 
   CustomChatModel({
     required this.chatModel,
     required this.playAudio,
     required this.downloadImage,
     required this.downloadAudio,
+    required this.downloadVideo,
     this.color = CustomChatColor.dark,
   });
 }
@@ -44,53 +47,60 @@ class CustomChat extends StatelessWidget {
           ? CrossAxisAlignment.end
           : CrossAxisAlignment.start,
       children: [
-        model.chatModel.label.isNotEmpty ? Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            model.color == CustomChatColor.dark
-                ? Expanded(
-                    flex: 0,
-                    child: SquareImage(
-                      model: SquareImageModel(
-                        urlImage: model.chatModel.imageUser,
-                        size: size.width * 0.12,
+        model.chatModel.label.isNotEmpty
+            ? Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  model.color == CustomChatColor.dark
+                      ? Expanded(
+                          flex: 0,
+                          child: SquareImage(
+                            model: SquareImageModel(
+                              urlImage: model.chatModel.imageUser,
+                              size: size.width * 0.12,
+                            ),
+                          ),
+                        )
+                      : Expanded(
+                          flex: 0,
+                          child:
+                              Text(dateFormatHour(model.chatModel.dateCreate)),
+                        ),
+                  Expanded(
+                    flex: 4,
+                    child: Container(
+                      margin:
+                          EdgeInsets.symmetric(horizontal: size.width * 0.02),
+                      child: CartChat(
+                        size: size,
+                        model: CartChatModel(
+                            color: handledGenerateColor(model.color!),
+                            textChat: model.chatModel.label),
                       ),
                     ),
-                  )
-                : Expanded(
-                    flex: 0,
-                    child: Text(dateFormatHour(model.chatModel.dateCreate)),
                   ),
-            Expanded(
-              flex: 4,
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: size.width * 0.02),
-                child: CartChat(
-                  size: size,
-                  model: CartChatModel(
-                      color: handledGenerateColor(model.color!),
-                      textChat: model.chatModel.label),
-                ),
-              ),
-            ),
-            model.color == CustomChatColor.dark
-                ? Expanded(
-                    flex: 0,
-                    child: Text(dateFormatHour(model.chatModel.dateCreate)),
-                  )
-                : Container(),
-          ],
-        ) : Container(),
+                  model.color == CustomChatColor.dark
+                      ? Expanded(
+                          flex: 0,
+                          child:
+                              Text(dateFormatHour(model.chatModel.dateCreate)),
+                        )
+                      : Container(),
+                ],
+              )
+            : Container(),
         model.chatModel.dataAsset.urlAsset.isNotEmpty
             ? DownloadImageWidget(
                 model: DownloadImageWidgetModel(
                   chatModel: model.chatModel,
                   playAudio: model.playAudio,
                   downloadAudio: model.downloadAudio,
+                  downloadVideo: model.downloadVideo,
                   downloadImage: model.downloadImage,
                   image: model.chatModel.dataAsset.urlAsset,
                   color: handledGenerateAssetsColor(model.color!),
-                  elementToDownload: handledGenerateAssetsType(model.chatModel.dataAsset.typeAsset),
+                  elementToDownload: handledGenerateAssetsType(
+                      model.chatModel.dataAsset.typeAsset),
                 ),
               )
             : Container()
@@ -107,7 +117,8 @@ class CustomChat extends StatelessWidget {
     }
   }
 
-  DownloadImageWidgetColor handledGenerateAssetsColor(CustomChatColor customChatColor) {
+  DownloadImageWidgetColor handledGenerateAssetsColor(
+      CustomChatColor customChatColor) {
     switch (customChatColor) {
       case CustomChatColor.light:
         return DownloadImageWidgetColor.light;

@@ -1,19 +1,15 @@
 import 'dart:io';
+import 'package:almanubis/features/chat_group/presentation/widgets/cart_video_presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:almanubis/core/model/chat_model.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:almanubis/core/util/link_image_to_name.dart';
+import 'package:almanubis/features/chat_group/data/models/element_to_download.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/audio_widget.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/image_widget.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/presentation_audio_assets.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/presentation_image_assets.dart';
-
-enum ElementToDownload {
-  image,
-  video,
-  audio,
-}
 
 enum DownloadImageWidgetColor {
   light,
@@ -26,6 +22,7 @@ class DownloadImageWidgetModel {
   final Function(ChatModel) playAudio;
   final Function(String) downloadImage;
   final Function(String) downloadAudio;
+  final Function(String) downloadVideo;
   final DownloadImageWidgetColor color;
   final ElementToDownload? elementToDownload;
 
@@ -34,6 +31,7 @@ class DownloadImageWidgetModel {
     required this.color,
     required this.chatModel,
     required this.playAudio,
+    required this.downloadVideo,
     required this.downloadAudio,
     required this.downloadImage,
     this.elementToDownload = ElementToDownload.image,
@@ -64,6 +62,9 @@ class DownloadImageWidget extends StatelessWidget {
                   }
                   if (model.elementToDownload == ElementToDownload.audio) {
                     model.downloadAudio(model.image);
+                  }
+                  if (model.elementToDownload == ElementToDownload.video) {
+                    model.downloadVideo(model.image);
                   }
                 },
                 child: handledGenerateWidgetDownload(
@@ -137,10 +138,10 @@ class DownloadImageWidget extends StatelessWidget {
           urlAssets: urlAssets,
         );
       case ElementToDownload.video:
-        return ImageWidget(
-            elementToDownload: elementToDownload,
+        return CartVideoPresentation(
             size: size,
-            color: _getColor(model.color));
+            videoPath: urlAssets,
+        );
       case ElementToDownload.audio:
         return PresentationAudioAssets(
           size: size,

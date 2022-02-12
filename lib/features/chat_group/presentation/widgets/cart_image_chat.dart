@@ -1,17 +1,45 @@
 import 'dart:io';
 
+import 'package:almanubis/features/chat_group/data/models/element_to_download.dart';
+import 'package:almanubis/features/chat_group/presentation/widgets/cart_image_input_presentation.dart';
+import 'package:almanubis/features/chat_group/presentation/widgets/cart_video_input_presentation.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
-class CartImageChat extends StatelessWidget {
-  static late Size size;
+class CartImageChat extends StatefulWidget {
   final String imagePath;
+  final ElementToDownload elementToDownload;
   final Function(String) handledDeleteImage;
 
   const CartImageChat({
     Key? key,
     required this.imagePath,
-    required this.handledDeleteImage
+    required this.elementToDownload,
+    required this.handledDeleteImage,
   }) : super(key: key);
+
+  @override
+  State<CartImageChat> createState() => _CartImageChatState();
+}
+
+class _CartImageChatState extends State<CartImageChat> {
+  static late Size size;
+  static late Future<void> initializeVideoPlayerFuture;
+  static late VideoPlayerController videoPlayerController;
+
+  @override
+  void initState() {
+    videoPlayerController = VideoPlayerController.file(File(widget.imagePath));
+    initializeVideoPlayerFuture = videoPlayerController.initialize();
+    videoPlayerController.setLooping(true);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    videoPlayerController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,24 +47,18 @@ class CartImageChat extends StatelessWidget {
     return Stack(
       alignment: Alignment.topRight,
       children: [
-        Container(
-          margin: EdgeInsets.symmetric(
-            vertical: size.height * 0.01,
-            horizontal: size.width * 0.01,
-          ),
-          width: size.height * 0.09,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: FileImage(
-                File(imagePath),
+        widget.elementToDownload == ElementToDownload.image
+            ? CartImageInputPresentation(
+                size: size,
+                pathImage: widget.imagePath,
+              )
+            : CartVideoInputPresentation(
+                size: size,
+                videoPlayerController: videoPlayerController,
+                initializeVideoPlayerFuture: initializeVideoPlayerFuture,
               ),
-            )
-          ),
-        ),
         GestureDetector(
-          onTap: () => handledDeleteImage(imagePath),
+          onTap: () => widget.handledDeleteImage(widget.imagePath),
           child: Container(
             decoration: const BoxDecoration(
               color: Colors.white,

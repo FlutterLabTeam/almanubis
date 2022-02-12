@@ -1,3 +1,4 @@
+import 'package:almanubis/features/chat_group/data/models/element_to_download.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:almanubis/core/components/input_chat/input_chat.dart';
@@ -8,12 +9,14 @@ class TextInputOption extends StatelessWidget {
   final bool isSend;
   final String labelInput;
   final bool loadingButton;
+  final Function saveVideo;
   final List<String> mediaList;
   final Function handledTapCamara;
   final Function handledTapOption;
   final Function handledPlayAudio;
   final Function handledSubmitChat;
   final TextEditingController controller;
+  final ElementToDownload elementToDownload;
   final Function(String) handledChangeInput;
 
   const TextInputOption({
@@ -21,12 +24,14 @@ class TextInputOption extends StatelessWidget {
     required this.size,
     required this.isSend,
     required this.mediaList,
+    required this.saveVideo,
     required this.controller,
     required this.labelInput,
     required this.loadingButton,
     required this.handledPlayAudio,
     required this.handledTapOption,
     required this.handledTapCamara,
+    required this.elementToDownload,
     required this.handledSubmitChat,
     required this.handledChangeInput,
   }) : super(key: key);
@@ -35,7 +40,7 @@ class TextInputOption extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-         Expanded(
+        Expanded(
           flex: 0,
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -76,9 +81,14 @@ class TextInputOption extends StatelessWidget {
             color: CompanyColor.color().second,
             width: size.width * 0.18,
             height: size.width * 0.17,
-            child: !loadingButton ? isSend || mediaList.isNotEmpty
+            child: !loadingButton
+                ? isSend || mediaList.isNotEmpty
                     ? IconButton(
-                        onPressed: () => handledSubmitChat(),
+                        onPressed: () {
+                          elementToDownload == ElementToDownload.image
+                              ? handledSubmitChat()
+                              : saveVideo();
+                        },
                         icon: const Icon(
                           Icons.send,
                           size: 30,

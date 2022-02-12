@@ -23,6 +23,7 @@ import 'package:almanubis/features/chat_group/domain/repositories/chat_group_use
 import 'package:almanubis/features/chat_group/domain/use_cases/create_chat.dart';
 import 'package:almanubis/features/chat_group/domain/use_cases/get_chat_stream.dart';
 import 'package:almanubis/features/chat_group/domain/use_cases/save_audio.dart';
+import 'package:almanubis/features/chat_group/domain/use_cases/save_video.dart';
 import 'package:almanubis/features/chat_group/presentation/bloc/chat_group_bloc.dart';
 import 'package:almanubis/features/information_panel_groups/data/data_sources/information_panel_data_source.dart';
 import 'package:almanubis/features/information_panel_groups/data/repositories/information_panel_group_repository_impl.dart';
@@ -113,9 +114,10 @@ init() async {
     getListChat: sl()
   ));
   sl.registerFactory(() => ChatGroupBloc(
-    getChatStream: sl(),
-    createChat: sl(),
+    saveVideo: sl(),
     saveAudio: sl(),
+    createChat: sl(),
+    getChatStream: sl(),
   ));
   sl.registerFactory(() => InformationPanelBloc(
     activeNotification: sl(),
@@ -132,6 +134,7 @@ init() async {
   sl.registerLazySingleton(() => TakeVideo(globalRepository: sl()));
   sl.registerLazySingleton(() => SetDataUSer(authRepository: sl()));
   sl.registerLazySingleton(() => UpdateImage(globalRepository: sl()));
+  sl.registerLazySingleton(() => SaveVideo(chatGroupRepository: sl()));
   sl.registerLazySingleton(() => SearchUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => GetAllUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => SaveUserLogged(authRepository: sl()));

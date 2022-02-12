@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/util/company_colors.dart';
-import 'package:almanubis/features/chat_group/presentation/widgets/audio_input_option.dart';
+import 'package:almanubis/features/chat_group/data/models/element_to_download.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/cart_image_chat.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/text_input_option.dart';
+import 'package:almanubis/features/chat_group/presentation/widgets/audio_input_option.dart';
 
 enum ChatInputType {
   textOption,
@@ -15,6 +16,7 @@ class ChatInput extends StatelessWidget {
   static late Size size;
   final bool loadingButton;
   final Function saveAudio;
+  final Function saveVideo;
   final String? labelInput;
   final List<String> mediaList;
   final Function handledTapCamara;
@@ -27,6 +29,7 @@ class ChatInput extends StatelessWidget {
   final Function() handledSubmitChat;
   final AudioInputState audioInputState;
   final TextEditingController controller;
+  final ElementToDownload elementToDownload;
   final Function(String) handledDeleteImage;
   final Function(String) handledChangeInput;
 
@@ -36,6 +39,7 @@ class ChatInput extends StatelessWidget {
     required this.isSend,
     required this.counter,
     required this.mediaList,
+    required this.saveVideo,
     required this.saveAudio,
     required this.controller,
     required this.loadingButton,
@@ -44,6 +48,7 @@ class ChatInput extends StatelessWidget {
     required this.handledTapOption,
     required this.handledPlayAudio,
     required this.handledTapCamara,
+    required this.elementToDownload,
     required this.handledSubmitChat,
     required this.handledListenAudio,
     required this.handledDeleteAudio,
@@ -73,6 +78,7 @@ class ChatInput extends StatelessWidget {
                       String image = mediaList[index];
                       return CartImageChat(
                         imagePath: image,
+                        elementToDownload: elementToDownload,
                         handledDeleteImage: handledDeleteImage,
                       );
                     },
@@ -91,6 +97,7 @@ class ChatInput extends StatelessWidget {
           size: size,
           isSend: isSend,
           mediaList: mediaList,
+          saveVideo: saveVideo,
           controller: controller,
           loadingButton: loadingButton,
           labelInput: labelInput??"Mensaje",
@@ -98,6 +105,7 @@ class ChatInput extends StatelessWidget {
           handledTapOption: handledTapOption,
           handledTapCamara: handledTapCamara,
           handledSubmitChat: handledSubmitChat,
+          elementToDownload: elementToDownload,
           handledChangeInput: handledChangeInput,
         );
       case ChatInputType.audioOption:
