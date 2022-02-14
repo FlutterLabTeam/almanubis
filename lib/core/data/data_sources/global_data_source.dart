@@ -138,7 +138,7 @@ class GlobalDataSourceImpl implements GlobalDataSource {
   Future<String> takeVideo() async {
     try {
       final ImagePicker _picker = ImagePicker();
-      XFile? video = await _picker.pickVideo(source: ImageSource.gallery);
+      XFile? video = await _picker.pickVideo(source: ImageSource.gallery, maxDuration: const Duration(minutes: 1));
       if (video != null) {
         return video.path;
       } else {

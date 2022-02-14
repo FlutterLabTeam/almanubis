@@ -1,71 +1,100 @@
 import 'dart:io';
 
-import 'package:almanubis/core/bloc/global_bloc.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:video_player/video_player.dart';
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
-class CartVideoPresentation extends StatefulWidget {
-
+class CartVideoPresentation extends StatelessWidget {
   final Size size;
   final String videoPath;
 
   const CartVideoPresentation({
     Key? key,
     required this.size,
-    required this.videoPath
-  })
-      : super(key: key);
+    required this.videoPath,
+  }) : super(key: key);
 
-  @override
-  State<CartVideoPresentation> createState() => _CartVideoPresentationState();
-}
-
-class _CartVideoPresentationState extends State<CartVideoPresentation> {
-
-  static late Future<void> initializeVideoPlayerFuture;
-  static late VideoPlayerController videoPlayerController;
-
-  @override
-  void initState() {
-    videoPlayerController = VideoPlayerController.file(File(widget.videoPath));
-    initializeVideoPlayerFuture = videoPlayerController.initialize();
-    videoPlayerController.setLooping(true);
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => handledActiveVideo(),
-      child: Container(
-        margin: EdgeInsets.symmetric(
-          vertical: widget.size.height * 0.01,
-          horizontal: widget.size.width * 0.01,
-        ),
-        height: widget.size.height * 0.3,
-        width: widget.size.width * 0.4,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: FutureBuilder(
-          future: initializeVideoPlayerFuture,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            return AspectRatio(
-              aspectRatio: videoPlayerController.value.aspectRatio,
-              child: VideoPlayer(videoPlayerController),
-            );
-          },
-        ),
-      ),
+    return FutureBuilder(
+      future: generateImage(),
+      builder: (context, AsyncSnapshot<String> snapshot) {
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
+        String url = snapshot.data!;
+        return Container(
+          margin: EdgeInsets.symmetric(
+            vertical: size.height * 0.01,
+            horizontal: size.width * 0.1,
+          ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              GestureDetector(
+                onTap: () => handledTabVideo(videoPath, context),
+                child: Container(
+                  height: size.height * 0.3,
+                  width: size.width * 0.4,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: FileImage(
+                        File(url),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () => handledTabVideo(videoPath, context),
+                child: Container(
+                  child: const Icon(
+                    Icons.play_arrow,
+                    size: 50,
+                    color: Colors.white,
+                  ),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 3,
+                    ),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black45,
+                        offset: Offset(1, 1),
+                        blurRadius: 2,
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 
-  handledActiveVideo(){
-    if(videoPlayerController.value.isPlaying){
-      videoPlayerController.pause();
-    }else{
-      videoPlayerController.play();
-    }
-    BlocProvider.of<GlobalBloc>(context).add(DisposeEvent());
+  handledTabVideo(String url, BuildContext context) {
+    Navigator.pushNamed(context, '/videoPlayerView', arguments: url);
+  }
+
+  Future<String> generateImage() async {
+    final fileName = await VideoThumbnail.thumbnailFile(
+      video: videoPath,
+      thumbnailPath: (await getTemporaryDirectory()).path,
+      imageFormat: ImageFormat.WEBP,
+      maxHeight: 300,
+      maxWidth: 150,
+      // specify the height of the thumbnail, let the width auto-scaled to keep the source aspect ratio
+      quality: 75,
+    );
+
+    return fileName.toString();
   }
 }
+
+

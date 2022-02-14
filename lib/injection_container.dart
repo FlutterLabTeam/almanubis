@@ -53,6 +53,7 @@ import 'package:almanubis/features/user_configuration/data/repositories/user_con
 import 'package:almanubis/features/user_configuration/domain/repositories/user_configuration_repository.dart';
 import 'package:almanubis/features/user_configuration/domain/use_cases/update_user.dart';
 import 'package:almanubis/features/user_configuration/presentation/bloc/user_configuration_bloc.dart';
+import 'package:almanubis/features/videoPlayerPage/presentation/bloc/video_player_page_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -76,6 +77,7 @@ final sl = GetIt.instance;
 
 init() async {
   //Blocs
+  sl.registerFactory(() => VideoPlayerPageBloc());
   sl.registerFactory(() => AuthBloc(
         loginEmail: sl(),
         getUserData: sl(),

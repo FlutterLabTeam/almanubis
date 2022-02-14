@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:almanubis/core/errors/exceptions.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:video_compress/video_compress.dart';
 
 abstract class ChatGroupDataSource {
   Future<String> setAudio({required File file});
@@ -56,9 +57,15 @@ class ChatGroupDataSourceImpl implements ChatGroupDataSource {
   @override
   Future<String> saveVideo({required File file}) async {
     try {
+      MediaInfo? mediaInfo = await VideoCompress.compressVideo(
+        file.path,
+        quality: VideoQuality.Res640x480Quality,
+        deleteOrigin: true,
+      );
+      String newPath = mediaInfo != null ? mediaInfo.path! : file.path;
       String name = file.path.split("/").last;
       Reference storageReference = FirebaseStorage.instance.ref("video");
-      TaskSnapshot saveAudio = await storageReference.child(name).putFile(file);
+      TaskSnapshot saveAudio = await storageReference.child(name).putFile(File(newPath));
       String url =  await saveAudio.ref.getDownloadURL();
       return url;
     } catch (e) {

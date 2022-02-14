@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:async';
-import 'package:almanubis/features/chat_group/data/models/element_to_download.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -21,6 +20,7 @@ import 'package:almanubis/core/data/model/image_quality_model.dart';
 import 'package:almanubis/core/components/header_chat/header_chat.dart';
 import 'package:almanubis/core/components/custom_chat/custom_chat.dart';
 import 'package:almanubis/features/chat_group/data/models/audio_model.dart';
+import 'package:almanubis/features/chat_group/data/models/element_to_download.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/chat_input.dart';
 import 'package:almanubis/features/chat_group/presentation/bloc/chat_group_bloc.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/audio_input_option.dart';
@@ -154,9 +154,11 @@ class _ChatGroupState extends State<ChatGroup> {
                 audioInputState = AudioInputState.recording;
                 handledSaveMessage();
               }
-              if (state is SaveAudioState) {
+              if (state is SaveVideoState) {
+                listPath = [];
                 isAudio = true;
                 path = state.path;
+                loadingButton = false;
                 _typeAssetsChat = "VIDEO";
                 chatInputType = ChatInputType.textOption;
                 handledSaveMessage();

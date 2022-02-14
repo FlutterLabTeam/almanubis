@@ -90,6 +90,7 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
       });
     }
     if (event is DisposeEvent) {
+      yield TakeImageLoadingState();
       yield GlobalInitial();
     }
     if (event is DownloadAssetsEvent) {

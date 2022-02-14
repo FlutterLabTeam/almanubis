@@ -8,6 +8,7 @@ import 'features/list_chat/presentation/bloc/list_chat_bloc.dart';
 import 'features/new_group/presentation/bloc/new_group_bloc.dart';
 import 'features/save_group/presentation/bloc/save_group_bloc.dart';
 import 'features/user_configuration/presentation/bloc/user_configuration_bloc.dart';
+import 'features/videoPlayerPage/presentation/bloc/video_player_page_bloc.dart';
 import 'injection_container.dart';
 import 'package:almanubis/routes.dart';
 import 'package:flutter/material.dart';
@@ -40,8 +41,9 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => sl<ChatGroupBloc>()),
           BlocProvider(create: (context) => sl<SaveGroupBloc>()),
           BlocProvider(create: (context) => sl<AddNewUserBloc>()),
-          BlocProvider(create: (context) => sl<UserConfigurationBloc>()),
+          BlocProvider(create: (context) => sl<VideoPlayerPageBloc>()),
           BlocProvider(create: (context) => sl<InformationPanelBloc>()),
+          BlocProvider(create: (context) => sl<UserConfigurationBloc>()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -10,6 +10,7 @@ import 'package:almanubis/features/new_group/presentation/pages/new_group.dart';
 import 'package:almanubis/features/new_user/presentation/pages/new_user.dart';
 import 'package:almanubis/features/auth/presentation/pages/auth.dart';
 import 'package:almanubis/core/model/user_model.dart';
+import 'package:almanubis/features/videoPlayerPage/presentation/pages/videoPlayerPage.dart';
 import 'package:almanubis/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,7 @@ class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
 
     List<UserModel> listUserModel = [];
+    String paramsString = "";
     UserModel userModel= UserModel.fromJsonNoData();
     ChatGroupModel chatGroupModel = ChatGroupModel();
     GroupModel groupModel = GroupModel.fromNoDataJson();
@@ -41,6 +43,9 @@ class Routes {
     if(argument is InformationPanelGroupsModel){
       informationPanelGroupsModel = argument;
     }
+    if(argument is String){
+      paramsString = argument;
+    }
 
     switch (settings.name) {
       case '/': return MaterialPageRoute(builder: (_) => const AppSplashScreen());
@@ -52,6 +57,7 @@ class Routes {
       case '/chatGroup': return MaterialPageRoute(builder: (_) => ChatGroup(model: chatGroupModel,));
       case '/adminPanel': return MaterialPageRoute(builder: (_) => AdminPanel(userModel: userModel,));
       case '/saveGroup': return MaterialPageRoute(builder: (_) =>  SaveGroup(listUser: listUserModel));
+      case '/videoPlayerView': return MaterialPageRoute(builder: (_) => VideoPlayerView(videoPath: paramsString));
       case '/userConfiguration': return MaterialPageRoute(builder: (_) => UserConfiguration(userModel: userModel));
       case '/informationPanelGroups': return MaterialPageRoute(builder: (_) => InformationPanelGroups(model: informationPanelGroupsModel,));
       default: return MaterialPageRoute(builder: (_) => const AuthPage());
