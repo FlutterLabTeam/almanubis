@@ -40,8 +40,9 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
   void dispose() {
     controller.dispose();
     speedVideo = 1;
-    super.dispose();
     timeVideo = "00:00";
+    controller.setPlaybackSpeed(1);
+    super.dispose();
   }
 
   @override
@@ -73,6 +74,7 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
                   ),
                   handledTap: handledActiveVideo,
                   controller: controller,
+                  size: size,
                 ),
                 BasicOverlayWidget(controller: controller),
                 PanelVideo(
@@ -127,11 +129,11 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
   }
 
   setPlaybackSpeed(double speed, bool increase) {
-    if(increase){
-    speedVideo =  speed + speedVideo;
-    }else if (speedVideo > 0){
-      speedVideo =  speedVideo - speed;
+    if (increase) {
+      speedVideo = speed + speedVideo;
+    } else if (speedVideo > 0) {
+      speedVideo = speedVideo - speed;
     }
-      controller.setPlaybackSpeed(speedVideo);
+    controller.setPlaybackSpeed(speedVideo);
   }
 }
