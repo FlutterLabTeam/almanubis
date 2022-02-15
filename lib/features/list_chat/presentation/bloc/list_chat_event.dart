@@ -9,4 +9,12 @@ class GetAllListChatEvent implements ListChatEvent {
   GetAllListChatEvent({required this.userId});
 }
 
-class GetAllListChatStreamEvent implements ListChatEvent {}
+class GetAllListChatStreamEvent implements ListChatEvent {
+  final String userId;
+  final bool isAdmin;
+
+  GetAllListChatStreamEvent({
+    required this.userId,
+    required this.isAdmin,
+  });
+}

@@ -253,6 +253,7 @@ class SaveGroupStateView extends State<SaveGroup> {
         title: titleGroupController.text,
         description: descriptionGroupController.text,
         query: generateQuery(titleGroupController.text),
+        listUserId: listUserModel.map((e) => e.uid!).toList(),
         listUserNotify: listUserModel.map((e) => e.uid!).toList(),
       );
 

@@ -7,7 +7,6 @@ import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/core/model/group_model.dart';
 import 'package:almanubis/core/components/image/custom_image.dart';
 import 'package:almanubis/core/components/appbar/custom_appbar.dart';
-import 'package:almanubis/core/util/firebaseNotificationHandler.dart';
 import 'package:almanubis/core/components/navigation/navigation_bar.dart';
 import 'package:almanubis/core/components/cart_chat_home/card_chat_home.dart';
 import 'package:almanubis/features/chat_group/presentation/pages/chat_group.dart';
@@ -31,8 +30,8 @@ class _ListChatState extends State<ListChat> {
 
   @override
   void initState() {
-    BlocProvider.of<ListChatBloc>(context).add(
-        GetAllListChatEvent(userId: widget.userModel.uid!));
+    BlocProvider.of<ListChatBloc>(context)
+        .add(GetAllListChatEvent(userId: widget.userModel.uid!));
     super.initState();
   }
 
@@ -44,9 +43,7 @@ class _ListChatState extends State<ListChat> {
 
   @override
   Widget build(BuildContext context) {
-    size = MediaQuery
-        .of(context)
-        .size;
+    size = MediaQuery.of(context).size;
     DateTime dateTime = DateTime.now();
     return BlocBuilder<ListChatBloc, ListChatState>(builder: (context, state) {
       if (state is GetAllListChatStreamState) {
@@ -55,7 +52,12 @@ class _ListChatState extends State<ListChat> {
       }
       if (state is GetAllListChatState) {
         listMessageChat = state.listChatModel;
-        BlocProvider.of<ListChatBloc>(context).add(GetAllListChatStreamEvent());
+        BlocProvider.of<ListChatBloc>(context).add(
+          GetAllListChatStreamEvent(
+            userId: widget.userModel.uid!,
+            isAdmin: widget.userModel.rol == "ADMIN",
+          ),
+        );
       }
       return SafeArea(
         child: Scaffold(
@@ -82,59 +84,59 @@ class _ListChatState extends State<ListChat> {
                 height: size.height * 0.7115,
                 child: isStreamNotEmpty
                     ? StreamBuilder(
-                  stream: streamData,
-                  builder:
-                      (context, AsyncSnapshot<QuerySnapshot> snapShot) {
-                    if (snapShot.hasData) {
-                      listChat = snapShot.data!.docs
-                          .map((e) => GroupModel.fromJson(e.data(), e.id))
-                          .toList();
-                    }
-                    return ListView.builder(
-                      itemCount: listChat.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        GroupModel group = listChat[index];
-                        int counter = handledCalculateMessage(group);
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: CardChatHome(
-                            model: CardChatHomeModel(
-                                title: group.title,
-                                dateTime: dateTime,
-                                description: group.description,
-                                counter: counter,
-                                imageUrl: group.image.isEmpty
-                                    ? noImage
-                                    : group.image,
-                                handledCart: () => handledPushChat(group)),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                )
+                        stream: streamData,
+                        builder:
+                            (context, AsyncSnapshot<QuerySnapshot> snapShot) {
+                          if (snapShot.hasData) {
+                            listChat = snapShot.data!.docs
+                                .map((e) => GroupModel.fromJson(e.data(), e.id))
+                                .toList();
+                          }
+                          return ListView.builder(
+                            itemCount: listChat.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              GroupModel group = listChat[index];
+                              int counter = handledCalculateMessage(group);
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: CardChatHome(
+                                  model: CardChatHomeModel(
+                                      title: group.title,
+                                      dateTime: dateTime,
+                                      description: group.description,
+                                      counter: counter,
+                                      imageUrl: group.image.isEmpty
+                                          ? noImage
+                                          : group.image,
+                                      handledCart: () =>
+                                          handledPushChat(group)),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      )
                     : const Center(
-                  child: CircularProgressIndicator(),
-                ),
+                        child: CircularProgressIndicator(),
+                      ),
               )
             ],
           ),
           bottomNavigationBar: CustomNavigationBar(
             model: CustomNavigationBarModel(),
             onTapMessage: () {},
-            onTapPerson: () =>
-                Navigator.of(context).pushReplacementNamed(
-                    '/userConfiguration',
-                    arguments: widget.userModel),
+            onTapPerson: () => Navigator.of(context).pushReplacementNamed(
+                '/userConfiguration',
+                arguments: widget.userModel),
           ),
         ),
       );
     });
   }
 
-  handledPushChat(GroupModel groupModel) =>
-      Navigator.of(context).pushNamed(
+  handledPushChat(GroupModel groupModel) => Navigator.of(context).pushNamed(
         '/chatGroup',
         arguments: ChatGroupModel(
           groupModel: groupModel,
@@ -143,8 +145,14 @@ class _ListChatState extends State<ListChat> {
       );
 
   int handledCalculateMessage(GroupModel groupModel) {
-    List<ChatModel> chatModel = listMessageChat.where((element) => element.idGroup == groupModel.id!).toList();
-    int data = chatModel.where((element) => element.listUserReceiver.contains(widget.userModel.uid!)).toList().length;
+    List<ChatModel> chatModel = listMessageChat
+        .where((element) => element.idGroup == groupModel.id!)
+        .toList();
+    int data = chatModel
+        .where((element) =>
+            element.listUserReceiver.contains(widget.userModel.uid!))
+        .toList()
+        .length;
     return data;
   }
 }

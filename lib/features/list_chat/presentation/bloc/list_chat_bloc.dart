@@ -3,7 +3,6 @@ import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:almanubis/core/model/chat_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:almanubis/core/usecases/use_cases.dart';
 import 'package:almanubis/features/list_chat/domain/use_cases/get_list_chat_data.dart';
 import 'package:almanubis/features/list_chat/domain/use_cases/get_list_chat_snapshot.dart';
 
@@ -26,7 +25,10 @@ class ListChatBloc extends Bloc<ListChatEvent, ListChatState> {
   ) async* {
     if (event is GetAllListChatStreamEvent) {
       yield GetAllListChatLoadingState();
-      final result = await getListChatSnapShot(NoParams());
+      final result = await getListChatSnapShot(GetListChatSnapShotParams(
+        userId: event.userId,
+        isAdmin: event.isAdmin,
+      ),);
       yield* result.fold((failure) async* {
         yield GetAllListChatErrorState();
       }, (Stream<QuerySnapshot> listChat) async* {

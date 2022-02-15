@@ -5,5 +5,5 @@ import 'package:dartz/dartz.dart';
 
 abstract class ListChatRepository {
   Future<Either<Failure, List<ChatModel>>> getListChat(String userId);
-  Future<Either<Failure, Stream<QuerySnapshot>>> getListChatSnapShot();
+  Future<Either<Failure, Stream<QuerySnapshot>>> getListChatSnapShot({required bool isAdmin, required userId});
 }

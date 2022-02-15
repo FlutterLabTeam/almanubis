@@ -44,6 +44,7 @@ class AddNewUserDataSourceImpl implements AddNewUserDataSource {
       List listUserIdModel = user.map((e) => e.uid!).toList();
       await firestore.collection("groups").doc(idGroup).update({"listUser": FieldValue.arrayUnion(listUserModel)});
       await firestore.collection("groups").doc(idGroup).update({"listUserNotify": FieldValue.arrayUnion(listUserIdModel)});
+      await firestore.collection("groups").doc(idGroup).update({"listUserId": FieldValue.arrayUnion(listUserIdModel)});
       return true;
     } catch (e) {
       throw GetAllUserException();

@@ -1,12 +1,11 @@
 import 'package:almanubis/core/model/chat_model.dart';
-import 'package:almanubis/core/model/group_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:almanubis/core/errors/exceptions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class ListChatDataSource {
   Future<List<ChatModel>> getListChat(String userId);
-  Future<Stream<QuerySnapshot>> getListChatSnapShot();
+  Future<Stream<QuerySnapshot>> getListChatSnapShot({required bool isAdmin, required userId});
 }
 
 class ListChatDataSourceImpl implements ListChatDataSource {
@@ -31,9 +30,15 @@ class ListChatDataSourceImpl implements ListChatDataSource {
   }
 
   @override
-  Future<Stream<QuerySnapshot>> getListChatSnapShot() async {
+  Future<Stream<QuerySnapshot>> getListChatSnapShot({required bool isAdmin, required userId}) async {
     try {
-      Stream<QuerySnapshot> _listChatsSnapShot = FirebaseFirestore.instance.collection('groups').snapshots();
+      Stream<QuerySnapshot> _listChatsSnapShot;
+
+      if(isAdmin){
+        _listChatsSnapShot = FirebaseFirestore.instance.collection('groups').snapshots();
+      }else{
+        _listChatsSnapShot = FirebaseFirestore.instance.collection('groups').where("listUserId", arrayContains: userId).snapshots();
+      }
       return _listChatsSnapShot;
     } catch (e) {
       throw GetListChatSnapShotException();

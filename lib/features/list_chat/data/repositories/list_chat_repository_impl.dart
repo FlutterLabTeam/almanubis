@@ -23,9 +23,9 @@ class ListChatRepositoryImpl implements ListChatRepository{
   }
 
   @override
-  Future<Either<Failure, Stream<QuerySnapshot>>> getListChatSnapShot() async {
+  Future<Either<Failure, Stream<QuerySnapshot>>> getListChatSnapShot({required bool isAdmin, required userId}) async {
     try {
-      final result = await listChatDataSource.getListChatSnapShot();
+      final result = await listChatDataSource.getListChatSnapShot(userId: userId, isAdmin: isAdmin);
       return Right(result);
     } on GetListChatSnapShotException {
       return Left(ValidateUserLoggedFailure());
