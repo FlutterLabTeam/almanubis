@@ -1,9 +1,9 @@
 import 'package:almanubis/core/model/chat_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/constant.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:almanubis/core/model/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:almanubis/core/model/group_model.dart';
 import 'package:almanubis/core/components/image/custom_image.dart';
 import 'package:almanubis/core/components/appbar/custom_appbar.dart';
