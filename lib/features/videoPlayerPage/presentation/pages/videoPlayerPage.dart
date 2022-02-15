@@ -49,45 +49,45 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return Scaffold(
-        backgroundColor: CompanyColor.color().primary,
-        body: BlocBuilder<VideoPlayerPageBloc, VideoPlayerPageState>(
-          builder: (context, state) {
-            return Column(
-              children: [
-                BodyVideo(
-                  body: SizedBox(
-                    height: size.height * 0.8,
-                    width: size.width,
-                    child: GestureDetector(
-                      onTap: () => handledActiveVideo(),
-                      child: FutureBuilder(
-                        future: initializeVideoPlayerFuture,
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          return AspectRatio(
-                            aspectRatio: controller.value.aspectRatio,
-                            child: VideoPlayer(controller),
-                          );
-                        },
-                      ),
+      backgroundColor: CompanyColor.color().primary,
+      body: BlocBuilder<VideoPlayerPageBloc, VideoPlayerPageState>(
+        builder: (context, state) {
+          return Column(
+            children: [
+              BodyVideo(
+                body: SizedBox(
+                  height: size.height * 0.8,
+                  width: size.width,
+                  child: GestureDetector(
+                    onTap: () => handledActiveVideo(),
+                    child: FutureBuilder(
+                      future: initializeVideoPlayerFuture,
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        return AspectRatio(
+                          aspectRatio: controller.value.aspectRatio,
+                          child: VideoPlayer(controller),
+                        );
+                      },
                     ),
                   ),
-                  handledTap: handledActiveVideo,
-                  controller: controller,
-                  size: size,
                 ),
-                BasicOverlayWidget(controller: controller),
-                PanelVideo(
-                    size: size,
-                    time: timeVideo,
-                    controller: controller,
-                    handledTapVolume: handledTapVolume,
-                    handledActiveVideo: handledActiveVideo,
-                    setPlaybackSpeed: setPlaybackSpeed)
-              ],
-            );
-          },
-        ));
+                handledTap: handledActiveVideo,
+                controller: controller,
+                size: size,
+              ),
+              BasicOverlayWidget(controller: controller),
+              PanelVideo(
+                  size: size,
+                  time: timeVideo,
+                  controller: controller,
+                  handledTapVolume: handledTapVolume,
+                  handledActiveVideo: handledActiveVideo,
+                  setPlaybackSpeed: setPlaybackSpeed)
+            ],
+          );
+        },
+      ),
+    );
   }
 
   handledActiveVideo() {
