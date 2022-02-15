@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:almanubis/core/util/company_colors.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 enum TypeImage {
   fileType,
@@ -41,9 +43,6 @@ class ImageUser extends StatelessWidget {
               )
             ],
             color: CompanyColor.color().primary,
-            image: image != null && image!.isNotEmpty
-                ? handledGenderImage(typeImage: typeImage!, path: image!)
-                : null,
             border: Border.all(
               width: 4,
               color: CompanyColor.color().primary,
@@ -52,10 +51,10 @@ class ImageUser extends StatelessWidget {
           child: image == null || image!.isEmpty
               ? Icon(
                   Icons.people_outline_rounded,
-                  size: 100,
+                  size: size.height * 0.15,
                   color: CompanyColor.color().third,
                 )
-              : null,
+              : handledGenderImage(typeImage: typeImage!, path: image!),
         ),
         Container(
           height: size.height * 0.05,
@@ -83,25 +82,48 @@ class ImageUser extends StatelessWidget {
     );
   }
 
-  DecorationImage handledGenderImage(
-      {required TypeImage typeImage, required String path}) {
+  handledGenderImage({required TypeImage typeImage, required String path}) {
     switch (typeImage) {
       case TypeImage.fileType:
-        return DecorationImage(
-          fit: BoxFit.cover,
-          image: FileImage(
-            File(path),
+        return Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: FileImage(
+                File(path),
+              ),
+            ),
           ),
         );
       case TypeImage.networkType:
-        return DecorationImage(
-          fit: BoxFit.cover,
-          image: NetworkImage(path),
+        return CachedNetworkImage(
+          placeholder: (context, url) => Shimmer.fromColors(
+            baseColor: CompanyColor.color().primary,
+            highlightColor: CompanyColor.color().second,
+            child: Icon(
+              Icons.people_outline_rounded,
+              size: size.height * 0.15,
+              color: CompanyColor.color().third,
+            ),
+          ),
+          imageUrl: image!,
+          imageBuilder: (context, imageProvider) => Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(path),
+              ),
+            ),
+          ),
         );
       case TypeImage.assetType:
-        return DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage(path),
+        return Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage(path),
+            ),
+          ),
         );
     }
   }

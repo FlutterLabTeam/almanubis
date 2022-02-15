@@ -11,14 +11,19 @@ import 'dart:io';
 
 abstract class GlobalDataSource {
   Future<String> takeVideo();
+
   Future<String> takePhoto({required ImageQualityModel imageQualityModel});
+
   Future<String> takeImage({required ImageQualityModel imageQualityModel});
+
   Future<bool> downloadAssets({required String folderDB, required String path});
+
   Future<String> saveImage({
     String? idUser,
     required String path,
     required String folderDB,
   });
+
   Future<String> updateImage({
     String? idUser,
     required String path,
@@ -120,10 +125,11 @@ class GlobalDataSourceImpl implements GlobalDataSource {
     try {
       final ImagePicker _picker = ImagePicker();
       XFile? image = await _picker.pickImage(
-          source: ImageSource.gallery,
-          maxHeight: generateSizeImage(imageQualityModel.size!)["height"],
-          maxWidth: generateSizeImage(imageQualityModel.size!)["width"],
-          imageQuality: imageQualityModel.imageQuality);
+        source: ImageSource.gallery,
+        imageQuality: imageQualityModel.imageQuality,
+        maxHeight: generateSizeImage(imageQualityModel.size!)["height"],
+        maxWidth: generateSizeImage(imageQualityModel.size!)["width"],
+      );
       if (image != null) {
         return image.path;
       } else {
@@ -138,7 +144,8 @@ class GlobalDataSourceImpl implements GlobalDataSource {
   Future<String> takeVideo() async {
     try {
       final ImagePicker _picker = ImagePicker();
-      XFile? video = await _picker.pickVideo(source: ImageSource.gallery, maxDuration: const Duration(minutes: 1));
+      XFile? video = await _picker.pickVideo(
+          source: ImageSource.gallery, maxDuration: const Duration(minutes: 1));
       if (video != null) {
         return video.path;
       } else {

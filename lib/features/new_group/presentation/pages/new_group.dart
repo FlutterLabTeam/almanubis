@@ -3,7 +3,6 @@ import 'package:almanubis/core/components/carousel_image_user/carousel_image_use
 import 'package:almanubis/features/new_group/presentation/bloc/new_group_bloc.dart';
 import 'package:almanubis/core/components/selected_item/selected_item.dart';
 import 'package:almanubis/core/components/input_search/input_search.dart';
-import 'package:almanubis/core/components/navigation/navigation_bar.dart';
 import 'package:almanubis/core/components/appbar/custom_appbar.dart';
 import 'package:almanubis/core/util/company_fonts.dart';
 import 'package:almanubis/core/model/user_model.dart';
@@ -104,13 +103,6 @@ class _NewGroupState extends State<NewGroup> {
               ],
             );
           },
-        ),
-        bottomNavigationBar: CustomNavigationBar(
-          onTapPlus: () {},
-          model: CustomNavigationBarModel(),
-          onTapMessage: () => Navigator.of(context).pushNamed('/listChat'),
-          onTapPerson: () =>
-              Navigator.of(context).pushNamed('/userConfiguration'),
         ),
         floatingActionButton: CustomFloatingButton(
           model: CustomFloatingButtonModel(

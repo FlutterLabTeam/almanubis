@@ -1,6 +1,5 @@
 import 'package:almanubis/core/util/snack_bar_message.dart';
 import 'package:almanubis/features/new_user/presentation/bloc/new_user_bloc.dart';
-import 'package:almanubis/core/components/navigation/navigation_bar.dart';
 import 'package:almanubis/core/components/button/custom_button.dart';
 import 'package:almanubis/core/components/appbar/custom_appbar.dart';
 import 'package:almanubis/core/components/image/custom_image.dart';
@@ -82,132 +81,123 @@ class _NewUserState extends State<NewUser> {
         child: Scaffold(
           body: SingleChildScrollView(
             child: Form(
-                key: _formKey,
-                child: BlocBuilder<NewUserBloc, NewUserState>(
-                  builder: (context, state) {
-                    loadingButton = false;
-                    if (state is ChangePasswordState) {
-                      statePassword = state.state;
-                    }
-                    if (state is ChangeRepeatPasswordState) {
-                      stateRepeatPassword = state.state;
-                    }
-                    if (state is NewUserRegisterLoading) {
-                      loadingButton = true;
-                    }
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CustomAppBar(
-                          model: CustomAppBarModel(
-                            body: Text(
-                              "NUEVO USUARIO",
-                              style: CompanyFontStyle.style().titleStyleDark,
-                            ),
-                            handledGoBack: () => Navigator.of(context).pop(),
+              key: _formKey,
+              child: BlocBuilder<NewUserBloc, NewUserState>(
+                builder: (context, state) {
+                  loadingButton = false;
+                  if (state is ChangePasswordState) {
+                    statePassword = state.state;
+                  }
+                  if (state is ChangeRepeatPasswordState) {
+                    stateRepeatPassword = state.state;
+                  }
+                  if (state is NewUserRegisterLoading) {
+                    loadingButton = true;
+                  }
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CustomAppBar(
+                        model: CustomAppBarModel(
+                          body: Text(
+                            "NUEVO USUARIO",
+                            style: CompanyFontStyle.style().titleStyleDark,
+                          ),
+                          handledGoBack: () => Navigator.of(context).pop(),
+                        ),
+                      ),
+                      Container(
+                        height: size.height * 0.17,
+                        margin: EdgeInsets.only(
+                          top: size.height * 0.02,
+                          bottom: size.height * 0.02,
+                        ),
+                        width: double.infinity,
+                        child: CustomImage(
+                          model: CustomImageModel(color: CustomImageColor.dark),
+                        ),
+                      ),
+                      Container(
+                        margin: marginGlobal,
+                        child: CustomInput(
+                          model: CustomInputColorModel(
+                            label: "Usuario",
+                            controller: userController,
+                            color: CustomInputColor.dark,
                           ),
                         ),
-                        Container(
-                          height: size.height * 0.17,
-                          margin: EdgeInsets.only(
-                            top: size.height * 0.02,
-                            bottom: size.height * 0.02,
-                          ),
-                          width: double.infinity,
-                          child: CustomImage(
-                            model:
-                                CustomImageModel(color: CustomImageColor.dark),
-                          ),
-                        ),
-                        Container(
-                          margin: marginGlobal,
-                          child: CustomInput(
-                            model: CustomInputColorModel(
-                              label: "Usuario",
-                              controller: userController,
-                              color: CustomInputColor.dark,
-                            ),
+                      ),
+                      Container(
+                        margin: marginGlobal,
+                        child: CustomInput(
+                          model: CustomInputColorModel(
+                            validator: validationEmail,
+                            label: "Correo electronico",
+                            controller: emailController,
+                            color: CustomInputColor.dark,
                           ),
                         ),
-                        Container(
-                          margin: marginGlobal,
-                          child: CustomInput(
-                            model: CustomInputColorModel(
-                              validator: validationEmail,
-                              label: "Correo electronico",
-                              controller: emailController,
-                              color: CustomInputColor.dark,
-                            ),
+                      ),
+                      Container(
+                        margin: marginGlobal,
+                        child: CustomInput(
+                          model: CustomInputColorModel(
+                            label: "Contraseña",
+                            isObscure: statePassword,
+                            color: CustomInputColor.dark,
+                            validator: validationPassword,
+                            tapIcon: () => BlocProvider.of<NewUserBloc>(context)
+                                .add(
+                                    ChangePasswordEvent(state: !statePassword)),
+                            controller: passwordController,
+                            typeInput: CustomInputType.password,
                           ),
                         ),
-                        Container(
-                          margin: marginGlobal,
-                          child: CustomInput(
-                            model: CustomInputColorModel(
-                              label: "Contraseña",
-                              isObscure: statePassword,
-                              color: CustomInputColor.dark,
-                              validator: validationPassword,
-                              tapIcon: () =>
-                                  BlocProvider.of<NewUserBloc>(context).add(
-                                      ChangePasswordEvent(
-                                          state: !statePassword)),
-                              controller: passwordController,
-                              typeInput: CustomInputType.password,
-                            ),
+                      ),
+                      Container(
+                        margin: marginGlobal,
+                        child: CustomInput(
+                          model: CustomInputColorModel(
+                            label: "Repita la Contraseña",
+                            color: CustomInputColor.dark,
+                            validator: validationPassword,
+                            isObscure: stateRepeatPassword,
+                            tapIcon: () => BlocProvider.of<NewUserBloc>(context)
+                                .add(ChangeRepeatPasswordEvent(
+                                    state: !stateRepeatPassword)),
+                            controller: repeatPasswordController,
+                            typeInput: CustomInputType.password,
                           ),
                         ),
-                        Container(
-                          margin: marginGlobal,
-                          child: CustomInput(
-                            model: CustomInputColorModel(
-                              label: "Repita la Contraseña",
-                              color: CustomInputColor.dark,
-                              validator: validationPassword,
-                              isObscure: stateRepeatPassword,
-                              tapIcon: () =>
-                                  BlocProvider.of<NewUserBloc>(context).add(
-                                      ChangeRepeatPasswordEvent(
-                                          state: !stateRepeatPassword)),
-                              controller: repeatPasswordController,
-                              typeInput: CustomInputType.password,
-                            ),
-                          ),
-                        ),
-                        loadingButton
-                            ? Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.symmetric(
-                                  vertical: size.height * 0.02,
-                                ),
-                                child: const CircularProgressIndicator(),
-                              )
-                            : Container(
-                                height: size.height * 0.085,
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.12,
-                                  vertical: size.height * 0.02,
-                                ),
-                                child: CustomButton(
-                                  model: CustomButtonModel(
-                                    label: "CREAR USUARIO",
-                                    color: CustomButtonColor.dark,
-                                    handledButton: () => handledRegisterUser(),
-                                  ),
+                      ),
+                      loadingButton
+                          ? Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.symmetric(
+                                vertical: size.height * 0.02,
+                              ),
+                              child: const CircularProgressIndicator(),
+                            )
+                          : Container(
+                              height: size.height * 0.085,
+                              margin: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.12,
+                                vertical: size.height * 0.02,
+                              ),
+                              child: CustomButton(
+                                model: CustomButtonModel(
+                                  label: "CREAR USUARIO",
+                                  color: CustomButtonColor.dark,
+                                  handledButton: () => handledRegisterUser(),
                                 ),
                               ),
-                      ],
-                    );
-                  },
-                )),
-          ),
-          bottomNavigationBar: CustomNavigationBar(
-            onTapPlus: () {},
-            model: CustomNavigationBarModel(),
-            onTapMessage: () => Navigator.of(context).pushNamed('/listChat'),
-            onTapPerson: () =>
-                Navigator.of(context).pushNamed('/userConfiguration'),
+                            ),
+                    ],
+                  );
+                },
+              ),
+            ),
           ),
         ),
       ),

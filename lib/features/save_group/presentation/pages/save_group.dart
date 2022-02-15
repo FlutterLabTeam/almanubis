@@ -10,7 +10,6 @@ import 'package:almanubis/core/util/generate_query.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:almanubis/core/util/snack_bar_message.dart';
 import 'package:almanubis/core/components/appbar/custom_appbar.dart';
-import 'package:almanubis/core/components/navigation/navigation_bar.dart';
 import 'package:almanubis/core/components/image_user_option/image_user_option.dart';
 import 'package:almanubis/core/components/input_edit_account/input_edit_account.dart';
 import 'package:almanubis/features/save_group/presentation/bloc/save_group_bloc.dart';
@@ -154,7 +153,7 @@ class SaveGroupStateView extends State<SaveGroup> {
                     ),
                   ),
                   Container(
-                    height: size.height * 0.35,
+                    height: size.height * 0.45,
                     alignment: Alignment.topLeft,
                     color: CompanyColor.color().primary,
                     child: SingleChildScrollView(
@@ -194,13 +193,6 @@ class SaveGroupStateView extends State<SaveGroup> {
                   ),
                 ],
               ),
-            ),
-            bottomNavigationBar: CustomNavigationBar(
-              onTapPlus: () {},
-              model: CustomNavigationBarModel(),
-              onTapMessage: () => Navigator.of(context).pushNamed('/listChat'),
-              onTapPerson: () =>
-                  Navigator.of(context).pushNamed('/userConfiguration'),
             ),
             floatingActionButton: BlocBuilder<GlobalBloc, GlobalState>(
               builder: (context, state) {

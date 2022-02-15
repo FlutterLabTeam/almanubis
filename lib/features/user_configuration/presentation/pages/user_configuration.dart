@@ -28,7 +28,8 @@ class _UserConfigurationState extends State<UserConfiguration> {
   static late bool loadingButton = false;
   static late GlobalKey<FormState> _formKey;
   static late TextEditingController nameController = TextEditingController();
-  static late TextEditingController descriptionController = TextEditingController();
+  static late TextEditingController descriptionController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -127,6 +128,9 @@ class _UserConfigurationState extends State<UserConfiguration> {
                   ),
                 ),
                 bottomNavigationBar: CustomNavigationBar(
+                  onTapMessage: () => Navigator.of(context)
+                      .pushReplacementNamed('/listChat',
+                          arguments: widget.userModel),
                   model: CustomNavigationBarModel(
                     color: CustomNavigationBarColors.black,
                   ),
@@ -147,8 +151,14 @@ class _UserConfigurationState extends State<UserConfiguration> {
     }
   }
 
-  handledTakeImage() =>
-      BlocProvider.of<GlobalBloc>(context).add(TakeImageEvent(imageQualityModel: ImageQualityModel()));
+  handledTakeImage() => BlocProvider.of<GlobalBloc>(context).add(
+        TakeImageEvent(
+          imageQualityModel: ImageQualityModel(
+            size: ImageSizeEnum.l,
+            imageQuality: 70
+          ),
+        ),
+      );
 
   saveImage() {
     if (_formKey.currentState!.validate()) {

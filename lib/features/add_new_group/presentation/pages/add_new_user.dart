@@ -112,9 +112,9 @@ class _AddNewUserState extends State<AddNewUser> {
         bottomNavigationBar: CustomNavigationBar(
           onTapPlus: () {},
           model: CustomNavigationBarModel(),
-          onTapMessage: () => Navigator.of(context).pushNamed('/listChat'),
+          onTapMessage: () => Navigator.of(context).pushReplacementNamed('/listChat'),
           onTapPerson: () =>
-              Navigator.of(context).pushNamed('/userConfiguration'),
+              Navigator.of(context).pushReplacementNamed('/userConfiguration'),
         ),
         floatingActionButton: CustomFloatingButton(
           model: CustomFloatingButtonModel(
