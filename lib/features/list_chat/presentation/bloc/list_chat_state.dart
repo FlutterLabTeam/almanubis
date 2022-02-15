@@ -4,8 +4,14 @@ abstract class ListChatState {}
 
 class ListChatInitial extends ListChatState {}
 
+class GetAllListChatStreamState extends ListChatState {
+  final Stream<QuerySnapshot> stream;
+
+  GetAllListChatStreamState({required this.stream});
+}
+
 class GetAllListChatState extends ListChatState {
-  final List<GroupModel> listChatModel;
+  final List<ChatModel> listChatModel;
 
   GetAllListChatState({required this.listChatModel});
 }

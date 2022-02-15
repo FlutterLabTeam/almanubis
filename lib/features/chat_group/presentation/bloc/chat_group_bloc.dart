@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:almanubis/features/chat_group/domain/use_cases/reading_chat.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:almanubis/core/model/chat_model.dart';
@@ -10,25 +11,28 @@ import 'package:almanubis/features/chat_group/domain/use_cases/save_video.dart';
 import 'package:almanubis/features/chat_group/domain/use_cases/get_chat_stream.dart';
 
 part 'chat_group_state.dart';
+
 part 'chat_group_event.dart';
 
 class ChatGroupBloc extends Bloc<ChatGroupEvent, ChatGroupState> {
   final GetChatStream getChatStream;
+  final ReadingChat readingChat;
   final CreateChat createChat;
   final SaveAudio saveAudio;
   final SaveVideo saveVideo;
 
   ChatGroupBloc({
     required this.saveAudio,
-    required this.createChat,
-    required this.getChatStream,
     required this.saveVideo,
+    required this.createChat,
+    required this.readingChat,
+    required this.getChatStream,
   }) : super(ChatGroupInitial());
 
   @override
   Stream<ChatGroupState> mapEventToState(
-      ChatGroupEvent event,
-      ) async* {
+    ChatGroupEvent event,
+  ) async* {
     if (event is GetChatStreamEvent) {
       yield GetChatGroupStreamLoadingState();
       final result = await getChatStream(event.idGroup);
@@ -68,6 +72,15 @@ class ChatGroupBloc extends Bloc<ChatGroupEvent, ChatGroupState> {
     if (event is InitBlocEvent) {
       yield GetChatGroupStreamLoadingState();
       yield ChatGroupInitial();
+    }
+    if (event is ReadingChatEvent) {
+      yield ReadingChatLoadingState();
+      final result = await readingChat(ReadingChatParams(listChatId: event.listIdChat, userId: event.userId));
+      yield* result.fold((failure) async* {
+        yield ReadingChatErrorState();
+      }, (bool state) async* {
+        yield ReadingChatState();
+      });
     }
   }
 }

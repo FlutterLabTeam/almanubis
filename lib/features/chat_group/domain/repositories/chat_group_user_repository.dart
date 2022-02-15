@@ -10,4 +10,5 @@ abstract class ChatGroupRepository {
   Future<Either<Failure, bool>> createChat({required ChatModel chatModel});
   Future<Either<Failure, String>> saveAudio({required File file});
   Future<Either<Failure, String>> saveVideo({required File file});
+  Future<Either<Failure, bool>> readingChat({required List<String> listIdChat,required String userId});
 }

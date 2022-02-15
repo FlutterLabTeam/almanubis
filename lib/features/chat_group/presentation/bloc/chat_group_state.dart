@@ -40,3 +40,7 @@ class SaveVideoState extends ChatGroupState {
 class SaveVideoLoadingState extends ChatGroupState {}
 
 class SaveVideoErrorState extends ChatGroupState {}
+
+class ReadingChatState extends ChatGroupState {}
+class ReadingChatLoadingState extends ChatGroupState {}
+class ReadingChatErrorState extends ChatGroupState {}

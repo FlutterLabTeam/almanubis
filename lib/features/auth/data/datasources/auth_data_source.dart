@@ -11,9 +11,9 @@ abstract class AuthDataSource {
 
   Future<UserModel> getUserDb(String uid);
   Future<CredentialsModel> validateUserLogged();
+  Future<bool> setDataUSer(UserModel userModel);
   Future<User> loginEmail(String email, String password);
   Future<bool> saveUserLogged(CredentialsModel credentialsModel);
-  Future<bool> setDataUSer(UserModel userModel);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {

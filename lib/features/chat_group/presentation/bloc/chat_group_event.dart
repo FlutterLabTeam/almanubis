@@ -36,3 +36,11 @@ class SaveVideoEvent implements ChatGroupEvent {
 }
 
 class InitBlocEvent implements ChatGroupEvent {}
+
+class ReadingChatEvent implements ChatGroupEvent {
+
+  final String userId;
+  final List<String> listIdChat;
+
+  ReadingChatEvent({required this.listIdChat, required this.userId});
+}

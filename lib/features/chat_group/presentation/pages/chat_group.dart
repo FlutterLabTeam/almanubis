@@ -214,7 +214,9 @@ class _ChatGroupState extends State<ChatGroup> {
                                           ),
                                           child: CustomChat(
                                             model: CustomChatModel(
-                                              color: chat.idUserCreate == widget.model.userModel!.uid!
+                                              color: chat.idUserCreate ==
+                                                      widget
+                                                          .model.userModel!.uid!
                                                   ? CustomChatColor.light
                                                   : CustomChatColor.dark,
                                               chatModel: chat,
@@ -290,9 +292,18 @@ class _ChatGroupState extends State<ChatGroup> {
   }
 
   handledMapData(QuerySnapshot data) {
-    listChats =
-        data.docs.map((e) => ChatModel.fromJson(e.data(), e.id)).toList();
+    listChats = data.docs.map((e) => ChatModel.fromJson(e.data(), e.id)).toList();
     listChats.sort((a, b) => b.dateCreate.compareTo(a.dateCreate));
+    List<ChatModel> listChatsFilter = listChats.where((element) => element.listUserReceiver.contains(widget.model.userModel!.uid!)).toList();
+    List<String> listChatId = listChatsFilter.map((e) => e.id!).toList();
+    if (listChatId.isNotEmpty) {
+      BlocProvider.of<ChatGroupBloc>(context).add(
+        ReadingChatEvent(
+          listIdChat: listChatId,
+          userId: widget.model.userModel!.uid!,
+        ),
+      );
+    }
   }
 
   handledSaveMessage() {

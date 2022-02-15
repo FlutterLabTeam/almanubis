@@ -12,6 +12,7 @@ abstract class ChatGroupDataSource {
   Future<String> saveVideo({required File file});
   Future<bool> createChat({required ChatModel chatModel});
   Future<Stream<QuerySnapshot>> getStreamChat({required String idGroup});
+  Future<bool> readingChat({required List<String> listIdChat, required String userId});
 }
 
 class ChatGroupDataSourceImpl implements ChatGroupDataSource {
@@ -68,6 +69,22 @@ class ChatGroupDataSourceImpl implements ChatGroupDataSource {
       TaskSnapshot saveAudio = await storageReference.child(name).putFile(File(newPath));
       String url =  await saveAudio.ref.getDownloadURL();
       return url;
+    } catch (e) {
+      throw CreateChatException();
+    }
+  }
+
+  @override
+  Future<bool> readingChat({required List<String> listIdChat, required String userId}) async {
+    try {
+      final batch = firestore.batch();
+      listIdChat.forEach((element) {
+        DocumentReference documentReference = firestore.collection("chats").doc(element);
+        batch.update(documentReference, {"listUserReceiver": FieldValue.arrayRemove([userId])});
+        batch.update(documentReference, {"listUserViewed": FieldValue.arrayUnion([userId])});
+      });
+        await batch.commit();
+        return true;
     } catch (e) {
       throw CreateChatException();
     }

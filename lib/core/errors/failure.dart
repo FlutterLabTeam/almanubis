@@ -10,6 +10,8 @@ class LoginEmailFailure extends Failure {}
 
 class ValidateUserLoggedFailure extends Failure {}
 
+class GetListChatSnapShotFailure extends Failure {}
+
 class SaveCredentialsFailure extends Failure {}
 
 class GetStreamChatFailure extends Failure {}

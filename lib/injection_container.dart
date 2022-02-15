@@ -22,6 +22,7 @@ import 'package:almanubis/features/chat_group/data/repositories/chat_group_user_
 import 'package:almanubis/features/chat_group/domain/repositories/chat_group_user_repository.dart';
 import 'package:almanubis/features/chat_group/domain/use_cases/create_chat.dart';
 import 'package:almanubis/features/chat_group/domain/use_cases/get_chat_stream.dart';
+import 'package:almanubis/features/chat_group/domain/use_cases/reading_chat.dart';
 import 'package:almanubis/features/chat_group/domain/use_cases/save_audio.dart';
 import 'package:almanubis/features/chat_group/domain/use_cases/save_video.dart';
 import 'package:almanubis/features/chat_group/presentation/bloc/chat_group_bloc.dart';
@@ -36,6 +37,7 @@ import 'package:almanubis/features/list_chat/data/data_sources/list_chat_data_so
 import 'package:almanubis/features/list_chat/data/repositories/list_chat_repository_impl.dart';
 import 'package:almanubis/features/list_chat/domain/repositories/list_chat_repository.dart';
 import 'package:almanubis/features/list_chat/domain/use_cases/get_list_chat_data.dart';
+import 'package:almanubis/features/list_chat/domain/use_cases/get_list_chat_snapshot.dart';
 import 'package:almanubis/features/list_chat/presentation/bloc/list_chat_bloc.dart';
 import 'package:almanubis/features/new_group/data/data_sources/new_group_data_source.dart';
 import 'package:almanubis/features/new_group/data/repositories/new_group_repository_impl.dart';
@@ -90,42 +92,44 @@ init() async {
         registerUserDb: sl(),
       ));
   sl.registerFactory(() => NewGroupBloc(
-    getAllUser: sl(),
-    searchUser: sl(),
-  ));
+        getAllUser: sl(),
+        searchUser: sl(),
+      ));
   sl.registerFactory(() => AddNewUserBloc(
-    getAllUserAdd: sl(),
-    searchUserAdd: sl(),
-    addNewUserUseCase: sl(),
-  ));
+        getAllUserAdd: sl(),
+        searchUserAdd: sl(),
+        addNewUserUseCase: sl(),
+      ));
   sl.registerFactory(() => GlobalBloc(
-    takePhoto: sl(),
-    saveImage: sl(),
-    takeVideo: sl(),
-    takeImage: sl(),
-    updateImage: sl(),
-    downloadAssets: sl(),
-  ));
+        takePhoto: sl(),
+        saveImage: sl(),
+        takeVideo: sl(),
+        takeImage: sl(),
+        updateImage: sl(),
+        downloadAssets: sl(),
+      ));
   sl.registerFactory(() => SaveGroupBloc(
-    saveNewGroup: sl(),
-  ));
+        saveNewGroup: sl(),
+      ));
   sl.registerFactory(() => UserConfigurationBloc(
-    updateUser: sl()
-  ));
+        updateUser: sl(),
+      ));
   sl.registerFactory(() => ListChatBloc(
-    getListChat: sl()
-  ));
+        getListChat: sl(),
+        getListChatSnapShot: sl(),
+      ));
   sl.registerFactory(() => ChatGroupBloc(
-    saveVideo: sl(),
-    saveAudio: sl(),
-    createChat: sl(),
-    getChatStream: sl(),
-  ));
+        saveVideo: sl(),
+        saveAudio: sl(),
+        createChat: sl(),
+        readingChat: sl(),
+        getChatStream: sl(),
+      ));
   sl.registerFactory(() => InformationPanelBloc(
-    activeNotification: sl(),
-    disableNotification: sl(),
-    deleteUser: sl(),
-  ));
+        activeNotification: sl(),
+        disableNotification: sl(),
+        deleteUser: sl(),
+      ));
 
 // Use cases
   sl.registerLazySingleton(() => LoginEmail(authRepository: sl()));
@@ -145,6 +149,7 @@ init() async {
   sl.registerLazySingleton(() => GetListChat(listChatRepository: sl()));
   sl.registerLazySingleton(() => DownloadAssets(globalRepository: sl()));
   sl.registerLazySingleton(() => RegisterEmail(newUserRepository: sl()));
+  sl.registerLazySingleton(() => ReadingChat(chatGroupRepository: sl()));
   sl.registerLazySingleton(() => SaveNewGroup(saveGroupRepository: sl()));
   sl.registerLazySingleton(() => RegisterUserDb(newUserRepository: sl()));
   sl.registerLazySingleton(() => ValidateUserLogged(authRepository: sl()));
@@ -152,6 +157,7 @@ init() async {
   sl.registerLazySingleton(() => GetAllUserAdd(addNewUserRepository: sl()));
   sl.registerLazySingleton(() => SearchUserAdd(addNewUserRepository: sl()));
   sl.registerLazySingleton(() => DeleteUser(informationPanelRepository: sl()));
+  sl.registerLazySingleton(() => GetListChatSnapShot(listChatRepository: sl()));
   sl.registerLazySingleton(() => AddNewUserUseCase(addNewUserRepository: sl()));
   sl.registerLazySingleton(() => UpdateUser(userConfigurationRepository: sl()));
   sl.registerLazySingleton(() => ActiveNotification(informationPanelRepository: sl()));

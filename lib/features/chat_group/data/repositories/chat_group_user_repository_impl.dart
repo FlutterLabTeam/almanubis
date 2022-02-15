@@ -14,9 +14,11 @@ class ChatGroupRepositoryImpl implements ChatGroupRepository {
   ChatGroupRepositoryImpl({required this.chatGroupDataSource});
 
   @override
-  Future<Either<Failure, Stream<QuerySnapshot<Object?>>>> getStreamChat({required String idGroup}) async {
+  Future<Either<Failure, Stream<QuerySnapshot<Object?>>>> getStreamChat(
+      {required String idGroup}) async {
     try {
-      final response = await chatGroupDataSource.getStreamChat(idGroup: idGroup);
+      final response =
+          await chatGroupDataSource.getStreamChat(idGroup: idGroup);
       return Right(response);
     } on GetStreamChatException {
       return Left(RegisterUserDbFailure());
@@ -24,22 +26,21 @@ class ChatGroupRepositoryImpl implements ChatGroupRepository {
   }
 
   @override
-  Future<Either<Failure, bool>>  createChat({required ChatModel chatModel}) async {
+  Future<Either<Failure, bool>> createChat(
+      {required ChatModel chatModel}) async {
     try {
-      final response = await chatGroupDataSource.createChat(chatModel: chatModel);
+      final response =
+          await chatGroupDataSource.createChat(chatModel: chatModel);
       return Right(response);
     } on CreateChatException {
       return Left(RegisterUserDbFailure());
     }
   }
 
-
   @override
   Future<Either<Failure, String>> saveAudio({required File file}) async {
     try {
-      final response = await chatGroupDataSource.setAudio(
-        file: file
-      );
+      final response = await chatGroupDataSource.setAudio(file: file);
       return Right(response);
     } on RegisterEmailException {
       return Left(RegisterEmailFailure());
@@ -49,8 +50,20 @@ class ChatGroupRepositoryImpl implements ChatGroupRepository {
   @override
   Future<Either<Failure, String>> saveVideo({required File file}) async {
     try {
-      final response = await chatGroupDataSource.saveVideo(
-        file: file
+      final response = await chatGroupDataSource.saveVideo(file: file);
+      return Right(response);
+    } on RegisterEmailException {
+      return Left(RegisterEmailFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> readingChat(
+      {required List<String> listIdChat, required String userId}) async {
+    try {
+      final response = await chatGroupDataSource.readingChat(
+        listIdChat: listIdChat,
+        userId: userId,
       );
       return Right(response);
     } on RegisterEmailException {
