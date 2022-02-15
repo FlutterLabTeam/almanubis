@@ -81,7 +81,7 @@ class CardChatHome extends StatelessWidget {
                       style: CompanyFontStyle.style().textCartDarkStyle,
                     ),
                     const SizedBox(height: 5),
-                    Container(
+                    model.counter > 0 ?  Container(
                       height: 25,
                       width: 25,
                       alignment: Alignment.center,
@@ -93,7 +93,7 @@ class CardChatHome extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                    ),
+                    ) : Container(),
                   ],
                 ),
               )
