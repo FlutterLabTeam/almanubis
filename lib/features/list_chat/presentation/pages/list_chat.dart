@@ -1,4 +1,5 @@
 import 'package:almanubis/core/model/chat_model.dart';
+import 'package:almanubis/core/util/firebaseNotificationHandler.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/constant.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,11 +28,12 @@ class _ListChatState extends State<ListChat> {
   static late Stream<QuerySnapshot> streamData;
   static late List<GroupModel> listChat = [];
   static late List<ChatModel> listMessageChat = [];
+  FirebaseNotifications firebaseNotifications = FirebaseNotifications();
 
   @override
   void initState() {
-    BlocProvider.of<ListChatBloc>(context)
-        .add(GetAllListChatEvent(userId: widget.userModel.uid!));
+    firebaseNotifications.setUpFirebase(context: context, userModel: widget.userModel);
+    BlocProvider.of<ListChatBloc>(context).add(GetAllListChatEvent(userId: widget.userModel.uid!));
     super.initState();
   }
 

@@ -1,5 +1,5 @@
-import 'core/bloc/global_bloc.dart';
 import 'injection_container.dart';
+import 'core/bloc/global_bloc.dart';
 import 'package:almanubis/routes.dart';
 import 'package:flutter/material.dart';
 import 'injection_container.dart' as di;

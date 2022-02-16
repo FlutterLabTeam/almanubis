@@ -1,10 +1,9 @@
 import 'dart:io';
-import 'package:almanubis/core/util/notificationHandler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:almanubis/core/model/user_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:almanubis/core/util/notificationHandler.dart';
 import 'package:almanubis/features/auth/presentation/bloc/auth_bloc.dart';
 
 class FirebaseNotifications {
@@ -26,8 +25,10 @@ class FirebaseNotifications {
     required UserModel userModel,
   }) async {
     _messaging.getToken().then((token) {
-      userModel.token = token;
-      BlocProvider.of<AuthBloc>(context).add(SetDataUserEvent(userModel: userModel));
+      if(userModel.token != token){
+        userModel.token = token;
+        BlocProvider.of<AuthBloc>(context).add(SetDataUserEvent(userModel: userModel));
+      }
     });
     _messaging
         .subscribeToTopic('edmtdev_demo')
@@ -77,8 +78,6 @@ Future<void> handledGoDailyReport({
   required BuildContext context,
   required UserModel userModel,
 }) async {
-  late FirebaseFirestore firebaseFirestore;
-  firebaseFirestore = FirebaseFirestore.instance;
   try {
 
   } catch (e) {

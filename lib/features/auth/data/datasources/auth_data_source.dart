@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:almanubis/core/model/group_model.dart';
 import 'package:almanubis/features/auth/data/models/credentials_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,11 +9,14 @@ import 'package:almanubis/core/errors/exceptions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AuthDataSource {
-
   Future<UserModel> getUserDb(String uid);
+
   Future<CredentialsModel> validateUserLogged();
+
   Future<bool> setDataUSer(UserModel userModel);
+
   Future<User> loginEmail(String email, String password);
+
   Future<bool> saveUserLogged(CredentialsModel credentialsModel);
 }
 
@@ -81,8 +85,25 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<bool> setDataUSer(UserModel userModel) async {
     try {
+      QuerySnapshot dataGroupQuery = await firestore.collection("groups").where("listUserId", arrayContains: userModel.uid!).get();
+      List<GroupModel> dataGroup = dataGroupQuery.docs.map((e) => GroupModel.fromJson(e.data(), e.id)).toList();
+
+      final batch = firestore.batch();
+
+      for (var element in dataGroup) {
+        element.listUser.map((e) {
+          if (e.uid == userModel.uid) {
+            e.token = userModel.token;
+          }
+          return e;
+        }).toList();
+
+        DocumentReference documentReference = firestore.collection("groups").doc(element.id!);
+        batch.update(documentReference, element.toJson());
+      }
       DocumentReference documentReference = firestore.collection("users").doc(userModel.uid);
-      await documentReference.update(userModel.toJson());
+      batch.update(documentReference, userModel.toJson());
+      await batch.commit();
       return true;
     } on Exception {
       throw SaveCredentialsException();
