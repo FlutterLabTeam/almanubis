@@ -10,6 +10,7 @@ class CardChatHomeModel {
   final String imageUrl;
   final DateTime dateTime;
   final String description;
+  final Function handledCart;
 
   CardChatHomeModel({
     required this.title,
@@ -17,6 +18,7 @@ class CardChatHomeModel {
     required this.dateTime,
     required this.imageUrl,
     required this.description,
+    required this.handledCart,
   });
 }
 
@@ -30,68 +32,73 @@ class CardChatHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 0,
-              child: SquareImage(
-                model: SquareImageModel(urlImage: "", size: 60),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      model.title,
-                      style: CompanyFontStyle.style().titleStyle,
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      model.description,
-                      style: CompanyFontStyle.style().textCartDarkStyle,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+    return GestureDetector(
+      onTap: ()=> model.handledCart(),
+      child: SizedBox(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 0,
+                child: SquareImage(
+                  model: SquareImageModel(urlImage: model.imageUrl, size: 60),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    dateFormatHour(model.dateTime),
-                    style: CompanyFontStyle.style().textCartDarkStyle,
+              Expanded(
+                flex: 1,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        model.title,
+                        style: CompanyFontStyle.style().titleStyleDark,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        model.description,
+                        style: CompanyFontStyle.style().textCartDarkStyle,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 5),
-                  Container(
-                    height: 25,
-                    width: 25,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(3),
-                    decoration: BoxDecoration(color: CompanyColor.color().second),
-                    child: Text(
-                      model.counter.toString(),
-                      style: CompanyFontStyle.style().labelCounterStyle,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
+                ),
               ),
-            )
-          ],
+              Expanded(
+                flex: 0,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      dateFormatHour(model.dateTime),
+                      style: CompanyFontStyle.style().textCartDarkStyle,
+                    ),
+                    const SizedBox(height: 5),
+                    model.counter > 0 ?  Container(
+                      height: 25,
+                      width: 25,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(3),
+                      decoration: BoxDecoration(color: CompanyColor.color().second),
+                      child: Text(
+                        model.counter.toString(),
+                        style: CompanyFontStyle.style().labelCounterStyle,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ) : Container(),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

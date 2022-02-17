@@ -91,7 +91,7 @@ class CustomBody extends StatelessWidget {
   Color _getColor(ColorCustomBody color) {
     switch (color) {
       case ColorCustomBody.light:
-        return CompanyColor.color().second;
+        return CompanyColor.color().third;
       case ColorCustomBody.dark:
         return CompanyColor.color().primary;
     }

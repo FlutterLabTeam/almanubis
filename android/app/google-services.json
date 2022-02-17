@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "543109530011",
+    "project_id": "almanubis-7deea",
+    "storage_bucket": "almanubis-7deea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543109530011:android:4a98ed6531a7ad8b1ae13e",
+        "android_client_info": {
+          "package_name": "com.example.almanubis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "543109530011-bdecan31pbmoq8uadsbt3buakhqg83n8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.almanubis",
+            "certificate_hash": "53ea16e9b9aaf2efe3ef6d6da6edb42fbebf4dd2"
+          }
+        },
+        {
+          "client_id": "543109530011-ltku4pgunb4e95tvo20ip8apl6gkd9ej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCymmlxuGYFKHFEvkRk-ZYBUlgP2iuQHpU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "543109530011-ltku4pgunb4e95tvo20ip8apl6gkd9ej.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
