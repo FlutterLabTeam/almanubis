@@ -1,4 +1,8 @@
+import 'package:almanubis/core/util/company_colors.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class SquareImageModel {
   final String urlImage;
@@ -20,12 +24,30 @@ class SquareImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: CompanyColor.color().primary,
+          width: 1
+        )
+      ),
       height: model.size,
       width: model.size,
-      child: Image.network(
-        "https://fotografias.lasexta.com/clipping/cmsimages01/2021/06/02/45663211-B024-4F6F-A4C7-4859DA27CE25/97.jpg",
-        fit: BoxFit.cover,
+      child: CachedNetworkImage(
+        placeholder: (context, url) => Shimmer.fromColors(
+          baseColor: CompanyColor.color().primary,
+          highlightColor: CompanyColor.color().second,
+          child: const Icon(Icons.group, size: 50,),
+        ),
+        imageUrl: model.urlImage,
+        imageBuilder: (context, imageProvider) => Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: imageProvider,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
       ),
     );
   }

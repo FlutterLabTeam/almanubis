@@ -44,10 +44,12 @@ class CustomAppBar extends StatelessWidget {
             flex: 1,
             child: model.disableGoBack!
                 ? Container()
-                : Icon(
-                    Icons.arrow_back_ios,
-                    color: CompanyColor.color().primary,
-                  ),
+                : IconButton(
+                    onPressed: () => model.handledGoBack(),
+                    icon: Icon(
+                      Icons.arrow_back_ios,
+                      color: CompanyColor.color().primary,
+                    )),
           ),
           Expanded(
               flex: 3,

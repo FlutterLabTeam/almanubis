@@ -14,13 +14,17 @@ class CustomInputColorModel {
   final CustomInputColor color;
   final String label;
   final bool isObscure;
+  final Function(dynamic)? validator;
+  final Function? tapIcon;
 
   CustomInputColorModel({
     this.typeInput = CustomInputType.string,
     this.color = CustomInputColor.light,
-    this.controller,
     this.isObscure = false,
     this.label = "",
+    this.controller,
+    this.tapIcon,
+    this.validator,
   });
 }
 
@@ -37,6 +41,7 @@ class CustomInput extends StatelessWidget {
     final borderSide = BorderSide(color: _getColor(model.color), width: 2);
     return TextFormField(
       autofocus: false,
+      controller: model.controller,
       obscureText: model.isObscure,
       style: TextStyle(
         fontSize: 17.0,
@@ -45,19 +50,20 @@ class CustomInput extends StatelessWidget {
       ),
       cursorColor: _getColor(model.color),
       keyboardType: _getTypeInput(model.typeInput),
+      validator: (e) => model.validator != null ? model.validator!(e) : null,
       decoration: InputDecoration(
         suffixIcon:
             _getTypeInput(model.typeInput) == TextInputType.visiblePassword
                 ? model.isObscure
                     ? IconButton(
-                        onPressed: () {},
+                        onPressed: () => model.tapIcon!(),
                         icon: Icon(
                           Icons.remove_red_eye,
                           color: _getColor(model.color),
                         ),
                       )
                     : IconButton(
-                        onPressed: () {},
+                        onPressed: () => model.tapIcon!(),
                         icon: Icon(
                           Icons.visibility_off,
                           color: _getColor(model.color),

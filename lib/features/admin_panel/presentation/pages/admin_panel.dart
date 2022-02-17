@@ -1,10 +1,15 @@
+import 'package:almanubis/core/model/user_model.dart';
+import 'package:almanubis/core/util/firebaseNotificationHandler.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/components/button/custom_button.dart';
 import 'package:almanubis/core/components/navigation/navigation_bar.dart';
 import 'package:almanubis/features/admin_panel/presentation/widgets/body_admin.dart';
 
 class AdminPanel extends StatefulWidget {
-  const AdminPanel({Key? key}) : super(key: key);
+
+  final UserModel userModel;
+
+  const AdminPanel({Key? key, required this.userModel}) : super(key: key);
 
   @override
   _AdminPanelState createState() => _AdminPanelState();
@@ -12,6 +17,13 @@ class AdminPanel extends StatefulWidget {
 
 class _AdminPanelState extends State<AdminPanel> {
   static late Size size;
+  FirebaseNotifications firebaseNotifications = FirebaseNotifications();
+
+  @override
+  void initState() {
+    super.initState();
+    firebaseNotifications.setUpFirebase(context: context, userModel: widget.userModel);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +39,8 @@ class _AdminPanelState extends State<AdminPanel> {
                 margin: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                 child: CustomButton(
                   model: CustomButtonModel(
-                      handledButton: () => Navigator.of(context).pushNamed('/listChat'),
+                      handledButton: () =>
+                          Navigator.of(context).pushNamed('/newGroup'),
                       color: CustomButtonColor.dark,
                       label: "CREAR GRUPO"),
                 ),
@@ -47,6 +60,8 @@ class _AdminPanelState extends State<AdminPanel> {
       ),
       bottomNavigationBar: CustomNavigationBar(
         onTapPlus: () {},
+        onTapMessage: () => Navigator.of(context).pushNamed('/listChat', arguments: widget.userModel),
+        onTapPerson: () => Navigator.of(context).pushNamed('/userConfiguration', arguments: widget.userModel),
         model: CustomNavigationBarModel(
           color: CustomNavigationBarColors.black,
         ),
