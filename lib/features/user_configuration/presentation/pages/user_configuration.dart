@@ -52,8 +52,7 @@ class _UserConfigurationState extends State<UserConfiguration> {
           path = "";
           isPath = false;
           snackBarMessage(context,
-              message: "La operación se realizó con éxito");
-          Navigator.pop(context);
+              message: "Todos los datos fueron guardados exitosamente");
         }
       },
       child: BlocBuilder<UserConfigurationBloc, UserConfigurationState>(
@@ -123,7 +122,7 @@ class _UserConfigurationState extends State<UserConfiguration> {
                   model: CustomFloatingButtonModel(
                     icon: Icons.arrow_forward,
                     loadingButton: loadingButton,
-                    handledIcon: () => saveImage(),
+                    handledIcon: () => path.isNotEmpty ? saveImage() : updateUser(widget.userModel.image!),
                   ),
                 ),
               );

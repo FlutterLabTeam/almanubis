@@ -1,3 +1,4 @@
+import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:almanubis/core/util/company_fonts.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +89,7 @@ class AudioInputOption extends StatelessWidget {
                       horizontal: size.width * 0.045,
                       vertical: size.width * 0.04,
                     ),
-                    child: const CircularProgressIndicator(),
+                    child: const CustomCircularProgressIndicator(),
                   ),
           ),
         ),

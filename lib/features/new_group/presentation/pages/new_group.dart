@@ -107,8 +107,7 @@ class _NewGroupState extends State<NewGroup> {
         floatingActionButton: CustomFloatingButton(
           model: CustomFloatingButtonModel(
             icon: Icons.arrow_forward,
-            handledIcon: () => Navigator.of(context)
-                .pushNamed('/saveGroup', arguments: listUserData),
+            handledIcon: () => Navigator.of(context).pushNamed('/saveGroup', arguments: listUserData),
           ),
         ),
       ),

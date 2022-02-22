@@ -1,3 +1,4 @@
+import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 import 'package:almanubis/features/chat_group/data/models/element_to_download.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/util/company_colors.dart';
@@ -108,7 +109,7 @@ class TextInputOption extends StatelessWidget {
                       horizontal: size.width * 0.045,
                       vertical: size.width * 0.04,
                     ),
-                    child: const CircularProgressIndicator(),
+                    child: const CustomCircularProgressIndicator(),
                   ),
           ),
         ),

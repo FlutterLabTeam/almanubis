@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 import 'package:almanubis/core/components/panel_widget/panel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -241,7 +242,7 @@ class _ChatGroupState extends State<ChatGroup> {
                                     );
                             },
                           )
-                        : const Center(child: CircularProgressIndicator()),
+                        : const Center(child: CustomCircularProgressIndicator()),
                   ),
                   BlocBuilder<GlobalBloc, GlobalState>(
                       builder: (context, state) {

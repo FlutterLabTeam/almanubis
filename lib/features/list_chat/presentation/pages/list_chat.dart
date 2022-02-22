@@ -1,3 +1,4 @@
+import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/constant.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -123,7 +124,7 @@ class _ListChatState extends State<ListChat> {
                             },
                           )
                         : const Center(
-                            child: CircularProgressIndicator(),
+                            child: CustomCircularProgressIndicator(),
                           ),
                   ),
                 )

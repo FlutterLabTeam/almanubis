@@ -1,3 +1,4 @@
+import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 import 'package:almanubis/core/util/snack_bar_message.dart';
 import 'package:almanubis/features/new_user/presentation/bloc/new_user_bloc.dart';
 import 'package:almanubis/core/components/button/custom_button.dart';
@@ -177,7 +178,7 @@ class _NewUserState extends State<NewUser> {
                               margin: EdgeInsets.symmetric(
                                 vertical: size.height * 0.02,
                               ),
-                              child: const CircularProgressIndicator(),
+                              child: const CustomCircularProgressIndicator(),
                             )
                           : Container(
                               height: size.height * 0.085,
