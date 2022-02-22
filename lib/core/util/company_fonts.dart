@@ -77,9 +77,10 @@ class CompanyFontStyle {
           color: CompanyColor.color().third,
           fontWeight: FontWeight.w400),
       buttonStyle: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
-          color: CompanyColor.color().primary),
+        fontSize: 20,
+        fontWeight: FontWeight.w500,
+        color: CompanyColor.color().primary,
+      ),
       titleAppLight: TextStyle(
           fontSize: 40,
           letterSpacing: 10,

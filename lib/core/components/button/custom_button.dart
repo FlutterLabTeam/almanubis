@@ -1,6 +1,6 @@
-import 'package:almanubis/core/util/company_colors.dart';
-import 'package:almanubis/core/util/company_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:almanubis/core/util/company_fonts.dart';
+import 'package:almanubis/core/util/company_colors.dart';
 
 enum CustomButtonColor {
   light,
@@ -29,24 +29,19 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => model.handledButton(),
-      child: Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: _getColor(model.color),
-          boxShadow: [
-            BoxShadow(
-                color: CompanyColor.color().second70,
-                spreadRadius: 3,
-                blurRadius: 3,
-                offset: const Offset(0, 2))
-          ],
-        ),
-        child: Text(
-          model.label,
-          style: CompanyFontStyle.style().buttonStyle,
-        ),
+    return Material(
+      elevation: 10,
+      shadowColor: CompanyColor.color().second70,
+      color: _getColor(model.color),
+      child: InkWell(
+        onTap: () => model.handledButton(),
+        child: Container(
+          alignment: Alignment.center,
+          child: Text(
+            model.label,
+            style: CompanyFontStyle.style().buttonStyle,
+          ),
+        )
       ),
     );
   }
