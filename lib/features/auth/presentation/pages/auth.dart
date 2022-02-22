@@ -1,15 +1,14 @@
-import 'package:almanubis/core/components/button/custom_button.dart';
-import 'package:almanubis/core/components/image/custom_image.dart';
-import 'package:almanubis/core/components/input/custom_input.dart';
-import 'package:almanubis/core/components/body/custom_body.dart';
-import 'package:almanubis/core/constant.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:almanubis/core/util/company_fonts.dart';
 import 'package:almanubis/core/util/snack_bar_message.dart';
+import 'package:almanubis/core/components/body/custom_body.dart';
+import 'package:almanubis/core/components/image/custom_image.dart';
+import 'package:almanubis/core/components/input/custom_input.dart';
+import 'package:almanubis/core/components/button/custom_button.dart';
 import 'package:almanubis/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -171,11 +170,6 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   handledGoHome(UserModel userModel) {
-    /*firebaseNotifications.setUpFirebase(context: context, userModel: widget.myUserModel);*/
-    if (userModel.rol == adminConstant) {
-      Navigator.pushReplacementNamed(context, "/adminPanel", arguments: userModel);
-    } else {
-      Navigator.pushReplacementNamed(context, "/listChat", arguments: userModel);
-    }
+      Navigator.pushReplacementNamed(context, "/home", arguments: userModel);
   }
 }

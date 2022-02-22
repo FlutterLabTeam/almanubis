@@ -1,11 +1,10 @@
-import 'package:almanubis/core/data/model/image_quality_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/core/bloc/global_bloc.dart';
 import 'package:almanubis/core/util/snack_bar_message.dart';
 import 'package:almanubis/core/components/body/custom_body.dart';
-import 'package:almanubis/core/components/navigation/navigation_bar.dart';
+import 'package:almanubis/core/data/model/image_quality_model.dart';
 import 'package:almanubis/core/components/input_edit_account/input_edit_account.dart';
 import 'package:almanubis/features/user_configuration/presentation/widgets/image_user.dart';
 import 'package:almanubis/core/components/custom_floating_button/custom_floating_button.dart';
@@ -127,14 +126,6 @@ class _UserConfigurationState extends State<UserConfiguration> {
                     handledIcon: () => saveImage(),
                   ),
                 ),
-                bottomNavigationBar: CustomNavigationBar(
-                  onTapMessage: () => Navigator.of(context)
-                      .pushReplacementNamed('/listChat',
-                          arguments: widget.userModel),
-                  model: CustomNavigationBarModel(
-                    color: CustomNavigationBarColors.black,
-                  ),
-                ),
               );
             },
           );
@@ -153,10 +144,8 @@ class _UserConfigurationState extends State<UserConfiguration> {
 
   handledTakeImage() => BlocProvider.of<GlobalBloc>(context).add(
         TakeImageEvent(
-          imageQualityModel: ImageQualityModel(
-            size: ImageSizeEnum.l,
-            imageQuality: 70
-          ),
+          imageQualityModel:
+              ImageQualityModel(size: ImageSizeEnum.l, imageQuality: 70),
         ),
       );
 

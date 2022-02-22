@@ -52,9 +52,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         yield* resultDb.fold((failure) async* {
           yield GetUserDataErrorState();
         }, (UserModel userModel) async* {
-
-
-
           final saveCredential = await saveUserLogged(CredentialsModel(
             email: event.email,
             password: event.password,
@@ -62,7 +59,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           yield* saveCredential.fold((error) async* {
             yield SaveCredentialErrorState();
           }, (bool okSaveCredential) async* {
-          yield GetUserDataLoadedState(userModel: userModel);
+            yield GetUserDataLoadedState(userModel: userModel);
           });
         });
       });

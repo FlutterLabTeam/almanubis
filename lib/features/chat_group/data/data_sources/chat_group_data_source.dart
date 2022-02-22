@@ -36,6 +36,7 @@ class ChatGroupDataSourceImpl implements ChatGroupDataSource {
   Future<bool> createChat({required ChatModel chatModel}) async {
     try {
        await firestore.collection("chats").add(chatModel.toJson());
+       await firestore.collection("groups").doc(chatModel.idGroup).update({"dateUpdate": DateTime.now()});
       return true;
     } catch (e) {
       throw CreateChatException();

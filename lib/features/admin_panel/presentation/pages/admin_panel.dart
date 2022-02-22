@@ -2,7 +2,6 @@ import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/core/util/firebaseNotificationHandler.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/components/button/custom_button.dart';
-import 'package:almanubis/core/components/navigation/navigation_bar.dart';
 import 'package:almanubis/features/admin_panel/presentation/widgets/body_admin.dart';
 
 class AdminPanel extends StatefulWidget {
@@ -57,14 +56,6 @@ class _AdminPanelState extends State<AdminPanel> {
                 ),
               )
             ]),
-      ),
-      bottomNavigationBar: CustomNavigationBar(
-        onTapPlus: () {},
-        onTapMessage: () => Navigator.of(context).pushNamed('/listChat', arguments: widget.userModel),
-        onTapPerson: () => Navigator.of(context).pushNamed('/userConfiguration', arguments: widget.userModel),
-        model: CustomNavigationBarModel(
-          color: CustomNavigationBarColors.black,
-        ),
       ),
     );
   }
