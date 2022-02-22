@@ -1,13 +1,13 @@
-import 'package:almanubis/core/model/chat_model.dart';
-import 'package:almanubis/core/util/firebaseNotificationHandler.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/constant.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:almanubis/core/model/user_model.dart';
+import 'package:almanubis/core/model/chat_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:almanubis/core/model/group_model.dart';
 import 'package:almanubis/core/components/image/custom_image.dart';
 import 'package:almanubis/core/components/appbar/custom_appbar.dart';
+import 'package:almanubis/core/util/firebaseNotificationHandler.dart';
 import 'package:almanubis/core/components/navigation/navigation_bar.dart';
 import 'package:almanubis/core/components/cart_chat_home/card_chat_home.dart';
 import 'package:almanubis/features/chat_group/presentation/pages/chat_group.dart';
@@ -82,47 +82,47 @@ class _ListChatState extends State<ListChat> {
                   handledGoBack: () {},
                 ),
               ),
-              SizedBox(
-                height: size.height * 0.7115,
-                child: isStreamNotEmpty
-                    ? StreamBuilder(
-                        stream: streamData,
-                        builder:
-                            (context, AsyncSnapshot<QuerySnapshot> snapShot) {
-                          if (snapShot.hasData) {
-                            listChat = snapShot.data!.docs
-                                .map((e) => GroupModel.fromJson(e.data(), e.id))
-                                .toList();
-                          }
-                          return ListView.builder(
-                            itemCount: listChat.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              GroupModel group = listChat[index];
-                              int counter = handledCalculateMessage(group);
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: CardChatHome(
-                                  model: CardChatHomeModel(
-                                      title: group.title,
-                                      dateTime: dateTime,
-                                      description: group.description,
-                                      counter: counter,
-                                      imageUrl: group.image.isEmpty
-                                          ? noImage
-                                          : group.image,
-                                      handledCart: () =>
-                                          handledPushChat(group)),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      )
-                    : const Center(
-                        child: CircularProgressIndicator(),
-                      ),
+              Expanded(
+                child: SizedBox(
+                  child: isStreamNotEmpty
+                      ? StreamBuilder(
+                          stream: streamData,
+                          builder:
+                              (context, AsyncSnapshot<QuerySnapshot> snapShot) {
+                            if (snapShot.hasData) {
+                              listChat = snapShot.data!.docs
+                                  .map((e) => GroupModel.fromJson(e.data(), e.id))
+                                  .toList();
+                            }
+                            return ListView.builder(
+                              itemCount: listChat.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                GroupModel group = listChat[index];
+                                int counter = handledCalculateMessage(group);
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                  child: CardChatHome(
+                                    model: CardChatHomeModel(
+                                        title: group.title,
+                                        dateTime: dateTime,
+                                        description: group.description,
+                                        counter: counter,
+                                        imageUrl: group.image.isEmpty
+                                            ? noImage
+                                            : group.image,
+                                        handledCart: () =>
+                                            handledPushChat(group)),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        )
+                      : const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                ),
               )
             ],
           ),

@@ -16,6 +16,7 @@ class CompanyFontStyle {
   final TextStyle textCartDarkStyle;
   final TextStyle labelCounterStyle;
   final TextStyle textCartWhiteStyle;
+  final TextStyle textDescription;
   final TextStyle textCartLightStyle;
   final TextStyle textCartChatDarkStyle;
   final TextStyle textCartChatWhiteStyle;
@@ -33,6 +34,7 @@ class CompanyFontStyle {
     this.textCartDarkStyle = _undefinedStyle,
     this.labelCounterStyle = _undefinedStyle,
     this.textCartWhiteStyle = _undefinedStyle,
+    this.textDescription = _undefinedStyle,
     this.textCartLightStyle = _undefinedStyle,
     this.textCartChatDarkStyle = _undefinedStyle,
     this.textCartChatWhiteStyle = _undefinedStyle,
@@ -68,6 +70,10 @@ class CompanyFontStyle {
           fontWeight: FontWeight.w400),
       textCartWhiteStyle: TextStyle(
           fontSize: 12,
+          color: CompanyColor.color().third,
+          fontWeight: FontWeight.w400),
+      textDescription: TextStyle(
+          fontSize: 14,
           color: CompanyColor.color().third,
           fontWeight: FontWeight.w400),
       buttonStyle: TextStyle(

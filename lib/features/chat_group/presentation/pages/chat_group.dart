@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:almanubis/core/components/panel_widget/panel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -168,21 +169,24 @@ class _ChatGroupState extends State<ChatGroup> {
                 children: [
                   HeaderChat(
                     model: HeaderChatModel(
-                      image: widget.model.groupModel!.image,
-                      title: widget.model.groupModel!.title,
-                      description: widget.model.groupModel!.description,
-                      handledMenu: () => Navigator.pushNamed(
-                        context,
-                        '/informationPanelGroups',
-                        arguments: InformationPanelGroupsModel(
-                          userModel: widget.model.userModel,
-                          groupModel: widget.model.groupModel,
-                          typeUser: widget.model.userModel!.rol == "USER"
-                              ? InformationPanelGroupsEnum.user
-                              : InformationPanelGroupsEnum.admin,
+                        image: widget.model.groupModel!.image,
+                        title: widget.model.groupModel!.title,
+                        description: widget.model.groupModel!.description,
+                        handledMenu: () => draggableBottomPanel(
+                              context: context,
+                              handledTapItem: (e) {},
+                              body: InformationPanelGroups(
+                                model: InformationPanelGroupsModel(
+                                  userModel: widget.model.userModel,
+                                  typeUser:
+                                      widget.model.userModel!.rol == "USER"
+                                          ? InformationPanelGroupsEnum.user
+                                          : InformationPanelGroupsEnum.admin,
+                                  groupModel: widget.model.groupModel,
+                                ),
+                              ),
+                            )
                         ),
-                      ),
-                    ),
                   ),
                   Flexible(
                     fit: FlexFit.tight,
@@ -292,9 +296,13 @@ class _ChatGroupState extends State<ChatGroup> {
   }
 
   handledMapData(QuerySnapshot data) {
-    listChats = data.docs.map((e) => ChatModel.fromJson(e.data(), e.id)).toList();
+    listChats =
+        data.docs.map((e) => ChatModel.fromJson(e.data(), e.id)).toList();
     listChats.sort((a, b) => b.dateCreate.compareTo(a.dateCreate));
-    List<ChatModel> listChatsFilter = listChats.where((element) => element.listUserReceiver.contains(widget.model.userModel!.uid!)).toList();
+    List<ChatModel> listChatsFilter = listChats
+        .where((element) =>
+            element.listUserReceiver.contains(widget.model.userModel!.uid!))
+        .toList();
     List<String> listChatId = listChatsFilter.map((e) => e.id!).toList();
     if (listChatId.isNotEmpty) {
       BlocProvider.of<ChatGroupBloc>(context).add(
