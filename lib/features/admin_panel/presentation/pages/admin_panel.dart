@@ -1,7 +1,7 @@
-import 'package:almanubis/core/model/user_model.dart';
-import 'package:almanubis/core/util/firebaseNotificationHandler.dart';
 import 'package:flutter/material.dart';
+import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/core/components/button/custom_button.dart';
+import 'package:almanubis/core/util/firebaseNotificationHandler.dart';
 import 'package:almanubis/features/admin_panel/presentation/widgets/body_admin.dart';
 
 class AdminPanel extends StatefulWidget {
