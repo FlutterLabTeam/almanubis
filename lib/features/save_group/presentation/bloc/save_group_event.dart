@@ -10,6 +10,7 @@ class ChangeStateEvent  implements SaveGroupEvent {
 }
 
 class GetAllUserEvent  implements SaveGroupEvent {}
+class InitStateSaveGroupEvent  implements SaveGroupEvent {}
 
 class SaveNewGroupEvent  implements SaveGroupEvent {
 

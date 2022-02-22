@@ -66,3 +66,4 @@ class UpdateImageEvent implements GlobalEvent {
 }
 
 class DisposeEvent implements GlobalEvent {}
+class InitStateGlobalEvent implements GlobalEvent {}

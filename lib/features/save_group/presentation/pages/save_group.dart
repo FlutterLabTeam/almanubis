@@ -1,4 +1,3 @@
-import 'package:almanubis/core/data/model/image_quality_model.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/constant.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +8,7 @@ import 'package:almanubis/core/util/company_fonts.dart';
 import 'package:almanubis/core/util/generate_query.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:almanubis/core/util/snack_bar_message.dart';
+import 'package:almanubis/core/data/model/image_quality_model.dart';
 import 'package:almanubis/core/components/appbar/custom_appbar.dart';
 import 'package:almanubis/core/components/image_user_option/image_user_option.dart';
 import 'package:almanubis/core/components/input_edit_account/input_edit_account.dart';
@@ -42,6 +42,7 @@ class SaveGroupStateView extends State<SaveGroup> {
   @override
   void initState() {
     super.initState();
+    isSubmit = true;
     listUserModel = widget.listUser;
     _formKey = GlobalKey<FormState>();
     titleGroupController = TextEditingController();
@@ -56,8 +57,7 @@ class SaveGroupStateView extends State<SaveGroup> {
         if (state is SaveNewGroupErrorState) {
           snackBarMessage(
             context,
-            message:
-                "Lo sentimos, ocurrió un error al realizar el guardado de nuevo grupo",
+            message: "Lo sentimos, ocurrió un error al realizar el guardado de nuevo grupo",
           );
         }
         if (state is SaveNewGroupState) {
@@ -69,9 +69,10 @@ class SaveGroupStateView extends State<SaveGroup> {
             context,
             message: "La operación se realizó con éxito",
           );
+          BlocProvider.of<SaveGroupBloc>(context).add(InitStateSaveGroupEvent());
+          BlocProvider.of<GlobalBloc>(context).add(InitStateGlobalEvent());
           Navigator.pop(context);
           Navigator.pop(context);
-          isSubmit = true;
         }
       },
       child: SafeArea(child: BlocBuilder<SaveGroupBloc, SaveGroupState>(
@@ -226,20 +227,27 @@ class SaveGroupStateView extends State<SaveGroup> {
   }
 
   handledSelectedUser(UserModel userModel) =>
-      BlocProvider.of<SaveGroupBloc>(context)
-          .add(ChangeStateEvent(userModel: userModel));
+      BlocProvider.of<SaveGroupBloc>(context).add(ChangeStateEvent(userModel: userModel));
 
-  handledTakeImage() =>
-      BlocProvider.of<GlobalBloc>(context).add(TakeImageEvent(imageQualityModel: ImageQualityModel()));
+  handledTakeImage() => BlocProvider.of<GlobalBloc>(context)
+      .add(TakeImageEvent(imageQualityModel: ImageQualityModel()));
 
   saveImage() {
     if (_formKey.currentState!.validate()) {
-      BlocProvider.of<GlobalBloc>(context).add(
-        SaveImageEvent(
-          path: path,
-          folderDB: "group_image",
-        ),
-      );
+      if (path.isNotEmpty) {
+        BlocProvider.of<GlobalBloc>(context).add(
+          SaveImageEvent(
+            path: path,
+            folderDB: "group_image",
+          ),
+        );
+      }else{
+        snackBarMessage(
+          context,
+          message:
+          "Es necesario que el grupo tenga una foto",
+        );
+      }
     }
   }
 
@@ -257,8 +265,7 @@ class SaveGroupStateView extends State<SaveGroup> {
         listUserNotify: listUserModel.map((e) => e.uid!).toList(),
       );
 
-      BlocProvider.of<SaveGroupBloc>(context)
-          .add(SaveNewGroupEvent(groupModel: groupModel));
+      BlocProvider.of<SaveGroupBloc>(context).add(SaveNewGroupEvent(groupModel: groupModel));
     }
   }
 }

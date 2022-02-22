@@ -58,6 +58,10 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
         yield TakeVideoState(path: path);
       });
     }
+    if (event is InitStateGlobalEvent) {
+      yield TakeImageLoadingState();
+      yield GlobalInitial();
+    }
     if (event is SaveImageEvent) {
       yield SaveImageLoadingState();
       final result = await saveImage(

@@ -1,5 +1,6 @@
 import 'package:almanubis/core/components/custom_floating_button/custom_floating_button.dart';
 import 'package:almanubis/core/components/carousel_image_user/carousel_image_user.dart';
+import 'package:almanubis/core/util/snack_bar_message.dart';
 import 'package:almanubis/features/new_group/presentation/bloc/new_group_bloc.dart';
 import 'package:almanubis/core/components/selected_item/selected_item.dart';
 import 'package:almanubis/core/components/input_search/input_search.dart';
@@ -107,7 +108,16 @@ class _NewGroupState extends State<NewGroup> {
         floatingActionButton: CustomFloatingButton(
           model: CustomFloatingButtonModel(
             icon: Icons.arrow_forward,
-            handledIcon: () => Navigator.of(context).pushNamed('/saveGroup', arguments: listUserData),
+            handledIcon: (){
+              if(listUserData.isNotEmpty){
+                Navigator.of(context).pushNamed('/saveGroup', arguments: listUserData);
+              }else{
+                snackBarMessage(
+                  context,
+                  message: "Es necesario que selecciones usuarios",
+                );
+              }
+            }
           ),
         ),
       ),
