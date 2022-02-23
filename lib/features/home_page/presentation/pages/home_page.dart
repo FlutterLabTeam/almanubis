@@ -1,6 +1,9 @@
+import 'package:almanubis/core/bloc/global_bloc.dart';
+import 'package:almanubis/features/chat_group/presentation/pages/chat_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:almanubis/core/model/user_model.dart';
+import 'package:almanubis/core/util/firebaseNotificationHandler.dart';
 import 'package:almanubis/core/components/navigation/navigation_bar.dart';
 import 'package:almanubis/features/home_page/presentation/bloc/home_bloc.dart';
 import 'package:almanubis/features/list_chat/presentation/pages/list_chat.dart';
@@ -18,33 +21,49 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   static late int _selectedIndex;
+  FirebaseNotifications firebaseNotifications = FirebaseNotifications();
 
   @override
   void initState() {
     super.initState();
     _selectedIndex = widget.userModel.rol == "ADMIN" ? 1 : 0;
+    firebaseNotifications.setUpFirebase(
+        context: context, userModel: widget.userModel);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        if (state is ChangeViewState) {
-          _selectedIndex = state.page;
+    return BlocListener<GlobalBloc, GlobalState>(
+      listener: (context, state) {
+        if(state is GetGroupDataState){
+          Navigator.of(context).pushNamed(
+            '/chatGroup',
+            arguments: ChatGroupModel(
+              groupModel: state.groupModel,
+              userModel: widget.userModel,
+            ),
+          );
         }
-        return Scaffold(
-          body: handledGenerateView(widget.userModel.rol)
-              .elementAt(_selectedIndex),
-          bottomNavigationBar: CustomNavigationBar(
-            typeUser: widget.userModel.rol == "ADMIN"
-                ? TypeUser.admin
-                : TypeUser.user,
-            selectedIndex: _selectedIndex,
-            onItemTapped: (int index) => BlocProvider.of<HomeBloc>(context)
-                .add(ChangeViewEvent(page: index)),
-          ),
-        );
       },
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          if (state is ChangeViewState) {
+            _selectedIndex = state.page;
+          }
+          return Scaffold(
+            body: handledGenerateView(widget.userModel.rol)
+                .elementAt(_selectedIndex),
+            bottomNavigationBar: CustomNavigationBar(
+              typeUser: widget.userModel.rol == "ADMIN"
+                  ? TypeUser.admin
+                  : TypeUser.user,
+              selectedIndex: _selectedIndex,
+              onItemTapped: (int index) => BlocProvider.of<HomeBloc>(context)
+                  .add(ChangeViewEvent(page: index)),
+            ),
+          );
+        },
+      ),
     );
   }
 

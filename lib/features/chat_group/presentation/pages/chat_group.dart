@@ -82,8 +82,7 @@ class _ChatGroupState extends State<ChatGroup> {
     _mPlayer.openPlayer();
     openTheRecorder();
     elementToSelected = ElementToDownload.image;
-    BlocProvider.of<ChatGroupBloc>(context)
-        .add(GetChatStreamEvent(idGroup: widget.model.groupModel!.id!));
+    BlocProvider.of<ChatGroupBloc>(context).add(GetChatStreamEvent(idGroup: widget.model.groupModel!.id!));
   }
 
   Future<void> generatePath() async {

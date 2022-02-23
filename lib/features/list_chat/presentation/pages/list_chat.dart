@@ -8,7 +8,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:almanubis/core/model/group_model.dart';
 import 'package:almanubis/core/components/image/custom_image.dart';
 import 'package:almanubis/core/components/appbar/custom_appbar.dart';
-import 'package:almanubis/core/util/firebaseNotificationHandler.dart';
 import 'package:almanubis/core/components/cart_chat_home/card_chat_home.dart';
 import 'package:almanubis/features/chat_group/presentation/pages/chat_group.dart';
 import 'package:almanubis/features/list_chat/presentation/bloc/list_chat_bloc.dart';
@@ -28,12 +27,9 @@ class _ListChatState extends State<ListChat> {
   static late List<GroupModel> listChat = [];
   static late Stream<QuerySnapshot> streamData;
   static late List<ChatModel> listMessageChat = [];
-  FirebaseNotifications firebaseNotifications = FirebaseNotifications();
 
   @override
   void initState() {
-    firebaseNotifications.setUpFirebase(
-        context: context, userModel: widget.userModel);
     BlocProvider.of<ListChatBloc>(context).add(GetAllListChatEvent(userId: widget.userModel.uid!));
     super.initState();
   }

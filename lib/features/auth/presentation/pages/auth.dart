@@ -1,4 +1,3 @@
-import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:almanubis/core/model/user_model.dart';
@@ -10,6 +9,7 @@ import 'package:almanubis/core/components/image/custom_image.dart';
 import 'package:almanubis/core/components/input/custom_input.dart';
 import 'package:almanubis/core/components/button/custom_button.dart';
 import 'package:almanubis/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);

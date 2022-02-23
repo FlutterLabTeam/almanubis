@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:almanubis/core/domain/use_cases/get_group_data.dart';
+import 'package:almanubis/core/model/group_model.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:almanubis/core/usecases/use_cases.dart';
@@ -20,6 +22,7 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
   final SaveImage saveImage;
   final TakeVideo takeVideo;
   final UpdateImage updateImage;
+  final GetGroupData getGroupData;
   final DownloadAssets downloadAssets;
 
   GlobalBloc({
@@ -28,6 +31,7 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
     required this.takeImage,
     required this.takeVideo,
     required this.updateImage,
+    required this.getGroupData,
     required this.downloadAssets,
   }) : super(GlobalInitial());
 
@@ -96,6 +100,17 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
     if (event is DisposeEvent) {
       yield TakeImageLoadingState();
       yield GlobalInitial();
+    }
+    if (event is GetGroupDataEvent) {
+      yield GetGroupLoadingState();
+      final result = await getGroupData(event.idGroup);
+      yield* result.fold((failure) async* {
+        yield GetGroupErrorState();
+      }, (GroupModel groupModel) async* {
+        yield GetGroupDataState(
+          groupModel: groupModel
+        );
+      });
     }
     if (event is DownloadAssetsEvent) {
       yield DownloadAssetsLoadingState(

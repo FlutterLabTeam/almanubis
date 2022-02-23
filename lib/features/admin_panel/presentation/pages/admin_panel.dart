@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/core/components/button/custom_button.dart';
-import 'package:almanubis/core/util/firebaseNotificationHandler.dart';
 import 'package:almanubis/features/admin_panel/presentation/widgets/body_admin.dart';
 
 class AdminPanel extends StatefulWidget {
@@ -16,12 +15,10 @@ class AdminPanel extends StatefulWidget {
 
 class _AdminPanelState extends State<AdminPanel> {
   static late Size size;
-  FirebaseNotifications firebaseNotifications = FirebaseNotifications();
 
   @override
   void initState() {
     super.initState();
-    firebaseNotifications.setUpFirebase(context: context, userModel: widget.userModel);
   }
 
   @override
