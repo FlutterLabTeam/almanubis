@@ -79,7 +79,7 @@ class HeaderChat extends StatelessWidget {
                 child: IconButton(
                   onPressed: () => model.handledMenu(),
                   icon: Icon(
-                    Icons.menu,
+                    Icons.more_vert,
                     color: CompanyColor.color().third,
                   ),
                 ),

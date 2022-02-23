@@ -1,7 +1,5 @@
 import 'dart:io';
 import 'dart:async';
-import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
-import 'package:almanubis/core/components/panel_widget/panel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -21,6 +19,7 @@ import 'package:almanubis/core/components/noData/no_data.dart';
 import 'package:almanubis/core/data/model/image_quality_model.dart';
 import 'package:almanubis/core/components/header_chat/header_chat.dart';
 import 'package:almanubis/core/components/custom_chat/custom_chat.dart';
+import 'package:almanubis/core/components/panel_widget/panel_widget.dart';
 import 'package:almanubis/features/chat_group/data/models/audio_model.dart';
 import 'package:almanubis/features/chat_group/data/models/element_to_download.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/chat_input.dart';
@@ -28,6 +27,7 @@ import 'package:almanubis/features/chat_group/presentation/bloc/chat_group_bloc.
 import 'package:almanubis/features/chat_group/presentation/widgets/audio_input_option.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:almanubis/features/information_panel_groups/presentation/pages/information_panel_groups.dart';
+import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 
 class ChatGroupModel {
   final UserModel? userModel;
@@ -56,7 +56,7 @@ class _ChatGroupState extends State<ChatGroup> {
   late String _mPath;
   late String path = "";
   late bool isSend = false;
-  late bool isAudio = false;
+  late bool isAssets = false;
   late bool isPlayingAudio = true;
   late int assetMilliseconds = 0;
   late bool isStream = false;
@@ -130,25 +130,16 @@ class _ChatGroupState extends State<ChatGroup> {
                 isStream = true;
               }
               if (state is CreateChatState) {
-                path = "";
-                isAudio = false;
-                controller.text = "";
-                _typeAssetsChat = "";
-                assetMilliseconds = 0;
-                isSubmitHandled = true;
-                BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+                createMessage();
               }
               if (state is CreateChatErrorState) {
-                path = "";
-                isAudio = false;
-                controller.text = "";
-                _typeAssetsChat = "";
-                assetMilliseconds = 0;
-                isSubmitHandled = true;
-                BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
+                createMessage();
+              }
+              if (state is CreateChatLoadingState) {
+                createMessage();
               }
               if (state is SaveAudioState) {
-                isAudio = true;
+                isAssets = true;
                 path = state.path;
                 _typeAssetsChat = "AUDIO";
                 chatInputType = ChatInputType.textOption;
@@ -157,7 +148,7 @@ class _ChatGroupState extends State<ChatGroup> {
               }
               if (state is SaveVideoState) {
                 listPath = [];
-                isAudio = true;
+                isAssets = true;
                 path = state.path;
                 loadingButton = false;
                 _typeAssetsChat = "VIDEO";
@@ -197,8 +188,7 @@ class _ChatGroupState extends State<ChatGroup> {
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapShot) {
                               bool pause = _mPlayer.isPaused;
-                              if ((snapShot.hasData && pause) ||
-                                  (snapShot.hasData && isPlayingAudio)) {
+                              if ((snapShot.hasData && pause) || (snapShot.hasData && isPlayingAudio)) {
                                 handledMapData(snapShot.data!);
                               }
                               return listChats.isNotEmpty
@@ -206,8 +196,7 @@ class _ChatGroupState extends State<ChatGroup> {
                                       reverse: true,
                                       shrinkWrap: true,
                                       itemCount: listChats.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
+                                      itemBuilder: (BuildContext context, int index) {
                                         ChatModel chat = listChats[index];
                                         return Container(
                                           margin: const EdgeInsets.symmetric(
@@ -219,8 +208,7 @@ class _ChatGroupState extends State<ChatGroup> {
                                           child: CustomChat(
                                             model: CustomChatModel(
                                               color: chat.idUserCreate ==
-                                                      widget
-                                                          .model.userModel!.uid!
+                                                      widget.model.userModel!.uid!
                                                   ? CustomChatColor.light
                                                   : CustomChatColor.dark,
                                               chatModel: chat,
@@ -296,26 +284,18 @@ class _ChatGroupState extends State<ChatGroup> {
   }
 
   handledMapData(QuerySnapshot data) {
-    listChats =
-        data.docs.map((e) => ChatModel.fromJson(e.data(), e.id)).toList();
+    listChats = data.docs.map((e) => ChatModel.fromJson(e.data(), e.id)).toList();
     listChats.sort((a, b) => b.dateCreate.compareTo(a.dateCreate));
-    List<ChatModel> listChatsFilter = listChats
-        .where((element) =>
-            element.listUserReceiver.contains(widget.model.userModel!.uid!))
-        .toList();
+    List<ChatModel> listChatsFilter = listChats.where((element) => element.listUserReceiver.contains(widget.model.userModel!.uid!)).toList();
     List<String> listChatId = listChatsFilter.map((e) => e.id!).toList();
     if (listChatId.isNotEmpty) {
-      BlocProvider.of<ChatGroupBloc>(context).add(
-        ReadingChatEvent(
-          listIdChat: listChatId,
-          userId: widget.model.userModel!.uid!,
-        ),
+      BlocProvider.of<ChatGroupBloc>(context).add(ReadingChatEvent(listIdChat: listChatId, userId: widget.model.userModel!.uid!,),
       );
     }
   }
 
   handledSaveMessage() {
-    if ((controller.text.isNotEmpty && isSubmitHandled) || isAudio) {
+    if ((controller.text.isNotEmpty && isSubmitHandled) || isAssets) {
       isSubmitHandled = false;
       List<String> listUser = [];
       listUser = widget.model.groupModel!.listUser.map((e) => e.uid!).toList();
@@ -365,6 +345,7 @@ class _ChatGroupState extends State<ChatGroup> {
 
   saveImage() {
     loadingButton = true;
+    isAssets = true;
     BlocProvider.of<GlobalBloc>(context).add(
       SaveImageEvent(
         folderDB: "imageChat",
@@ -500,9 +481,21 @@ class _ChatGroupState extends State<ChatGroup> {
   }
 
   saveAudio() async {
+    await handledStopRecorder();
     loadingButton = true;
-    BlocProvider.of<ChatGroupBloc>(context)
-        .add(SaveAudioEvent(file: File(_mPath)));
+    audioInputState = AudioInputState.slow;
+    BlocProvider.of<ChatGroupBloc>(context).add(SaveAudioEvent(file: File(_mPath)));
+  }
+
+  createMessage(){
+    path = "";
+    isAssets = false;
+    controller.text = "";
+    _typeAssetsChat = "";
+    assetMilliseconds = 0;
+    isSubmitHandled = true;
+    loadingButton = false;
+    BlocProvider.of<ChatGroupBloc>(context).add(InitBlocEvent());
   }
 
   void playAudio(ChatModel chatModel) async {

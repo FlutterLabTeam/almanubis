@@ -20,6 +20,7 @@ class CompanyFontStyle {
   final TextStyle textCartLightStyle;
   final TextStyle textCartChatDarkStyle;
   final TextStyle textCartChatWhiteStyle;
+  final TextStyle dateFont;
 
   CompanyFontStyle({
     this.titleApp = _undefinedStyle,
@@ -38,6 +39,7 @@ class CompanyFontStyle {
     this.textCartLightStyle = _undefinedStyle,
     this.textCartChatDarkStyle = _undefinedStyle,
     this.textCartChatWhiteStyle = _undefinedStyle,
+    this.dateFont = _undefinedStyle,
   });
 
   factory CompanyFontStyle.style() {
@@ -102,6 +104,10 @@ class CompanyFontStyle {
       textCartChatDarkStyle: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w500,
+          color: CompanyColor.color().primary),
+      dateFont: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w300,
           color: CompanyColor.color().primary),
     );
   }
