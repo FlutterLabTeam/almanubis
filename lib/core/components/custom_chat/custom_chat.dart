@@ -94,16 +94,6 @@ class CustomChat extends StatelessWidget {
                 ],
               )
             : Container(),
-        model.color == CustomChatColor.light
-            ? Container()
-            : Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.22, vertical: 5),
-                child: Text(
-                  model.chatModel.nameUser,
-                  style: CompanyFontStyle.style().textCartChatDarkStyle,
-                ),
-              ),
         model.chatModel.dataAsset.urlAsset.isNotEmpty
             ? DownloadImageWidget(
                 model: DownloadImageWidgetModel(
@@ -118,7 +108,21 @@ class CustomChat extends StatelessWidget {
                       model.chatModel.dataAsset.typeAsset),
                 ),
               )
-            : Container()
+            : Container(),
+        model.color == CustomChatColor.light
+            ? Container()
+            : Container(
+                margin: EdgeInsets.only(
+                  left: size.width * 0.15,
+                  right: size.width * 0.15,
+                  top: size.height * 0.002,
+                  bottom: size.height * 0.007,
+                ),
+                child: Text(
+                  model.chatModel.nameUser,
+                  style: CompanyFontStyle.style().textCartChatDarkStyle,
+                ),
+              ),
       ],
     );
   }

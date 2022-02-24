@@ -103,7 +103,7 @@ class CompanyFontStyle {
           color: CompanyColor.color().third),
       textCartChatDarkStyle: TextStyle(
           fontSize: 14,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w700,
           color: CompanyColor.color().primary),
       dateFont: TextStyle(
           fontSize: 11,

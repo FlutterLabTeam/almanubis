@@ -200,7 +200,7 @@ class _ChatGroupState extends State<ChatGroup> {
                                         ChatModel chat = listChats[index];
                                         return Container(
                                           margin: const EdgeInsets.symmetric(
-                                            vertical: 10,
+                                            vertical: 5,
                                           ),
                                           padding: EdgeInsets.symmetric(
                                             horizontal: size.width * 0.05,
