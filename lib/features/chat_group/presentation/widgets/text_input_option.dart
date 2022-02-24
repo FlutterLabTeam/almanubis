@@ -79,7 +79,12 @@ class TextInputOption extends StatelessWidget {
         Expanded(
           flex: 0,
           child: Container(
-            color: CompanyColor.color().second,
+            decoration: BoxDecoration(
+              color: CompanyColor.color().second,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(size.height * 0.005),
+              ),
+            ),
             width: size.width * 0.18,
             height: size.width * 0.17,
             child: !loadingButton
