@@ -13,8 +13,10 @@ import 'package:almanubis/features/user_configuration/presentation/bloc/user_con
 class UserConfiguration extends StatefulWidget {
   final UserModel userModel;
 
-  const UserConfiguration({Key? key, required this.userModel})
-      : super(key: key);
+  const UserConfiguration({
+    Key? key,
+    required this.userModel,
+  }) : super(key: key);
 
   @override
   _UserConfigurationState createState() => _UserConfigurationState();
@@ -103,7 +105,8 @@ class _UserConfigurationState extends State<UserConfiguration> {
                                 )),
                             Container(
                               margin: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.05),
+                                horizontal: size.width * 0.05,
+                              ),
                               child: InputEditAccount(
                                 model: InputEditAccountModel(
                                     label: "Descripción",
@@ -120,9 +123,11 @@ class _UserConfigurationState extends State<UserConfiguration> {
                 ),
                 floatingActionButton: CustomFloatingButton(
                   model: CustomFloatingButtonModel(
-                    icon: Icons.arrow_forward,
+                    icon: Icons.save,
                     loadingButton: loadingButton,
-                    handledIcon: () => path.isNotEmpty ? saveImage() : updateUser(widget.userModel.image!),
+                    handledIcon: () => path.isNotEmpty
+                        ? saveImage()
+                        : updateUser(widget.userModel.image!),
                   ),
                 ),
               );
