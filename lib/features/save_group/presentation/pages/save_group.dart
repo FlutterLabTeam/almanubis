@@ -32,6 +32,7 @@ class SaveGroupStateView extends State<SaveGroup> {
   static late Size size;
   static late String path = "";
   static late bool isPath = false;
+  static late double heightHeader;
   static late bool isSubmit = true;
   static late bool loadingButton = false;
   static late GlobalKey<FormState> _formKey;
@@ -44,6 +45,7 @@ class SaveGroupStateView extends State<SaveGroup> {
     super.initState();
     isSubmit = true;
     listUserModel = widget.listUser;
+    heightHeader = size.height * 0.35;
     _formKey = GlobalKey<FormState>();
     titleGroupController = TextEditingController();
     descriptionGroupController = TextEditingController();
@@ -57,7 +59,8 @@ class SaveGroupStateView extends State<SaveGroup> {
         if (state is SaveNewGroupErrorState) {
           snackBarMessage(
             context,
-            message: "Lo sentimos, ocurrió un error al realizar el guardado de nuevo grupo",
+            message:
+                "Lo sentimos, ocurrió un error al realizar el guardado de nuevo grupo",
           );
         }
         if (state is SaveNewGroupState) {
@@ -69,7 +72,8 @@ class SaveGroupStateView extends State<SaveGroup> {
             context,
             message: "La operación se realizó con éxito",
           );
-          BlocProvider.of<SaveGroupBloc>(context).add(InitStateSaveGroupEvent());
+          BlocProvider.of<SaveGroupBloc>(context)
+              .add(InitStateSaveGroupEvent());
           BlocProvider.of<GlobalBloc>(context).add(InitStateGlobalEvent());
           Navigator.pop(context);
           Navigator.pop(context);
@@ -99,13 +103,13 @@ class SaveGroupStateView extends State<SaveGroup> {
                 children: [
                   CustomAppBar(
                     model: CustomAppBarModel(
-                      height: 90,
+                      height: size.height * 0.12,
                       body: const Text(""),
                       handledGoBack: () => Navigator.of(context).pop(),
                     ),
                   ),
                   Container(
-                    height: size.height * 0.43,
+                    height: heightHeader,
                     alignment: Alignment.center,
                     child: Form(
                       key: _formKey,
@@ -121,6 +125,7 @@ class SaveGroupStateView extends State<SaveGroup> {
                                 typeImage: isPath
                                     ? TypeImage.fileType
                                     : TypeImage.networkType,
+                                sizeParams: size.width * 0.30,
                                 handledTakeImage: () => handledTakeImage(),
                                 image: path,
                               );
@@ -154,7 +159,7 @@ class SaveGroupStateView extends State<SaveGroup> {
                     ),
                   ),
                   Container(
-                    height: size.height * 0.45,
+                    height: size.height * 0.50,
                     alignment: Alignment.topLeft,
                     color: CompanyColor.color().primary,
                     child: SingleChildScrollView(
@@ -163,7 +168,9 @@ class SaveGroupStateView extends State<SaveGroup> {
                           Container(
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 20),
+                              vertical: 20,
+                              horizontal: 20,
+                            ),
                             child: Text(
                               "Participantes",
                               style: CompanyFontStyle.style().titleStyleLight,
@@ -227,7 +234,8 @@ class SaveGroupStateView extends State<SaveGroup> {
   }
 
   handledSelectedUser(UserModel userModel) =>
-      BlocProvider.of<SaveGroupBloc>(context).add(ChangeStateEvent(userModel: userModel));
+      BlocProvider.of<SaveGroupBloc>(context)
+          .add(ChangeStateEvent(userModel: userModel));
 
   handledTakeImage() => BlocProvider.of<GlobalBloc>(context)
       .add(TakeImageEvent(imageQualityModel: ImageQualityModel()));
@@ -241,13 +249,15 @@ class SaveGroupStateView extends State<SaveGroup> {
             folderDB: "group_image",
           ),
         );
-      }else{
+      } else {
         snackBarMessage(
           context,
-          message:
-          "Es necesario que el grupo tenga una foto",
+          message: "Es necesario que el grupo tenga una foto",
         );
       }
+    }else {
+      heightHeader = size.height * 0.42;
+      BlocProvider.of<SaveGroupBloc>(context).add(InitStateSaveGroupEvent());
     }
   }
 
@@ -265,7 +275,8 @@ class SaveGroupStateView extends State<SaveGroup> {
         listUserNotify: listUserModel.map((e) => e.uid!).toList(),
       );
 
-      BlocProvider.of<SaveGroupBloc>(context).add(SaveNewGroupEvent(groupModel: groupModel));
+      BlocProvider.of<SaveGroupBloc>(context)
+          .add(SaveNewGroupEvent(groupModel: groupModel));
     }
   }
 }

@@ -49,7 +49,7 @@ class _AdminPanelState extends State<AdminPanel> {
                   model: CustomButtonModel(
                       handledButton: () => Navigator.of(context).pushNamed('/newUser'),
                       color: CustomButtonColor.light,
-                      label: "CREAT USUARIO"),
+                      label: "CREAR USUARIO"),
                 ),
               )
             ]),
