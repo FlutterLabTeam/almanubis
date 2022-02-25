@@ -45,7 +45,7 @@ class SaveGroupStateView extends State<SaveGroup> {
     super.initState();
     isSubmit = true;
     listUserModel = widget.listUser;
-    heightHeader = size.height * 0.35;
+    heightHeader =  0.35;
     _formKey = GlobalKey<FormState>();
     titleGroupController = TextEditingController();
     descriptionGroupController = TextEditingController();
@@ -109,7 +109,7 @@ class SaveGroupStateView extends State<SaveGroup> {
                     ),
                   ),
                   Container(
-                    height: heightHeader,
+                    height: size.height * heightHeader,
                     alignment: Alignment.center,
                     child: Form(
                       key: _formKey,
@@ -256,7 +256,7 @@ class SaveGroupStateView extends State<SaveGroup> {
         );
       }
     }else {
-      heightHeader = size.height * 0.42;
+      heightHeader = 0.42;
       BlocProvider.of<SaveGroupBloc>(context).add(InitStateSaveGroupEvent());
     }
   }
