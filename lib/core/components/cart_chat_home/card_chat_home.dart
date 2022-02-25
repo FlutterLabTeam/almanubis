@@ -37,6 +37,7 @@ class CardChatHome extends StatelessWidget {
       onTap: ()=> model.handledCart(),
       child: Container(
         color: Colors.transparent,
+        margin: const EdgeInsets.only(bottom: 15),
         padding: const EdgeInsets.symmetric(vertical: 15),
         child: Row(
           children: [
@@ -49,7 +50,7 @@ class CardChatHome extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 23),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,

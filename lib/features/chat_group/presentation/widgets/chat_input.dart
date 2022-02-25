@@ -61,21 +61,18 @@ class ChatInput extends StatelessWidget {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: size.width * 0.01),
-      width: size.width,
-      decoration: BoxDecoration(
-      color: CompanyColor.color().primary,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(size.height * 0.01),
-          topRight: Radius.circular(size.height * 0.01),
-        ),
+      margin: EdgeInsets.only(
+        right: size.width * 0.04,
+        left: size.width * 0.04,
+        bottom: size.height * 0.02,
       ),
+      width: size.width,
+      color: CompanyColor.color().primary90,
       child: Column(
         children: [
           handledSelectedTypeInput(typeInputChat),
           mediaList.isNotEmpty
               ? SizedBox(
-                  height: size.height * 0.11,
                   width: size.width,
                   child: ListView.builder(
                     shrinkWrap: true,

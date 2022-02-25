@@ -63,14 +63,13 @@ class TextInputOption extends StatelessWidget {
         Expanded(
           flex: 0,
           child: Container(
-            color: CompanyColor.color().primary,
             width: size.width * 0.18,
-            height: size.width * 0.17,
+            height: size.width * 0.15,
             child: IconButton(
               onPressed: () => handledTapCamara(),
               icon: const Icon(
                 Icons.camera_alt,
-                size: 30,
+                size: 25,
                 color: Colors.white,
               ),
             ),
@@ -79,14 +78,9 @@ class TextInputOption extends StatelessWidget {
         Expanded(
           flex: 0,
           child: Container(
-            decoration: BoxDecoration(
-              color: CompanyColor.color().second,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(size.height * 0.005),
-              ),
-            ),
-            width: size.width * 0.18,
-            height: size.width * 0.17,
+            color: CompanyColor.color().second,
+            width: size.width * 0.15,
+            height: size.width * 0.15,
             child: !loadingButton
                 ? isSend || mediaList.isNotEmpty
                     ? IconButton(
@@ -97,7 +91,7 @@ class TextInputOption extends StatelessWidget {
                         },
                         icon: const Icon(
                           Icons.send,
-                          size: 30,
+                          size: 25,
                           color: Colors.white,
                         ),
                       )
@@ -105,7 +99,7 @@ class TextInputOption extends StatelessWidget {
                         onPressed: () => handledPlayAudio(),
                         icon: const Icon(
                           Icons.mic,
-                          size: 30,
+                          size: 25,
                           color: Colors.white,
                         ),
                       )

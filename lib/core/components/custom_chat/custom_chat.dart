@@ -73,7 +73,7 @@ class CustomChat extends StatelessWidget {
                     flex: 4,
                     child: Container(
                       margin:
-                          EdgeInsets.symmetric(horizontal: size.width * 0.02),
+                      EdgeInsets.symmetric(horizontal: size.width * 0.02),
                       child: CartChat(
                         size: size,
                         model: CartChatModel(

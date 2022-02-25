@@ -54,14 +54,14 @@ class AudioInputOption extends StatelessWidget {
         Expanded(
           flex: 0,
           child: Container(
-            color: CompanyColor.color().primary,
+            color: CompanyColor.color().primary80,
             width: size.width * 0.18,
-            height: size.width * 0.17,
+            height: size.width * 0.15,
             child: IconButton(
               onPressed: () => handledDeleteAudio(),
               icon: const Icon(
                 Icons.delete,
-                size: 30,
+                size: 25,
                 color: Colors.white,
               ),
             ),
@@ -70,20 +70,15 @@ class AudioInputOption extends StatelessWidget {
         Expanded(
           flex: 0,
           child: Container(
-            width: size.width * 0.18,
-            height: size.width * 0.17,
-            decoration: BoxDecoration(
-              color: CompanyColor.color().second,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(size.height * 0.01),
-              ),
-            ),
+            width: size.width * 0.15,
+            height: size.width * 0.15,
+            color: CompanyColor.color().second,
             child: !loadingButton
                 ? IconButton(
                     onPressed: () => saveAudio(),
                     icon: const Icon(
                       Icons.send,
-                      size: 30,
+                      size: 25,
                       color: Colors.white,
                     ),
                   )
@@ -146,7 +141,7 @@ class AudioInputOption extends StatelessWidget {
       onPressed: () => handled(),
       icon: Icon(
         icon,
-        size: 30,
+        size: 25,
         color: color,
       ),
     );

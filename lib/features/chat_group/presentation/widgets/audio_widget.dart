@@ -58,9 +58,9 @@ class AudioWidget extends StatelessWidget {
   Color _getColor(DownloadImageWidgetColor color) {
     switch (color) {
       case DownloadImageWidgetColor.light:
-        return CompanyColor.color().second;
+        return CompanyColor.color().second80;
       case DownloadImageWidgetColor.dark:
-        return CompanyColor.color().primary;
+        return CompanyColor.color().primary80;
     }
   }
 

@@ -77,9 +77,9 @@ class CartChat extends StatelessWidget {
   Color _getColor(CartChatColor color) {
     switch (color) {
       case CartChatColor.light:
-        return CompanyColor.color().second;
+        return CompanyColor.color().second80;
       case CartChatColor.dark:
-        return CompanyColor.color().primary;
+        return CompanyColor.color().primary80;
     }
   }
 }
