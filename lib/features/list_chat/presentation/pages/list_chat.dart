@@ -94,27 +94,20 @@ class _ListChatState extends State<ListChat> {
                                     .toList();
                               }
                               return ListView.builder(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: size.height * 0.034,
-                                ),
+                                padding: EdgeInsets.symmetric(vertical: size.height * 0.05, horizontal: 25),
                                 itemCount: listChat.length,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   GroupModel group = listChat[index];
                                   int counter = handledCalculateMessage(group);
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 20,
-                                    ),
-                                    child: CardChatHome(
-                                      model: CardChatHomeModel(
-                                          counter: counter,
-                                          title: group.title,
-                                          description: group.description,
-                                          handledCart: () => handledPushChat(group),
-                                          dateTime: group.dateUpdate ?? group.dateCreate,
-                                          imageUrl: group.image.isEmpty ? noImage : group.image,
-                                      ),
+                                  return CardChatHome(
+                                    model: CardChatHomeModel(
+                                        counter: counter,
+                                        title: group.title,
+                                        description: group.description,
+                                        handledCart: () => handledPushChat(group),
+                                        dateTime: group.dateUpdate ?? group.dateCreate,
+                                        imageUrl: group.image.isEmpty ? noImage : group.image,
                                     ),
                                   );
                                 },
