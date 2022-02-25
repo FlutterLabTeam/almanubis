@@ -37,7 +37,7 @@ class CarouselImageUser extends StatelessWidget {
         itemCount: model.listUserData.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 12),
             child: ImageUserOption(
               model: ImageUserOptionModel(
                 image: model.listUserData[index].image??noImage,
