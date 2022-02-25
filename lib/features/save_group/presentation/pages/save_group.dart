@@ -1,4 +1,3 @@
-import 'package:almanubis/core/data/model/image_quality_model.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/constant.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +8,7 @@ import 'package:almanubis/core/util/company_fonts.dart';
 import 'package:almanubis/core/util/generate_query.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:almanubis/core/util/snack_bar_message.dart';
+import 'package:almanubis/core/data/model/image_quality_model.dart';
 import 'package:almanubis/core/components/appbar/custom_appbar.dart';
 import 'package:almanubis/core/components/image_user_option/image_user_option.dart';
 import 'package:almanubis/core/components/input_edit_account/input_edit_account.dart';
@@ -32,6 +32,7 @@ class SaveGroupStateView extends State<SaveGroup> {
   static late Size size;
   static late String path = "";
   static late bool isPath = false;
+  static late double heightHeader;
   static late bool isSubmit = true;
   static late bool loadingButton = false;
   static late GlobalKey<FormState> _formKey;
@@ -42,7 +43,9 @@ class SaveGroupStateView extends State<SaveGroup> {
   @override
   void initState() {
     super.initState();
+    isSubmit = true;
     listUserModel = widget.listUser;
+    heightHeader = size.height * 0.35;
     _formKey = GlobalKey<FormState>();
     titleGroupController = TextEditingController();
     descriptionGroupController = TextEditingController();
@@ -69,9 +72,11 @@ class SaveGroupStateView extends State<SaveGroup> {
             context,
             message: "La operación se realizó con éxito",
           );
+          BlocProvider.of<SaveGroupBloc>(context)
+              .add(InitStateSaveGroupEvent());
+          BlocProvider.of<GlobalBloc>(context).add(InitStateGlobalEvent());
           Navigator.pop(context);
           Navigator.pop(context);
-          isSubmit = true;
         }
       },
       child: SafeArea(child: BlocBuilder<SaveGroupBloc, SaveGroupState>(
@@ -98,13 +103,13 @@ class SaveGroupStateView extends State<SaveGroup> {
                 children: [
                   CustomAppBar(
                     model: CustomAppBarModel(
-                      height: 90,
+                      height: size.height * 0.12,
                       body: const Text(""),
                       handledGoBack: () => Navigator.of(context).pop(),
                     ),
                   ),
                   Container(
-                    height: size.height * 0.43,
+                    height: heightHeader,
                     alignment: Alignment.center,
                     child: Form(
                       key: _formKey,
@@ -120,6 +125,7 @@ class SaveGroupStateView extends State<SaveGroup> {
                                 typeImage: isPath
                                     ? TypeImage.fileType
                                     : TypeImage.networkType,
+                                sizeParams: size.width * 0.30,
                                 handledTakeImage: () => handledTakeImage(),
                                 image: path,
                               );
@@ -153,7 +159,7 @@ class SaveGroupStateView extends State<SaveGroup> {
                     ),
                   ),
                   Container(
-                    height: size.height * 0.45,
+                    height: size.height * 0.50,
                     alignment: Alignment.topLeft,
                     color: CompanyColor.color().primary,
                     child: SingleChildScrollView(
@@ -162,7 +168,9 @@ class SaveGroupStateView extends State<SaveGroup> {
                           Container(
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 20),
+                              vertical: 20,
+                              horizontal: 20,
+                            ),
                             child: Text(
                               "Participantes",
                               style: CompanyFontStyle.style().titleStyleLight,
@@ -229,17 +237,27 @@ class SaveGroupStateView extends State<SaveGroup> {
       BlocProvider.of<SaveGroupBloc>(context)
           .add(ChangeStateEvent(userModel: userModel));
 
-  handledTakeImage() =>
-      BlocProvider.of<GlobalBloc>(context).add(TakeImageEvent(imageQualityModel: ImageQualityModel()));
+  handledTakeImage() => BlocProvider.of<GlobalBloc>(context)
+      .add(TakeImageEvent(imageQualityModel: ImageQualityModel()));
 
   saveImage() {
     if (_formKey.currentState!.validate()) {
-      BlocProvider.of<GlobalBloc>(context).add(
-        SaveImageEvent(
-          path: path,
-          folderDB: "group_image",
-        ),
-      );
+      if (path.isNotEmpty) {
+        BlocProvider.of<GlobalBloc>(context).add(
+          SaveImageEvent(
+            path: path,
+            folderDB: "group_image",
+          ),
+        );
+      } else {
+        snackBarMessage(
+          context,
+          message: "Es necesario que el grupo tenga una foto",
+        );
+      }
+    }else {
+      heightHeader = size.height * 0.42;
+      BlocProvider.of<SaveGroupBloc>(context).add(InitStateSaveGroupEvent());
     }
   }
 

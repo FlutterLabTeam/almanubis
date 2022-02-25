@@ -23,9 +23,7 @@ class CustomSwitch extends StatelessWidget {
       children: [
         Text(
           label,
-          style: CompanyFontStyle
-              .style()
-              .textCartWhiteStyle,
+          style: CompanyFontStyle.style().textDescription
         ),
         Switch(
           value: state,

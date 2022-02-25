@@ -3,6 +3,7 @@ import 'package:almanubis/core/data/data_sources/global_data_source.dart';
 import 'package:almanubis/core/data/repositories/global_repository_impl.dart';
 import 'package:almanubis/core/domain/repositories/global_repository.dart';
 import 'package:almanubis/core/domain/use_cases/download_image.dart';
+import 'package:almanubis/core/domain/use_cases/get_group_data.dart';
 import 'package:almanubis/core/domain/use_cases/save_image.dart';
 import 'package:almanubis/core/domain/use_cases/take_image.dart';
 import 'package:almanubis/core/domain/use_cases/take_photo.dart';
@@ -26,6 +27,7 @@ import 'package:almanubis/features/chat_group/domain/use_cases/reading_chat.dart
 import 'package:almanubis/features/chat_group/domain/use_cases/save_audio.dart';
 import 'package:almanubis/features/chat_group/domain/use_cases/save_video.dart';
 import 'package:almanubis/features/chat_group/presentation/bloc/chat_group_bloc.dart';
+import 'package:almanubis/features/home_page/presentation/bloc/home_bloc.dart';
 import 'package:almanubis/features/information_panel_groups/data/data_sources/information_panel_data_source.dart';
 import 'package:almanubis/features/information_panel_groups/data/repositories/information_panel_group_repository_impl.dart';
 import 'package:almanubis/features/information_panel_groups/domain/repositories/information_panel_repository.dart';
@@ -80,6 +82,7 @@ final sl = GetIt.instance;
 init() async {
   //Blocs
   sl.registerFactory(() => VideoPlayerPageBloc());
+  sl.registerFactory(() => HomeBloc());
   sl.registerFactory(() => AuthBloc(
         loginEmail: sl(),
         getUserData: sl(),
@@ -106,6 +109,7 @@ init() async {
         takeVideo: sl(),
         takeImage: sl(),
         updateImage: sl(),
+        getGroupData: sl(),
         downloadAssets: sl(),
       ));
   sl.registerFactory(() => SaveGroupBloc(
@@ -140,6 +144,7 @@ init() async {
   sl.registerLazySingleton(() => TakeVideo(globalRepository: sl()));
   sl.registerLazySingleton(() => SetDataUSer(authRepository: sl()));
   sl.registerLazySingleton(() => UpdateImage(globalRepository: sl()));
+  sl.registerLazySingleton(() => GetGroupData(globalRepository: sl()));
   sl.registerLazySingleton(() => SaveVideo(chatGroupRepository: sl()));
   sl.registerLazySingleton(() => SearchUser(newGroupRepository: sl()));
   sl.registerLazySingleton(() => GetAllUser(newGroupRepository: sl()));

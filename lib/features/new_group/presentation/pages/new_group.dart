@@ -1,5 +1,6 @@
 import 'package:almanubis/core/components/custom_floating_button/custom_floating_button.dart';
 import 'package:almanubis/core/components/carousel_image_user/carousel_image_user.dart';
+import 'package:almanubis/core/util/snack_bar_message.dart';
 import 'package:almanubis/features/new_group/presentation/bloc/new_group_bloc.dart';
 import 'package:almanubis/core/components/selected_item/selected_item.dart';
 import 'package:almanubis/core/components/input_search/input_search.dart';
@@ -46,69 +47,80 @@ class _NewGroupState extends State<NewGroup> {
             if (state is GetSearchUserState) {
               getSearchUserState(state);
             }
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomAppBar(
-                  model: CustomAppBarModel(
-                    body: Text(
-                      "NUEVO GRUPO",
-                      style: CompanyFontStyle.style().titleStyleDark,
-                    ),
-                    handledGoBack: () => Navigator.of(context).pop(),
-                  ),
-                ),
-                SizedBox(
-                  height: listUserData.isNotEmpty ? size.height * 0.12 : 0,
-                  width: double.infinity,
-                  child: CarouselImageUser(
-                    model: CarouselImageUserModel(
-                      color: CarouselColor.dark,
-                      listUserData: listUserData,
-                      handledIcon: handledSelectedUser,
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomAppBar(
+                    model: CustomAppBarModel(
+                      body: Text(
+                        "NUEVO GRUPO",
+                        style: CompanyFontStyle.style().titleStyleDark,
+                      ),
+                      handledGoBack: () => Navigator.of(context).pop(),
                     ),
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  child: InputSearch(
-                    model: InputSearchColorModel(
-                      label: "Buscar usuario",
-                      onChanged: (String text) =>
-                          _debouncer.run(() => handledSearch(text)),
+                  SizedBox(
+                    height: listUserData.isNotEmpty ? size.height * 0.12 : 0,
+                    width: double.infinity,
+                    child: CarouselImageUser(
+                      model: CarouselImageUserModel(
+                        color: CarouselColor.dark,
+                        listUserData: listUserData,
+                        handledIcon: handledSelectedUser,
+                      ),
                     ),
                   ),
-                ),
-                Flexible(
-                  fit: FlexFit.loose,
-                  flex: 1,
-                  child: Container(
+                  Container(
                     margin: const EdgeInsets.symmetric(horizontal: 20),
-                    child: SizedBox(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: listAllUser.length,
-                        itemBuilder: (context, index) => Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          child: SelectedItem(
-                            userModel: listAllUser[index],
-                            handledSelectedUser: handledSelectedUser,
+                    child: InputSearch(
+                      model: InputSearchColorModel(
+                        label: "Buscar usuario",
+                        onChanged: (String text) =>
+                            _debouncer.run(() => handledSearch(text)),
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    fit: FlexFit.loose,
+                    flex: 1,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      child: SizedBox(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: listAllUser.length,
+                          itemBuilder: (context, index) => Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            child: SelectedItem(
+                              userModel: listAllUser[index],
+                              handledSelectedUser: handledSelectedUser,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           },
         ),
         floatingActionButton: CustomFloatingButton(
           model: CustomFloatingButtonModel(
             icon: Icons.arrow_forward,
-            handledIcon: () => Navigator.of(context)
-                .pushNamed('/saveGroup', arguments: listUserData),
+            handledIcon: (){
+              if(listUserData.isNotEmpty){
+                Navigator.of(context).pushNamed('/saveGroup', arguments: listUserData);
+              }else{
+                snackBarMessage(
+                  context,
+                  message: "Es necesario que selecciones usuarios",
+                );
+              }
+            }
           ),
         ),
       ),

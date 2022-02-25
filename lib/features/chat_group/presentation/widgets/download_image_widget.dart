@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/cart_video_presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -81,7 +82,7 @@ class DownloadImageWidget extends StatelessWidget {
               elementToDownload: model.elementToDownload!,
             );
           }
-          return const CircularProgressIndicator();
+          return const CustomCircularProgressIndicator();
         });
   }
 

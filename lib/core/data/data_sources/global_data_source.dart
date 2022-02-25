@@ -2,6 +2,7 @@ import 'package:almanubis/core/data/model/image_quality_model.dart';
 import 'package:almanubis/core/util/generate_size_image.dart';
 import 'package:almanubis/core/util/link_image_to_name.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:almanubis/core/model/group_model.dart';
 import 'package:almanubis/core/errors/exceptions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path_provider/path_provider.dart';
@@ -11,24 +12,12 @@ import 'dart:io';
 
 abstract class GlobalDataSource {
   Future<String> takeVideo();
-
+  Future<GroupModel> getGroupData({required String idGroup});
   Future<String> takePhoto({required ImageQualityModel imageQualityModel});
-
   Future<String> takeImage({required ImageQualityModel imageQualityModel});
-
   Future<bool> downloadAssets({required String folderDB, required String path});
-
-  Future<String> saveImage({
-    String? idUser,
-    required String path,
-    required String folderDB,
-  });
-
-  Future<String> updateImage({
-    String? idUser,
-    required String path,
-    required String folderDB,
-    required String linkImage,
+  Future<String> saveImage({String? idUser, required String path, required String folderDB});
+  Future<String> updateImage({String? idUser, required String path, required String folderDB, required String linkImage,
   });
 }
 
@@ -151,6 +140,19 @@ class GlobalDataSourceImpl implements GlobalDataSource {
       } else {
         throw SaveNewGroupException();
       }
+    } catch (e) {
+      throw SaveNewGroupException();
+    }
+  }
+
+  @override
+  Future<GroupModel> getGroupData({required String idGroup}) async {
+    try {
+      DocumentSnapshot dataGroup =
+          await firestore.collection("groups").doc(idGroup).get();
+      GroupModel groupModel =
+          GroupModel.fromJson(dataGroup.data(), dataGroup.id);
+      return groupModel;
     } catch (e) {
       throw SaveNewGroupException();
     }

@@ -64,7 +64,8 @@ class _InformationPanelGroupsState extends State<InformationPanelGroups> {
         statusNotification = false;
       }
       if (state is DeleteUserState) {
-        widget.model.groupModel!.listUser.removeWhere((element) => element == state.userModel);
+        widget.model.groupModel!.listUser
+            .removeWhere((element) => element == state.userModel);
       }
 
       return Scaffold(
@@ -72,11 +73,25 @@ class _InformationPanelGroupsState extends State<InformationPanelGroups> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+              alignment: Alignment.center,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: CompanyColor.color().second,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                margin: const EdgeInsets.symmetric(
+                  vertical: 10,
+                ),
+                height: 8,
+                width: MediaQuery.of(context).size.width * 0.2,
+              ),
+            ),
             Expanded(
               flex: 0,
               child: Container(
                 margin: const EdgeInsets.only(
-                    left: 36, right: 36, bottom: 26, top: 100),
+                    left: 36, right: 36, bottom: 26, top: 50),
                 child: Text(
                   "Descripción",
                   style: CompanyFontStyle.style().titleStyleLight,
@@ -90,7 +105,7 @@ class _InformationPanelGroupsState extends State<InformationPanelGroups> {
                     const EdgeInsets.symmetric(horizontal: 36, vertical: 10),
                 child: Text(
                   widget.model.groupModel!.description,
-                  style: CompanyFontStyle.style().textCartWhiteStyle,
+                  style: CompanyFontStyle.style().textDescription,
                 ),
               ),
             ),
@@ -148,7 +163,8 @@ class _InformationPanelGroupsState extends State<InformationPanelGroups> {
         floatingActionButton: CustomFloatingButton(
           model: CustomFloatingButtonModel(
             handledIcon: () {
-              Navigator.pushNamed(context, '/addNewUser', arguments: widget.model.groupModel);
+              Navigator.pushNamed(context, '/addNewUser',
+                  arguments: widget.model.groupModel);
             },
             icon: Icons.add,
           ),
@@ -184,7 +200,7 @@ class _InformationPanelGroupsState extends State<InformationPanelGroups> {
     }
   }
 
-  handledDeleteUser(UserModel user){
+  handledDeleteUser(UserModel user) {
     BlocProvider.of<InformationPanelBloc>(context).add(
       DeleteUserEvent(
         user: user,

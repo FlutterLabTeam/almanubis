@@ -1,3 +1,4 @@
+import 'features/home_page/presentation/bloc/home_bloc.dart';
 import 'injection_container.dart';
 import 'core/bloc/global_bloc.dart';
 import 'package:almanubis/routes.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => sl<HomeBloc>()),
         BlocProvider(create: (context) => sl<AuthBloc>()),
         BlocProvider(create: (context) => sl<GlobalBloc>()),
         BlocProvider(create: (context) => sl<NewUserBloc>()),

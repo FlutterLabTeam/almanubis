@@ -110,11 +110,9 @@ class _AddNewUserState extends State<AddNewUser> {
           },
         ),
         bottomNavigationBar: CustomNavigationBar(
-          onTapPlus: () {},
-          model: CustomNavigationBarModel(),
-          onTapMessage: () => Navigator.of(context).pushReplacementNamed('/listChat'),
-          onTapPerson: () =>
-              Navigator.of(context).pushReplacementNamed('/userConfiguration'),
+          typeUser: TypeUser.admin,
+          selectedIndex: 0,
+          onItemTapped: (int id){},
         ),
         floatingActionButton: CustomFloatingButton(
           model: CustomFloatingButtonModel(

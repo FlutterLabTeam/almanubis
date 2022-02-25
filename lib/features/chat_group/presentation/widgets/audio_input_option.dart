@@ -1,3 +1,4 @@
+import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:almanubis/core/util/company_fonts.dart';
 import 'package:flutter/material.dart';
@@ -39,9 +40,7 @@ class AudioInputOption extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          flex: 0,
-          child: handledControllingEngravingIcon(audioInputState)
-        ),
+            flex: 0, child: handledControllingEngravingIcon(audioInputState)),
         Expanded(
           flex: 0,
           child: handledControllingAudioIcon(audioInputState),
@@ -71,9 +70,14 @@ class AudioInputOption extends StatelessWidget {
         Expanded(
           flex: 0,
           child: Container(
-            color: CompanyColor.color().second,
             width: size.width * 0.18,
             height: size.width * 0.17,
+            decoration: BoxDecoration(
+              color: CompanyColor.color().second,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(size.height * 0.01),
+              ),
+            ),
             child: !loadingButton
                 ? IconButton(
                     onPressed: () => saveAudio(),
@@ -88,7 +92,7 @@ class AudioInputOption extends StatelessWidget {
                       horizontal: size.width * 0.045,
                       vertical: size.width * 0.04,
                     ),
-                    child: const CircularProgressIndicator(),
+                    child: const CustomCircularProgressIndicator(),
                   ),
           ),
         ),
@@ -100,22 +104,16 @@ class AudioInputOption extends StatelessWidget {
     switch (audioInputState) {
       case AudioInputState.recording:
         return handledIcon(
-          icon: Icons.pause,
-          color: const Color(0xffd79090),
-          handled: () => handledStopRecorder()
-        );
+            icon: Icons.pause,
+            color: const Color(0xffd79090),
+            handled: () => handledStopRecorder());
       case AudioInputState.slow:
         return handledIcon(
             icon: Icons.mic,
             color: Colors.greenAccent,
-            handled: () => handledPlayAudio()
-        );
+            handled: () => handledPlayAudio());
       case AudioInputState.listening:
-        return handledIcon(
-            icon: Icons.mic,
-            color: Colors.grey,
-            handled: (){}
-        );
+        return handledIcon(icon: Icons.mic, color: Colors.grey, handled: () {});
     }
   }
 
@@ -125,20 +123,17 @@ class AudioInputOption extends StatelessWidget {
         return handledIcon(
             icon: Icons.volume_up_rounded,
             color: const Color(0xc47e7e7e),
-            handled: (){}
-        );
+            handled: () {});
       case AudioInputState.slow:
         return handledIcon(
             icon: Icons.volume_up_rounded,
             color: Colors.white,
-            handled: () => handledListenAudio()
-        );
+            handled: () => handledListenAudio());
       case AudioInputState.listening:
         return handledIcon(
             icon: Icons.volume_up_rounded,
             color: Colors.greenAccent,
-            handled: () => handledListenAudio()
-        );
+            handled: () => handledListenAudio());
     }
   }
 

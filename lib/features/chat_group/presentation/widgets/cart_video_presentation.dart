@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -20,7 +21,7 @@ class CartVideoPresentation extends StatelessWidget {
       future: generateImage(),
       builder: (context, AsyncSnapshot<String> snapshot) {
         if (!snapshot.hasData) {
-          return const CircularProgressIndicator();
+          return const CustomCircularProgressIndicator();
         }
         String url = snapshot.data!;
         return Container(

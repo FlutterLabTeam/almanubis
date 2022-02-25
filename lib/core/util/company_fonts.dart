@@ -16,9 +16,11 @@ class CompanyFontStyle {
   final TextStyle textCartDarkStyle;
   final TextStyle labelCounterStyle;
   final TextStyle textCartWhiteStyle;
+  final TextStyle textDescription;
   final TextStyle textCartLightStyle;
   final TextStyle textCartChatDarkStyle;
   final TextStyle textCartChatWhiteStyle;
+  final TextStyle dateFont;
 
   CompanyFontStyle({
     this.titleApp = _undefinedStyle,
@@ -33,9 +35,11 @@ class CompanyFontStyle {
     this.textCartDarkStyle = _undefinedStyle,
     this.labelCounterStyle = _undefinedStyle,
     this.textCartWhiteStyle = _undefinedStyle,
+    this.textDescription = _undefinedStyle,
     this.textCartLightStyle = _undefinedStyle,
     this.textCartChatDarkStyle = _undefinedStyle,
     this.textCartChatWhiteStyle = _undefinedStyle,
+    this.dateFont = _undefinedStyle,
   });
 
   factory CompanyFontStyle.style() {
@@ -70,10 +74,15 @@ class CompanyFontStyle {
           fontSize: 12,
           color: CompanyColor.color().third,
           fontWeight: FontWeight.w400),
+      textDescription: TextStyle(
+          fontSize: 14,
+          color: CompanyColor.color().third,
+          fontWeight: FontWeight.w400),
       buttonStyle: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
-          color: CompanyColor.color().primary),
+        fontSize: 20,
+        fontWeight: FontWeight.w500,
+        color: CompanyColor.color().primary,
+      ),
       titleAppLight: TextStyle(
           fontSize: 40,
           letterSpacing: 10,
@@ -94,7 +103,11 @@ class CompanyFontStyle {
           color: CompanyColor.color().third),
       textCartChatDarkStyle: TextStyle(
           fontSize: 14,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w700,
+          color: CompanyColor.color().primary),
+      dateFont: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w300,
           color: CompanyColor.color().primary),
     );
   }

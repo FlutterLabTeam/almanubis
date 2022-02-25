@@ -1,3 +1,4 @@
+import 'package:almanubis/core/util/company_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:almanubis/core/model/chat_model.dart';
@@ -63,8 +64,10 @@ class CustomChat extends StatelessWidget {
                         )
                       : Expanded(
                           flex: 0,
-                          child:
-                              Text(dateFormatHour(model.chatModel.dateCreate)),
+                          child: Text(
+                            dateFormatHour(model.chatModel.dateCreate),
+                            style: CompanyFontStyle.style().dateFont,
+                          ),
                         ),
                   Expanded(
                     flex: 4,
@@ -82,8 +85,10 @@ class CustomChat extends StatelessWidget {
                   model.color == CustomChatColor.dark
                       ? Expanded(
                           flex: 0,
-                          child:
-                              Text(dateFormatHour(model.chatModel.dateCreate)),
+                          child: Text(
+                            dateFormatHour(model.chatModel.dateCreate),
+                            style: CompanyFontStyle.style().dateFont,
+                          ),
                         )
                       : Container(),
                 ],
@@ -103,7 +108,21 @@ class CustomChat extends StatelessWidget {
                       model.chatModel.dataAsset.typeAsset),
                 ),
               )
-            : Container()
+            : Container(),
+        model.color == CustomChatColor.light
+            ? Container()
+            : Container(
+                margin: EdgeInsets.only(
+                  left: size.width * 0.15,
+                  right: size.width * 0.15,
+                  top: size.height * 0.002,
+                  bottom: size.height * 0.007,
+                ),
+                child: Text(
+                  model.chatModel.nameUser,
+                  style: CompanyFontStyle.style().textCartChatDarkStyle,
+                ),
+              ),
       ],
     );
   }

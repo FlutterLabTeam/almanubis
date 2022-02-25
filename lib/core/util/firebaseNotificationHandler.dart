@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:almanubis/core/bloc/global_bloc.dart';
 import 'package:almanubis/core/model/user_model.dart';
+import 'package:almanubis/core/util/snack_bar_message.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:almanubis/core/util/notificationHandler.dart';
 import 'package:almanubis/features/auth/presentation/bloc/auth_bloc.dart';
@@ -25,9 +27,10 @@ class FirebaseNotifications {
     required UserModel userModel,
   }) async {
     _messaging.getToken().then((token) {
-      if(userModel.token != token){
+      if (userModel.token != token) {
         userModel.token = token;
-        BlocProvider.of<AuthBloc>(context).add(SetDataUserEvent(userModel: userModel));
+        BlocProvider.of<AuthBloc>(context)
+            .add(SetDataUserEvent(userModel: userModel));
       }
     });
     _messaging
@@ -51,18 +54,18 @@ class FirebaseNotifications {
         );
       }
     });
-    FirebaseMessaging.onMessageOpenedApp.listen((remoteMessage) {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage remoteMessage) {
       if (Platform.isIOS) {
         handledGoDailyReport(
-          context: context,
-          userModel: userModel,
-        );
+            context: context,
+            userModel: userModel,
+            remoteMessage: remoteMessage);
       }
       if (Platform.isAndroid) {
         handledGoDailyReport(
-          context: context,
-          userModel: userModel,
-        );
+            context: context,
+            userModel: userModel,
+            remoteMessage: remoteMessage);
       }
     });
     // ignore: missing_return
@@ -70,18 +73,17 @@ class FirebaseNotifications {
   }
 
   static void showNotification(title, body, context, userModel) async {
-    print(body);
+    snackBarMessage(context, message: body);
   }
 }
 
-Future<void> handledGoDailyReport({
-  required BuildContext context,
-  required UserModel userModel,
-}) async {
-  try {
-
-  } catch (e) {
-    print(e);
+Future<void> handledGoDailyReport(
+    {required BuildContext context,
+    required UserModel userModel,
+    required RemoteMessage remoteMessage}) async {
+  if (remoteMessage.data["key"] == "newMessage") {
+    BlocProvider.of<GlobalBloc>(context)
+        .add(GetGroupDataEvent(idGroup: remoteMessage.data["id"]));
   }
 }
 

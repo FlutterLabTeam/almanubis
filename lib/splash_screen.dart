@@ -1,8 +1,7 @@
-import 'package:almanubis/core/components/image/custom_image.dart';
-import 'package:almanubis/core/constant.dart';
-import 'package:almanubis/core/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:almanubis/core/model/user_model.dart';
+import 'package:almanubis/core/components/image/custom_image.dart';
 import 'package:almanubis/features/auth/presentation/bloc/auth_bloc.dart';
 
 class AppSplashScreen extends StatefulWidget {
@@ -54,10 +53,6 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
   }
 
   handledGoHome(UserModel userModel) {
-    if(userModel.rol == adminConstant){
-      Navigator.pushReplacementNamed(context, "/adminPanel", arguments: userModel);
-    }else{
-    Navigator.pushReplacementNamed(context, "/listChat", arguments: userModel);
-    }
+    Navigator.pushReplacementNamed(context, "/home", arguments: userModel);
   }
 }
