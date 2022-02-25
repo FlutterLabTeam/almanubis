@@ -1,13 +1,14 @@
-import 'package:almanubis/features/information_panel_groups/presentation/bloc/information_panel_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:almanubis/core/constant.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:almanubis/core/model/user_model.dart';
 import 'package:almanubis/core/model/group_model.dart';
 import 'package:almanubis/core/util/company_fonts.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:almanubis/core/components/custom_switch/custom_switch.dart';
-import 'package:almanubis/core/components/carousel_image_user/carousel_image_user.dart';
+import 'package:almanubis/core/components/image_user_option/image_user_option.dart';
 import 'package:almanubis/core/components/custom_floating_button/custom_floating_button.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:almanubis/features/information_panel_groups/presentation/bloc/information_panel_bloc.dart';
 
 enum InformationPanelGroupsEnum { admin, user }
 
@@ -37,6 +38,7 @@ class InformationPanelGroups extends StatefulWidget {
 
 class _InformationPanelGroupsState extends State<InformationPanelGroups> {
   bool statusNotification = false;
+  static late Size size;
 
   @override
   void initState() {
@@ -49,6 +51,7 @@ class _InformationPanelGroupsState extends State<InformationPanelGroups> {
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
     return BlocBuilder<InformationPanelBloc, InformationPanelState>(
         builder: (context, state) {
       if (state is ActiveNotificationState) {
@@ -70,95 +73,114 @@ class _InformationPanelGroupsState extends State<InformationPanelGroups> {
 
       return Scaffold(
         backgroundColor: CompanyColor.color().primary,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              alignment: Alignment.center,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: CompanyColor.color().second,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                margin: const EdgeInsets.symmetric(
-                  vertical: 10,
-                ),
-                height: 8,
-                width: MediaQuery.of(context).size.width * 0.2,
-              ),
-            ),
-            Expanded(
-              flex: 0,
-              child: Container(
-                margin: const EdgeInsets.only(
-                    left: 36, right: 36, bottom: 26, top: 50),
-                child: Text(
-                  "Descripción",
-                  style: CompanyFontStyle.style().titleStyleLight,
+        body: SingleChildScrollView(
+          padding: EdgeInsets.only(bottom: size.height * 0.1),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: CompanyColor.color().second,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 10,
+                  ),
+                  height: 8,
+                  width: MediaQuery.of(context).size.width * 0.2,
                 ),
               ),
-            ),
-            Expanded(
-              flex: 0,
-              child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 36, vertical: 10),
-                child: Text(
-                  widget.model.groupModel!.description,
-                  style: CompanyFontStyle.style().textDescription,
-                ),
-              ),
-            ),
-            viewWidget(
-              enumData: widget.model.typeUser!,
-              body: Expanded(
+              Expanded(
                 flex: 0,
                 child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 36, vertical: 20),
+                  margin: EdgeInsets.only(
+                      left: 36,
+                      right: 36,
+                      bottom: size.height * 0.008,
+                      top: size.height * 0.06),
                   child: Text(
-                    "Participantes",
+                    "Descripción",
                     style: CompanyFontStyle.style().titleStyleLight,
                   ),
                 ),
               ),
-            ),
-            viewWidget(
-              enumData: widget.model.typeUser!,
-              body: Expanded(
+              Expanded(
                 flex: 0,
-                child: SizedBox(
-                  height: 100,
-                  width: double.infinity,
-                  child: CarouselImageUser(
-                    model: CarouselImageUserModel(
-                      handledIcon: (e) => handledDeleteUser(e),
-                      listUserData: widget.model.groupModel!.listUser,
+                child: Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 36,
+                    vertical: size.height * 0.008,
+                  ),
+                  child: Text(
+                    widget.model.groupModel!.description,
+                    style: CompanyFontStyle.style().textDescription,
+                  ),
+                ),
+              ),
+              viewWidget(
+                enumData: widget.model.typeUser!,
+                body: Expanded(
+                  flex: 0,
+                  child: Container(
+                    margin: EdgeInsets.only(
+                        left: 36,
+                        right: 36,
+                        top: size.height * 0.017
+                    ),
+                    child: Text(
+                      "Participantes",
+                      style: CompanyFontStyle.style().titleStyleLight,
                     ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 0,
-              child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 36, vertical: 10),
-                child: Text(
-                  "Notificaciones",
-                  style: CompanyFontStyle.style().titleStyleLight,
+              viewWidget(
+                enumData: widget.model.typeUser!,
+                body: Expanded(
+                  flex: 0,
+                  child: GridView.count(
+                    primary: false,
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(20),
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    crossAxisCount: 4,
+                    children: List.generate(
+                        widget.model.groupModel!.listUser.length, (index) {
+                      UserModel item = widget.model.groupModel!.listUser[index];
+                      return ImageUserOption(
+                        model: ImageUserOptionModel(
+                          handledIcon: () => handledDeleteUser(item),
+                          icon: Icons.people,
+                          image: item.image ?? noImage,
+                        ),
+                      );
+                    }),
+                  ),
                 ),
               ),
-            ),
-            Expanded(
+              Expanded(
                 flex: 0,
-                child: CustomSwitch(
-                  label: "Silenciar notificaciones",
-                  state: statusNotification,
-                  handledSwitch: (bool state) =>
-                      handledChangeStateNotification(state),
-                )),
-          ],
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 36),
+                  child: Text(
+                    "Notificaciones",
+                    style: CompanyFontStyle.style().titleStyleLight,
+                  ),
+                ),
+              ),
+              Expanded(
+                  flex: 0,
+                  child: CustomSwitch(
+                    label: "Silenciar notificaciones",
+                    state: statusNotification,
+                    handledSwitch: (bool state) =>
+                        handledChangeStateNotification(state),
+                  )),
+            ],
+          ),
         ),
         floatingActionButton: CustomFloatingButton(
           model: CustomFloatingButtonModel(

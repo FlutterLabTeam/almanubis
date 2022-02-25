@@ -1,9 +1,9 @@
-import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
-import 'package:almanubis/features/chat_group/data/models/element_to_download.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:almanubis/core/components/input_chat/input_chat.dart';
+import 'package:almanubis/features/chat_group/data/models/element_to_download.dart';
 import 'package:almanubis/features/chat_group/presentation/widgets/dropdown_button_widget.dart';
+import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 
 class TextInputOption extends StatelessWidget {
   final Size size;
