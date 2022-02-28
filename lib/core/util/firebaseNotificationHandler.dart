@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:almanubis/core/bloc/global_bloc.dart';
 import 'package:almanubis/core/model/user_model.dart';
-import 'package:almanubis/core/util/snack_bar_message.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:almanubis/core/util/notificationHandler.dart';
 import 'package:almanubis/features/auth/presentation/bloc/auth_bloc.dart';
@@ -73,7 +72,7 @@ class FirebaseNotifications {
   }
 
   static void showNotification(title, body, context, userModel) async {
-    snackBarMessage(context, message: body);
+    print('Handling a background message ${title}');
   }
 }
 
