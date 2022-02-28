@@ -23,15 +23,16 @@ class ListChat extends StatefulWidget {
 
 class _ListChatState extends State<ListChat> {
   static late Size size;
+  static late bool isListenChange;
   static late bool isStreamNotEmpty = false;
-  static late List<GroupModel> listChat = [];
+  static late List<GroupModel> listGroup = [];
   static late Stream<QuerySnapshot> streamData;
   static late List<ChatModel> listMessageChat = [];
 
   @override
   void initState() {
-    BlocProvider.of<ListChatBloc>(context)
-        .add(GetAllListChatEvent(userId: widget.userModel.uid!));
+    isListenChange = false;
+    BlocProvider.of<ListChatBloc>(context).add(GetAllListChatEvent(userId: widget.userModel.uid!));
     super.initState();
   }
 
@@ -88,17 +89,18 @@ class _ListChatState extends State<ListChat> {
                             builder: (context,
                                 AsyncSnapshot<QuerySnapshot> snapShot) {
                               if (snapShot.hasData) {
-                                listChat = snapShot.data!.docs
-                                    .map((e) =>
-                                        GroupModel.fromJson(e.data(), e.id))
-                                    .toList();
+                                listGroup = snapShot.data!.docs.map((e) => GroupModel.fromJson(e.data(), e.id)).toList();
+                                if(isListenChange){
+                                  handledListenChange(snapShot.data!.docChanges);
+                                }
+                                isListenChange = true;
                               }
                               return ListView.builder(
                                 padding: EdgeInsets.symmetric(vertical: size.height * 0.05, horizontal: 25),
-                                itemCount: listChat.length,
+                                itemCount: listGroup.length,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
-                                  GroupModel group = listChat[index];
+                                  GroupModel group = listGroup[index];
                                   int counter = handledCalculateMessage(group);
                                   return CardChatHome(
                                     model: CardChatHomeModel(
@@ -136,14 +138,16 @@ class _ListChatState extends State<ListChat> {
       );
 
   int handledCalculateMessage(GroupModel groupModel) {
-    List<ChatModel> chatModel = listMessageChat
-        .where((element) => element.idGroup == groupModel.id!)
-        .toList();
-    int data = chatModel
-        .where((element) =>
-            element.listUserReceiver.contains(widget.userModel.uid!))
-        .toList()
-        .length;
+    List<ChatModel> chatModel = listMessageChat.where((element) => element.idGroup == groupModel.id!).toList();
+    int data = chatModel.where((element) => element.listUserReceiver.contains(widget.userModel.uid!)).toList().length;
     return data;
+  }
+
+  handledListenChange(List<DocumentChange> dataChange){
+    List<GroupModel> listGroupChange = dataChange.map((e) => GroupModel.fromJson(e.doc.data(), e.doc.id)).toList();
+    for (var element in listGroupChange) {
+      ChatModel chatModel = ChatModel.fromJsonNoData(idGroup: element.id, listUserReceiver: [widget.userModel.uid!]);
+      listMessageChat.add(chatModel);
+    }
   }
 }

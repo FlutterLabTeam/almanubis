@@ -38,6 +38,19 @@ class ChatModel {
     listUserReceiver: List<String>.from(json["listUserReceiver"].map((x) => x)),
   );
 
+  factory ChatModel.fromJsonNoData({String? idGroup, List<String>? listUserReceiver}) => ChatModel(
+    id: '',
+    label: "",
+    nameUser: "",
+    imageUser: "",
+    idUserCreate: "",
+    listUserViewed: [],
+    idGroup: idGroup??"",
+    dateCreate: DateTime.now(),
+    dataAsset: AssetModel.fromJsonNoData(),
+    listUserReceiver: listUserReceiver??[],
+  );
+
   Map<String, dynamic> toJson() => {
     "label": label,
     "idGroup": idGroup,
