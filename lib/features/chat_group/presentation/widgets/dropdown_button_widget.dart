@@ -19,7 +19,7 @@ class DropdownButtonWidget extends StatelessWidget {
           .map((IconData e) => DropdownMenuItem(
                 child: Icon(
                   e,
-                  size: 30,
+                  size: 25,
                   color: Colors.white,
                 ),
                 value: e,

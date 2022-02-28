@@ -123,7 +123,7 @@ class _UserConfigurationState extends State<UserConfiguration> {
                 ),
                 floatingActionButton: CustomFloatingButton(
                   model: CustomFloatingButtonModel(
-                    icon: Icons.save,
+                    icon: Icons.check,
                     loadingButton: loadingButton,
                     handledIcon: () => path.isNotEmpty
                         ? saveImage()

@@ -63,7 +63,7 @@ class _NewGroupState extends State<NewGroup> {
                     ),
                   ),
                   SizedBox(
-                    height: listUserData.isNotEmpty ? size.height * 0.12 : 0,
+                    height: listUserData.isNotEmpty ? size.height * 0.13 : 0,
                     width: double.infinity,
                     child: CarouselImageUser(
                       model: CarouselImageUserModel(
@@ -86,18 +86,16 @@ class _NewGroupState extends State<NewGroup> {
                   Flexible(
                     fit: FlexFit.loose,
                     flex: 1,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      child: SizedBox(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: listAllUser.length,
-                          itemBuilder: (context, index) => Container(
-                            margin: const EdgeInsets.symmetric(vertical: 10),
-                            child: SelectedItem(
-                              userModel: listAllUser[index],
-                              handledSelectedUser: handledSelectedUser,
-                            ),
+                    child: SizedBox(
+                      child: ListView.builder(
+                        padding: EdgeInsets.only(top: size.height * 0.03, bottom: size.height * 0.1, left: 20, right: 20),
+                        shrinkWrap: true,
+                        itemCount: listAllUser.length,
+                        itemBuilder: (context, index) => Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          child: SelectedItem(
+                            userModel: listAllUser[index],
+                            handledSelectedUser: handledSelectedUser,
                           ),
                         ),
                       ),

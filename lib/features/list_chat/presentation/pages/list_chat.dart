@@ -1,4 +1,3 @@
-import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/constant.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +10,7 @@ import 'package:almanubis/core/components/appbar/custom_appbar.dart';
 import 'package:almanubis/core/components/cart_chat_home/card_chat_home.dart';
 import 'package:almanubis/features/chat_group/presentation/pages/chat_group.dart';
 import 'package:almanubis/features/list_chat/presentation/bloc/list_chat_bloc.dart';
+import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 
 class ListChat extends StatefulWidget {
   final UserModel userModel;
@@ -30,7 +30,8 @@ class _ListChatState extends State<ListChat> {
 
   @override
   void initState() {
-    BlocProvider.of<ListChatBloc>(context).add(GetAllListChatEvent(userId: widget.userModel.uid!));
+    BlocProvider.of<ListChatBloc>(context)
+        .add(GetAllListChatEvent(userId: widget.userModel.uid!));
     super.initState();
   }
 
@@ -93,26 +94,20 @@ class _ListChatState extends State<ListChat> {
                                     .toList();
                               }
                               return ListView.builder(
+                                padding: EdgeInsets.symmetric(vertical: size.height * 0.05, horizontal: 25),
                                 itemCount: listChat.length,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   GroupModel group = listChat[index];
                                   int counter = handledCalculateMessage(group);
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                    child: CardChatHome(
-                                      model: CardChatHomeModel(
-                                          title: group.title,
-                                          dateTime: group.dateUpdate ??
-                                              group.dateCreate,
-                                          description: group.description,
-                                          counter: counter,
-                                          imageUrl: group.image.isEmpty
-                                              ? noImage
-                                              : group.image,
-                                          handledCart: () =>
-                                              handledPushChat(group)),
+                                  return CardChatHome(
+                                    model: CardChatHomeModel(
+                                        counter: counter,
+                                        title: group.title,
+                                        description: group.description,
+                                        handledCart: () => handledPushChat(group),
+                                        dateTime: group.dateUpdate ?? group.dateCreate,
+                                        imageUrl: group.image.isEmpty ? noImage : group.image,
                                     ),
                                   );
                                 },

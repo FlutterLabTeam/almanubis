@@ -45,7 +45,7 @@ class SaveGroupStateView extends State<SaveGroup> {
     super.initState();
     isSubmit = true;
     listUserModel = widget.listUser;
-    heightHeader =  0.35;
+    heightHeader =  0.40;
     _formKey = GlobalKey<FormState>();
     titleGroupController = TextEditingController();
     descriptionGroupController = TextEditingController();
@@ -165,16 +165,33 @@ class SaveGroupStateView extends State<SaveGroup> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            margin: const EdgeInsets.symmetric(
-                              vertical: 20,
-                              horizontal: 20,
-                            ),
-                            child: Text(
-                              "Participantes",
-                              style: CompanyFontStyle.style().titleStyleLight,
-                            ),
+                          Row(
+                            children: [
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 20,
+                                  horizontal: 20,
+                                ),
+                                child: Text(
+                                  "Participantes",
+                                  style: CompanyFontStyle.style().titleStyleLight,
+                                ),
+                              ),
+                              Container(
+                                height: 25,
+                                width: 25,
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.all(3),
+                                decoration: BoxDecoration(color: CompanyColor.color().second),
+                                child: Text(
+                                  listUserModel.length.toString(),
+                                  style: CompanyFontStyle.style().labelCounterStyle,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              )
+                            ],
                           ),
                           GridView.count(
                             primary: false,
@@ -212,7 +229,7 @@ class SaveGroupStateView extends State<SaveGroup> {
                 }
                 return CustomFloatingButton(
                   model: CustomFloatingButtonModel(
-                    icon: Icons.arrow_forward,
+                    icon: Icons.check,
                     loadingButton: loadingButton,
                     handledIcon: () => loadingButton ? () {} : saveImage(),
                   ),
@@ -256,7 +273,7 @@ class SaveGroupStateView extends State<SaveGroup> {
         );
       }
     }else {
-      heightHeader = 0.42;
+      heightHeader = 0.46;
       BlocProvider.of<SaveGroupBloc>(context).add(InitStateSaveGroupEvent());
     }
   }

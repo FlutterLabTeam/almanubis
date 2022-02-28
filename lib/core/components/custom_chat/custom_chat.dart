@@ -43,87 +43,90 @@ class CustomChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    return Column(
-      crossAxisAlignment: model.color == CustomChatColor.light
-          ? CrossAxisAlignment.end
-          : CrossAxisAlignment.start,
-      children: [
-        model.chatModel.label.isNotEmpty
-            ? Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  model.color == CustomChatColor.dark
-                      ? Expanded(
-                          flex: 0,
-                          child: SquareImage(
-                            model: SquareImageModel(
-                              urlImage: model.chatModel.imageUser,
-                              size: size.width * 0.12,
+    return Container(
+      margin: EdgeInsets.only(bottom: size.height * 0.02),
+      child: Column(
+        crossAxisAlignment: model.color == CustomChatColor.light
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
+        children: [
+          model.chatModel.label.isNotEmpty
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    model.color == CustomChatColor.dark
+                        ? Expanded(
+                            flex: 0,
+                            child: SquareImage(
+                              model: SquareImageModel(
+                                urlImage: model.chatModel.imageUser,
+                                size: size.width * 0.12,
+                              ),
+                            ),
+                          )
+                        : Expanded(
+                            flex: 0,
+                            child: Text(
+                              dateFormatHour(model.chatModel.dateCreate),
+                              style: CompanyFontStyle.style().dateFont,
                             ),
                           ),
-                        )
-                      : Expanded(
-                          flex: 0,
-                          child: Text(
-                            dateFormatHour(model.chatModel.dateCreate),
-                            style: CompanyFontStyle.style().dateFont,
-                          ),
+                    Expanded(
+                      flex: 4,
+                      child: Container(
+                        margin:
+                        EdgeInsets.symmetric(horizontal: size.width * 0.02),
+                        child: CartChat(
+                          size: size,
+                          model: CartChatModel(
+                              color: handledGenerateColor(model.color!),
+                              textChat: model.chatModel.label),
                         ),
-                  Expanded(
-                    flex: 4,
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: size.width * 0.02),
-                      child: CartChat(
-                        size: size,
-                        model: CartChatModel(
-                            color: handledGenerateColor(model.color!),
-                            textChat: model.chatModel.label),
                       ),
                     ),
+                    model.color == CustomChatColor.dark
+                        ? Expanded(
+                            flex: 0,
+                            child: Text(
+                              dateFormatHour(model.chatModel.dateCreate),
+                              style: CompanyFontStyle.style().dateFont,
+                            ),
+                          )
+                        : Container(),
+                  ],
+                )
+              : Container(),
+          model.chatModel.dataAsset.urlAsset.isNotEmpty
+              ? DownloadImageWidget(
+                  model: DownloadImageWidgetModel(
+                    chatModel: model.chatModel,
+                    playAudio: model.playAudio,
+                    downloadAudio: model.downloadAudio,
+                    downloadVideo: model.downloadVideo,
+                    downloadImage: model.downloadImage,
+                    image: model.chatModel.dataAsset.urlAsset,
+                    color: handledGenerateAssetsColor(model.color!),
+                    elementToDownload: handledGenerateAssetsType(
+                        model.chatModel.dataAsset.typeAsset),
                   ),
-                  model.color == CustomChatColor.dark
-                      ? Expanded(
-                          flex: 0,
-                          child: Text(
-                            dateFormatHour(model.chatModel.dateCreate),
-                            style: CompanyFontStyle.style().dateFont,
-                          ),
-                        )
-                      : Container(),
-                ],
-              )
-            : Container(),
-        model.chatModel.dataAsset.urlAsset.isNotEmpty
-            ? DownloadImageWidget(
-                model: DownloadImageWidgetModel(
-                  chatModel: model.chatModel,
-                  playAudio: model.playAudio,
-                  downloadAudio: model.downloadAudio,
-                  downloadVideo: model.downloadVideo,
-                  downloadImage: model.downloadImage,
-                  image: model.chatModel.dataAsset.urlAsset,
-                  color: handledGenerateAssetsColor(model.color!),
-                  elementToDownload: handledGenerateAssetsType(
-                      model.chatModel.dataAsset.typeAsset),
+                )
+              : Container(),
+          model.color == CustomChatColor.light
+              ? Container()
+              : Container(
+                  margin: EdgeInsets.only(
+                    left: size.width * 0.15,
+                    right: size.width * 0.15,
+                    top: size.height * 0.002,
+                    bottom: size.height * 0.007,
+                  ),
+                  child: Text(
+                    model.chatModel.nameUser,
+                    style: CompanyFontStyle.style().textCartChatDarkStyle,
+                  ),
                 ),
-              )
-            : Container(),
-        model.color == CustomChatColor.light
-            ? Container()
-            : Container(
-                margin: EdgeInsets.only(
-                  left: size.width * 0.15,
-                  right: size.width * 0.15,
-                  top: size.height * 0.002,
-                  bottom: size.height * 0.007,
-                ),
-                child: Text(
-                  model.chatModel.nameUser,
-                  style: CompanyFontStyle.style().textCartChatDarkStyle,
-                ),
-              ),
-      ],
+        ],
+      ),
     );
   }
 
