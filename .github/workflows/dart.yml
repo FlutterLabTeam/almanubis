@@ -22,4 +22,4 @@ jobs:
     # Get flutter packages
     - run: flutter pub get
     # Build :D 
-    - run: flutter build aot
+    - run: flutter build apk
