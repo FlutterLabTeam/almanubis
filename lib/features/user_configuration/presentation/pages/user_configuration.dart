@@ -148,6 +148,7 @@ class _UserConfigurationState extends State<UserConfiguration> {
 
   handledTakeImage() => BlocProvider.of<GlobalBloc>(context).add(
         TakeImageEvent(
+          isPhoto: false,
           imageQualityModel:
               ImageQualityModel(size: ImageSizeEnum.l, imageQuality: 70),
         ),

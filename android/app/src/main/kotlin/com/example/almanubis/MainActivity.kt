@@ -1,4 +1,4 @@
-package com.example.almanubis
+package com.flutterlab.almanubis
 
 import io.flutter.embedding.android.FlutterActivity
 

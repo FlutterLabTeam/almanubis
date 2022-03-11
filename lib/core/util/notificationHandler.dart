@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationHandler {
-  static final flutterLocalNotificationPlugin = FlutterLocalNotificationsPlugin();
+  static final flutterLocalNotificationPlugin =
+      FlutterLocalNotificationsPlugin();
   static late BuildContext myContext;
 
   static void initNotification(BuildContext context) {
@@ -13,16 +14,22 @@ class NotificationHandler {
     var initSetting = InitializationSettings(android: initAndroid, iOS: initIOS);
     flutterLocalNotificationPlugin.initialize(initSetting, onSelectNotification: onSelectNotification);*/
 
-
-
-
-    var initAndroid = const AndroidInitializationSettings("@drawable/launch_background");
-    var androidPlatformChannelSpecifics = const AndroidNotificationDetails('rutasChanle', 'rutas', '', playSound: true, sound: RawResourceAndroidNotificationSound('assets/song/AEROTAXISMARY-1.mp3'));
-    var initIOS = const IOSInitializationSettings(onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    var initAndroid =
+        const AndroidInitializationSettings("@drawable/launch_background");
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+        'rutasChanle', 'rutas',
+        playSound: true,
+        sound: RawResourceAndroidNotificationSound(
+            'assets/song/AEROTAXISMARY-1.mp3'));
+    var initIOS = const IOSInitializationSettings(
+        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
     var iOSPlatformChannelSpecifics = const IOSNotificationDetails();
-    var initializationSettings = InitializationSettings(android: initAndroid, iOS:  initIOS);
+    var initializationSettings =
+        InitializationSettings(android: initAndroid, iOS: initIOS);
     flutterLocalNotificationPlugin.initialize(initializationSettings);
-    NotificationDetails(android: androidPlatformChannelSpecifics,iOS:  iOSPlatformChannelSpecifics);
+    NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
   }
 
   static Future onDidReceiveLocalNotification(
@@ -34,13 +41,14 @@ class NotificationHandler {
     showDialog(
         context: myContext,
         builder: (builder) => CupertinoAlertDialog(
-              title: Text(title??""),
-              content: Text(body??""),
+              title: Text(title ?? ""),
+              content: Text(body ?? ""),
               actions: [
                 CupertinoDialogAction(
                   child: const Text('OK'),
                   isDefaultAction: true,
-                  onPressed: () => Navigator.of(myContext, rootNavigator: true).pop('false'),
+                  onPressed: () =>
+                      Navigator.of(myContext, rootNavigator: true).pop('false'),
                 ),
               ],
             ));

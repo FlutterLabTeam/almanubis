@@ -45,7 +45,7 @@ class SaveGroupStateView extends State<SaveGroup> {
     super.initState();
     isSubmit = true;
     listUserModel = widget.listUser;
-    heightHeader =  0.40;
+    heightHeader = 0.40;
     _formKey = GlobalKey<FormState>();
     titleGroupController = TextEditingController();
     descriptionGroupController = TextEditingController();
@@ -175,7 +175,8 @@ class SaveGroupStateView extends State<SaveGroup> {
                                 ),
                                 child: Text(
                                   "Participantes",
-                                  style: CompanyFontStyle.style().titleStyleLight,
+                                  style:
+                                      CompanyFontStyle.style().titleStyleLight,
                                 ),
                               ),
                               Container(
@@ -183,10 +184,12 @@ class SaveGroupStateView extends State<SaveGroup> {
                                 width: 25,
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.all(3),
-                                decoration: BoxDecoration(color: CompanyColor.color().second),
+                                decoration: BoxDecoration(
+                                    color: CompanyColor.color().second),
                                 child: Text(
                                   listUserModel.length.toString(),
-                                  style: CompanyFontStyle.style().labelCounterStyle,
+                                  style: CompanyFontStyle.style()
+                                      .labelCounterStyle,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -254,8 +257,10 @@ class SaveGroupStateView extends State<SaveGroup> {
       BlocProvider.of<SaveGroupBloc>(context)
           .add(ChangeStateEvent(userModel: userModel));
 
-  handledTakeImage() => BlocProvider.of<GlobalBloc>(context)
-      .add(TakeImageEvent(imageQualityModel: ImageQualityModel()));
+  handledTakeImage() => BlocProvider.of<GlobalBloc>(context).add(TakeImageEvent(
+        isPhoto: false,
+        imageQualityModel: ImageQualityModel(),
+      ));
 
   saveImage() {
     if (_formKey.currentState!.validate()) {
@@ -272,7 +277,7 @@ class SaveGroupStateView extends State<SaveGroup> {
           message: "Es necesario que el grupo tenga una foto",
         );
       }
-    }else {
+    } else {
       heightHeader = 0.46;
       BlocProvider.of<SaveGroupBloc>(context).add(InitStateSaveGroupEvent());
     }

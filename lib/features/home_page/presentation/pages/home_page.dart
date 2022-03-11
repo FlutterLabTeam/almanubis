@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.userModel.rol == "ADMIN" ? 1 : 0;
+    _selectedIndex = 0;
     firebaseNotifications.setUpFirebase(
         context: context, userModel: widget.userModel);
   }
@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return BlocListener<GlobalBloc, GlobalState>(
       listener: (context, state) {
-        if(state is GetGroupDataState){
+        if (state is GetGroupDataState) {
           Navigator.of(context).pushNamed(
             '/chatGroup',
             arguments: ChatGroupModel(

@@ -15,6 +15,7 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
   @override
   void initState() {
     super.initState();
+
     BlocProvider.of<AuthBloc>(context).add(ValidateUserLoggedEvent());
   }
 
@@ -42,9 +43,7 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: CustomImage(
-              model: CustomImageModel(
-                color: CustomImageColor.dark
-              ),
+              model: CustomImageModel(color: CustomImageColor.dark),
             ),
           ),
         ),

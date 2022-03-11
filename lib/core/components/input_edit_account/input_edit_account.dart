@@ -24,7 +24,7 @@ class InputEditAccountModel {
   });
 }
 
-class InputEditAccount extends StatelessWidget {
+class InputEditAccount extends StatefulWidget {
   final InputEditAccountModel model;
 
   const InputEditAccount({
@@ -33,28 +33,51 @@ class InputEditAccount extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<InputEditAccount> createState() => _InputEditAccountState();
+}
+
+class _InputEditAccountState extends State<InputEditAccount> {
+  FocusNode focusNode = FocusNode();
+  bool isFocused = false;
+
+  @override
+  void initState() {
+    super.initState();
+    focusNode.addListener(() {
+      if (focusNode.hasFocus) {
+        isFocused = true;
+      }
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    BorderSide borderSide = const BorderSide(width: 0, color: Colors.transparent);
+    BorderSide borderSide =
+        const BorderSide(width: 0, color: Colors.transparent);
+
     return TextFormField(
+      focusNode: focusNode,
       autofocus: false,
-      controller: model.controller,
-      obscureText: model.isObscure,
-      style: _getStyleTextInput(model.typeInput),
+      controller: widget.model.controller,
+      obscureText: widget.model.isObscure,
+      style: _getStyleTextInput(widget.model.typeInput),
       textAlign: TextAlign.center,
       cursorColor: CompanyColor.color().primary,
       keyboardType: TextInputType.text,
-      validator: (e) => model.validator != null ? model.validator!(e) : null,
+      validator: (e) =>
+          widget.model.validator != null ? widget.model.validator!(e) : null,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(vertical: 1),
-        hintText: model.label,
-        hintStyle: _getStyleTextInput(model.typeInput),
+        hintText: (isFocused) ? '' : widget.model.label,
+        hintStyle: _getStyleTextInput(widget.model.typeInput),
         border: OutlineInputBorder(
           borderSide: borderSide,
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderSide: borderSide,
         ),
-    /*    errorBorder: OutlineInputBorder(
+        /*    errorBorder: OutlineInputBorder(
           borderSide: borderSide,
         ),*/
         disabledBorder: OutlineInputBorder(
@@ -69,22 +92,21 @@ class InputEditAccount extends StatelessWidget {
       ),
     );
   }
+}
 
-
-  TextStyle _getStyleTextInput(InputEditAccountType type) {
-    switch (type) {
-      case InputEditAccountType.title:
-        return TextStyle(
-          color: CompanyColor.color().primary,
-          fontWeight: FontWeight.w500,
-          fontSize: 25,
-        );
-      case InputEditAccountType.description:
-        return TextStyle(
-          color: CompanyColor.color().primary,
-          fontWeight: FontWeight.w400,
-          fontSize: 16,
-        );
-    }
+TextStyle _getStyleTextInput(InputEditAccountType type) {
+  switch (type) {
+    case InputEditAccountType.title:
+      return TextStyle(
+        color: CompanyColor.color().primary,
+        fontWeight: FontWeight.w500,
+        fontSize: 25,
+      );
+    case InputEditAccountType.description:
+      return TextStyle(
+        color: CompanyColor.color().primary,
+        fontWeight: FontWeight.w400,
+        fontSize: 16,
+      );
   }
 }
