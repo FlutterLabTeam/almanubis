@@ -11,7 +11,7 @@ class ImageUserModel {
   final IconData icon;
   final double? size;
   final ImageUserColor? color;
-  final Function handledIcon;
+  final Function() handledIcon;
 
   ImageUserModel({
     this.size = 50,

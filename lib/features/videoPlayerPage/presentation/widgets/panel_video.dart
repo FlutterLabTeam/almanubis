@@ -6,8 +6,8 @@ import 'package:video_player/video_player.dart';
 class PanelVideo extends StatelessWidget {
   final Size size;
   final String time;
-  final Function handledTapVolume;
-  final Function handledActiveVideo;
+  final Function() handledTapVolume;
+  final Function() handledActiveVideo;
   final Function(double, bool) setPlaybackSpeed;
   final VideoPlayerController controller;
 
@@ -60,7 +60,7 @@ class PanelVideo extends StatelessWidget {
     );
   }
 
-  Widget generateIcons({required IconData icon, required Function handled}) {
+  Widget generateIcons({required IconData icon, required Function() handled}) {
     return Expanded(
       child: IconButton(
         onPressed: () => handled(),

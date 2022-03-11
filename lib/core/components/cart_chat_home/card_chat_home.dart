@@ -10,7 +10,7 @@ class CardChatHomeModel {
   final String imageUrl;
   final DateTime dateTime;
   final String description;
-  final Function handledCart;
+  final Function() handledCart;
 
   CardChatHomeModel({
     required this.title,

@@ -12,7 +12,7 @@ class InputEditAccountModel {
   final String label;
   final bool isObscure;
   final Function(dynamic)? validator;
-  final Function? tapIcon;
+  final Function()? tapIcon;
 
   InputEditAccountModel({
     this.typeInput = InputEditAccountType.title,

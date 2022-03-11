@@ -9,12 +9,12 @@ class TextInputOption extends StatelessWidget {
   final bool isSend;
   final String labelInput;
   final bool loadingButton;
-  final Function saveVideo;
+  final Function() saveVideo;
   final List<String> mediaList;
-  final Function handledTapCamara;
-  final Function handledTapOption;
-  final Function handledPlayAudio;
-  final Function handledSubmitChat;
+  final Function() handledTapCamara;
+  final Function(dynamic) handledTapOption;
+  final Function() handledPlayAudio;
+  final Function() handledSubmitChat;
   final TextEditingController controller;
   final ElementToDownload elementToDownload;
   final Function(String) handledChangeInput;

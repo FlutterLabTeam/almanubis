@@ -10,7 +10,7 @@ class CustomFloatingButtonModel {
   final IconData icon;
   final double? size;
   final CustomFloatingButtonColor? color;
-  final Function handledIcon;
+  final Function() handledIcon;
   final bool? loadingButton;
 
   CustomFloatingButtonModel({

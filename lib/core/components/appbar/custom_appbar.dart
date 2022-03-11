@@ -7,7 +7,7 @@ class CustomAppBarModel {
   final Widget body;
   final double? height;
   final bool? disableGoBack;
-  final Function handledGoBack;
+  final Function() handledGoBack;
   final ElevationCount elevation;
 
   CustomAppBarModel({

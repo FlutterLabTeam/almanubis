@@ -6,8 +6,8 @@ class HeaderChatModel {
   final String title;
   final String image;
   final String description;
-  final Function handledMenu;
-  final Function? handledGoBack;
+  final Function() handledMenu;
+  final Function()? handledGoBack;
 
   HeaderChatModel({
     required this.title,

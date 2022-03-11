@@ -10,7 +10,7 @@ enum CustomButtonColor {
 class CustomButtonModel {
   final CustomButtonColor color;
   final String label;
-  final Function handledButton;
+  final Function() handledButton;
 
   CustomButtonModel({
     this.label = "",

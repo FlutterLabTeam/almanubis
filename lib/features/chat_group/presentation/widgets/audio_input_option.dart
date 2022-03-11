@@ -9,13 +9,13 @@ class AudioInputOption extends StatelessWidget {
   final bool isSend;
   final String counter;
   final bool loadingButton;
-  final Function saveAudio;
+  final Function() saveAudio;
   final List<String> mediaList;
-  final Function handledPlayAudio;
-  final Function handledSubmitAudio;
-  final Function handledDeleteAudio;
-  final Function handledListenAudio;
-  final Function handledStopRecorder;
+  final Function() handledPlayAudio;
+  final Function() handledSubmitAudio;
+  final Function() handledDeleteAudio;
+  final Function() handledListenAudio;
+  final Function() handledStopRecorder;
   final AudioInputState audioInputState;
 
   const AudioInputOption({
@@ -145,7 +145,7 @@ class AudioInputOption extends StatelessWidget {
   handledIcon({
     required IconData icon,
     required Color color,
-    required Function handled,
+    required Function() handled,
   }) {
     return IconButton(
       onPressed: () => handled(),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class DropdownButtonWidget extends StatelessWidget {
   final List<IconData> listElement;
-  final Function handledTapInOption;
+  final Function(dynamic) handledTapInOption;
 
   const DropdownButtonWidget({Key? key, required this.listElement, required this.handledTapInOption})
       : super(key: key);

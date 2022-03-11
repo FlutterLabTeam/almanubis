@@ -5,7 +5,7 @@ import 'package:video_player/video_player.dart';
 class BodyVideo extends StatelessWidget {
   final Size size;
   final Widget body;
-  final Function handledTap;
+  final Function() handledTap;
   final VideoPlayerController controller;
 
   const BodyVideo({

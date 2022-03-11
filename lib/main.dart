@@ -47,8 +47,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Almanubis',
-        theme: ThemeData(
-            primaryColor: Colors.white, scaffoldBackgroundColor: Colors.white),
+        theme: ThemeData(primaryColor: Colors.white, scaffoldBackgroundColor: Colors.white),
         onGenerateRoute: Routes.generateRoute,
       ),
     );

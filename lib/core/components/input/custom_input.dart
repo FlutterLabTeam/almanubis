@@ -15,7 +15,7 @@ class CustomInputColorModel {
   final String label;
   final bool isObscure;
   final Function(dynamic)? validator;
-  final Function? tapIcon;
+  final Function()? tapIcon;
 
   CustomInputColorModel({
     this.typeInput = CustomInputType.string,

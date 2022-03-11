@@ -15,7 +15,7 @@ class ImageUser extends StatelessWidget {
   final String? image;
   static late Size size;
   final TypeImage? typeImage;
-  final Function handledTakeImage;
+  final Function() handledTakeImage;
 
   const ImageUser({
     Key? key,
