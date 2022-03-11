@@ -19,7 +19,7 @@ class AssetModel {
         millisecondTime: json["millisecondTime"] ?? 0,
       );
 
-  factory AssetModel.fromJsonNoData(Map<String, dynamic> json) => AssetModel(
+  factory AssetModel.fromJsonNoData() => AssetModel(
     counted: 0,
     urlAsset: "",
     typeAsset: "",

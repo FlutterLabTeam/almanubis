@@ -70,11 +70,12 @@ class InputChat extends StatelessWidget {
           ),
         )
             : null,
+        contentPadding: const EdgeInsets.symmetric(vertical: 0),
         hintText: model.label,
         hintStyle: TextStyle(
           color: CompanyColor.color().third,
           fontWeight: FontWeight.w500,
-          fontSize: 16,
+          fontSize: 17,
         ),
         border: OutlineInputBorder(
           borderSide: borderSide,

@@ -14,12 +14,14 @@ enum TypeImage {
 class ImageUser extends StatelessWidget {
   final String? image;
   static late Size size;
+  final double? sizeParams;
   final TypeImage? typeImage;
   final Function() handledTakeImage;
 
   const ImageUser({
     Key? key,
     this.image,
+    this.sizeParams,
     this.typeImage = TypeImage.networkType,
     required this.handledTakeImage,
   }) : super(key: key);
@@ -32,8 +34,8 @@ class ImageUser extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.all(10),
-          height: size.width * 0.35,
-          width: size.width * 0.35,
+          height: sizeParams ?? size.width * 0.43,
+          width: sizeParams ?? size.width * 0.43,
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(

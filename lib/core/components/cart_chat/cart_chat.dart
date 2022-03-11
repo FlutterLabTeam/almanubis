@@ -34,7 +34,7 @@ class CartChat extends StatelessWidget {
             ? Expanded(
                 flex: 0,
                 child: SizedBox(
-                  width: size.height * 0.03,
+                  width: size.height * 0.02,
                   height: size.height * 0.02,
                   child: CustomPaint(
                     painter: _MyCheck(_getColor(model.color!)),
@@ -62,7 +62,7 @@ class CartChat extends StatelessWidget {
             ? Expanded(
                 flex: 0,
                 child: SizedBox(
-                  width: size.height * 0.03,
+                  width: size.height * 0.02,
                   height: size.height * 0.02,
                   child: CustomPaint(
                     painter: _MyLightCheck(_getColor(model.color!)),
@@ -77,9 +77,9 @@ class CartChat extends StatelessWidget {
   Color _getColor(CartChatColor color) {
     switch (color) {
       case CartChatColor.light:
-        return CompanyColor.color().second;
+        return CompanyColor.color().second80;
       case CartChatColor.dark:
-        return CompanyColor.color().primary;
+        return CompanyColor.color().primary80;
     }
   }
 }

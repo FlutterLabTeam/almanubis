@@ -1,82 +1,71 @@
 import 'package:almanubis/core/util/company_colors.dart';
 import 'package:flutter/material.dart';
 
-enum CustomNavigationBarColors {
-  black,
-  white,
-}
-
-class CustomNavigationBarModel {
-  final CustomNavigationBarColors color;
-
-  CustomNavigationBarModel({
-    this.color = CustomNavigationBarColors.black,
-  });
+enum TypeUser {
+  admin,
+  user,
 }
 
 class CustomNavigationBar extends StatelessWidget {
-  final void Function()? onTapMessage;
-  final void Function()? onTapPerson;
-  final void Function()? onTapPlus;
-  final CustomNavigationBarModel model;
+  final int selectedIndex;
+  final TypeUser typeUser;
+  final Function(int) onItemTapped;
 
   const CustomNavigationBar({
     Key? key,
-    required this.model,
-    this.onTapMessage,
-    this.onTapPerson,
-    this.onTapPlus,
+    required this.typeUser,
+    required this.onItemTapped,
+    required this.selectedIndex,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: CompanyColor.color().primary,
-    /*    boxShadow: const [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 10,
-            spreadRadius: 5,
-          ),
-        ],*/
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: IconButton(
-              icon: Icon(
-                Icons.message_rounded,
-                color: CompanyColor.color().third,
-                size: 25,
-              ),
-              onPressed: onTapMessage,
-            ),
-          ),
-          if (onTapPlus != null)
-            Expanded(
-              child: IconButton(
-                icon: Icon(
-                  Icons.add_rounded,
-                  size: 35,
-                  color: CompanyColor.color().second,
-                ),
-                onPressed: onTapPlus,
-              ),
-            ),
-          Expanded(
-            child: IconButton(
-              icon: Icon(
-                Icons.person,
-                color: CompanyColor.color().third,
-                size: 25,
-              ),
-              onPressed: onTapPerson,
-            ),
-          ),
-        ],
-      ),
+    return BottomNavigationBar(
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      items: handledGenerateItem(typeUser),
+      currentIndex: selectedIndex,
+      unselectedItemColor: CompanyColor
+          .color()
+          .third,
+      selectedItemColor: CompanyColor
+          .color()
+          .second,
+      backgroundColor: CompanyColor
+          .color()
+          .primary,
+      onTap: (int index) => onItemTapped(index),
     );
+  }
+
+  List<BottomNavigationBarItem> handledGenerateItem(TypeUser typeUser) {
+    switch (typeUser) {
+      case TypeUser.admin:
+        return const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.message_rounded, size: 27,),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_rounded, size: 27,),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person, size: 27,),
+            label: '',
+          ),
+        ];
+      case TypeUser.user:
+        return const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.message_rounded, size: 27,),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person, size: 27,),
+            label: '',
+          ),
+        ];
+    }
   }
 }

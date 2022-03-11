@@ -61,14 +61,18 @@ class ChatInput extends StatelessWidget {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return Container(
+      margin: EdgeInsets.only(
+        right: size.width * 0.04,
+        left: size.width * 0.04,
+        bottom: size.height * 0.02,
+      ),
       width: size.width,
-      color: CompanyColor.color().primary,
+      color: CompanyColor.color().primary90,
       child: Column(
         children: [
           handledSelectedTypeInput(typeInputChat),
           mediaList.isNotEmpty
               ? SizedBox(
-                  height: size.height * 0.11,
                   width: size.width,
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -100,7 +104,7 @@ class ChatInput extends StatelessWidget {
           saveVideo: saveVideo,
           controller: controller,
           loadingButton: loadingButton,
-          labelInput: labelInput??"Mensaje",
+          labelInput: labelInput ?? "Mensaje",
           handledPlayAudio: handledPlayAudio,
           handledTapOption: handledTapOption,
           handledTapCamara: handledTapCamara,

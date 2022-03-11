@@ -1,3 +1,4 @@
+import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:almanubis/core/util/company_colors.dart';
 
@@ -34,7 +35,9 @@ class CustomFloatingButton extends StatelessWidget {
       backgroundColor: handledGenerateColor(model.color!),
       shape: const RoundedRectangleBorder(),
       child: model.loadingButton!
-          ? const CircularProgressIndicator()
+          ? const CustomCircularProgressIndicator(
+              colorType: ColorType.dark,
+            )
           : Icon(
               model.icon,
               size: model.size!,

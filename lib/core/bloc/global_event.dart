@@ -66,3 +66,11 @@ class UpdateImageEvent implements GlobalEvent {
 }
 
 class DisposeEvent implements GlobalEvent {}
+class GetGroupDataEvent implements GlobalEvent {
+
+  final String idGroup;
+
+  GetGroupDataEvent({required this.idGroup});
+
+}
+class InitStateGlobalEvent implements GlobalEvent {}

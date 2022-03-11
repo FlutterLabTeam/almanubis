@@ -1,3 +1,4 @@
+import 'package:almanubis/core/model/group_model.dart';
 import 'package:dartz/dartz.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/exceptions.dart';
@@ -85,6 +86,16 @@ class GlobalRepositoryImpl implements GlobalRepository {
   Future<Either<Failure, String>> takeVideo() async {
     try {
       final response = await globalDataSource.takeVideo();
+      return Right(response);
+    } on RegisterEmailException {
+      return Left(RegisterEmailFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, GroupModel>> getGroupData({required String idGroup}) async {
+    try {
+      final response = await globalDataSource.getGroupData(idGroup: idGroup);
       return Right(response);
     } on RegisterEmailException {
       return Left(RegisterEmailFailure());

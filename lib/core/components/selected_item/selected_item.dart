@@ -17,48 +17,51 @@ class SelectedItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => handledSelectedUser(userModel),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 0,
-            child: SquareImage(
-              model: SquareImageModel(
-                urlImage: userModel.image ?? noImage,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                userModel.name,
-                style: CompanyFontStyle.style().textCartChatDarkStyle,
-                textAlign: TextAlign.start,
-              ),
-            ),
-          ),
-          Expanded(
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      child: GestureDetector(
+        onTap: () => handledSelectedUser(userModel),
+        child: Row(
+          children: [
+            Expanded(
               flex: 0,
+              child: SquareImage(
+                model: SquareImageModel(
+                  urlImage: userModel.image ?? noImage,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
               child: Container(
-                margin: const EdgeInsets.only(left: 40),
-                decoration: BoxDecoration(
-                  color: userModel.state!
-                      ? CompanyColor.color().primary
-                      : CompanyColor.color().third,
-                  border: Border.all(
-                    width: 1.2,
-                    color: CompanyColor.color().primary,
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  userModel.name,
+                  style: CompanyFontStyle.style().textCartChatDarkStyle,
+                  textAlign: TextAlign.start,
+                ),
+              ),
+            ),
+            Expanded(
+                flex: 0,
+                child: Container(
+                  margin: const EdgeInsets.only(left: 40),
+                  decoration: BoxDecoration(
+                    color: userModel.state!
+                        ? CompanyColor.color().primary
+                        : CompanyColor.color().third,
+                    border: Border.all(
+                      width: 1.2,
+                      color: CompanyColor.color().primary,
+                    ),
                   ),
-                ),
-                child: Icon(
-                  Icons.check,
-                  color: CompanyColor.color().third,
-                ),
-              ))
-        ],
+                  child: Icon(
+                    Icons.check,
+                    color: CompanyColor.color().third,
+                  ),
+                ))
+          ],
+        ),
       ),
     );
   }

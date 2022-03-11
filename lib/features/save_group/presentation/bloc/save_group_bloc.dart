@@ -24,6 +24,10 @@ class SaveGroupBloc extends Bloc<SaveGroupEvent, SaveGroupState> {
       yield ChangeStateLoading();
       yield ChangeStateState(event.userModel);
     }
+    if (event is InitStateSaveGroupEvent) {
+      yield ChangeStateLoading();
+      yield SaveGroupInitial();
+    }
     if (event is SaveNewGroupEvent) {
       yield SaveNewGroupLoadingState();
       final result = await saveNewGroup(event.groupModel);

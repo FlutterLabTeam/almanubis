@@ -1,3 +1,4 @@
+import 'package:almanubis/core/components/custom_circular_progress_indicator/custom_circular_progress_indicator.dart';
 import 'package:almanubis/core/util/snack_bar_message.dart';
 import 'package:almanubis/features/new_user/presentation/bloc/new_user_bloc.dart';
 import 'package:almanubis/core/components/button/custom_button.dart';
@@ -125,6 +126,7 @@ class _NewUserState extends State<NewUser> {
                             label: "Usuario",
                             controller: userController,
                             color: CustomInputColor.dark,
+                            validator: userValidate,
                           ),
                         ),
                       ),
@@ -161,7 +163,7 @@ class _NewUserState extends State<NewUser> {
                           model: CustomInputColorModel(
                             label: "Repita la Contraseña",
                             color: CustomInputColor.dark,
-                            validator: validationPassword,
+                            validator: validationRepeatPassword,
                             isObscure: stateRepeatPassword,
                             tapIcon: () => BlocProvider.of<NewUserBloc>(context)
                                 .add(ChangeRepeatPasswordEvent(
@@ -177,13 +179,13 @@ class _NewUserState extends State<NewUser> {
                               margin: EdgeInsets.symmetric(
                                 vertical: size.height * 0.02,
                               ),
-                              child: const CircularProgressIndicator(),
+                              child: const CustomCircularProgressIndicator(),
                             )
                           : Container(
                               height: size.height * 0.085,
                               margin: EdgeInsets.symmetric(
                                 horizontal: size.width * 0.12,
-                                vertical: size.height * 0.02,
+                                vertical: size.height * 0.09,
                               ),
                               child: CustomButton(
                                 model: CustomButtonModel(
@@ -213,6 +215,13 @@ class _NewUserState extends State<NewUser> {
       return null;
     }
   }
+  dynamic userValidate(value) {
+    if (value.isEmpty) {
+      return 'Este campo no puede ser vacío';
+    } else {
+      return null;
+    }
+  }
 
   dynamic validationPassword(value) {
     if (value.isEmpty) {
@@ -228,8 +237,8 @@ class _NewUserState extends State<NewUser> {
     if (value.isEmpty) {
       return 'Este campo no puede ser vacío';
     }
-    if (value.isEmpty == passwordController.text) {
-      return 'Este campo no puede ser vacío';
+    if (value != passwordController.text) {
+      return 'Las contraseñas no coinciden';
     } else if (value.length < 9) {
       return 'Este campo debe tener más de 8 dígitos';
     } else {

@@ -1,4 +1,5 @@
 import 'package:almanubis/core/model/group_model.dart';
+import 'package:almanubis/features/home_page/presentation/pages/home_page.dart';
 import 'package:almanubis/features/information_panel_groups/presentation/pages/information_panel_groups.dart';
 import 'package:almanubis/features/user_configuration/presentation/pages/user_configuration.dart';
 import 'package:almanubis/features/add_new_group/presentation/pages/add_new_user.dart';
@@ -52,6 +53,7 @@ class Routes {
       case '/newUser': return MaterialPageRoute(builder: (_) => const NewUser());
       case '/authPage': return MaterialPageRoute(builder: (_) => const AuthPage());
       case '/newGroup': return MaterialPageRoute(builder: (_) => const NewGroup());
+      case '/home': return MaterialPageRoute(builder: (_) => HomePage(userModel: userModel));
       case '/addNewUser': return MaterialPageRoute(builder: (_) => AddNewUser(model: groupModel));
       case '/listChat': return MaterialPageRoute(builder: (_) =>  ListChat(userModel: userModel));
       case '/chatGroup': return MaterialPageRoute(builder: (_) => ChatGroup(model: chatGroupModel,));
