@@ -73,6 +73,7 @@ class ChatInput extends StatelessWidget {
           handledSelectedTypeInput(typeInputChat),
           mediaList.isNotEmpty
               ? SizedBox(
+                  height: size.height*0.1,
                   width: size.width,
                   child: ListView.builder(
                     shrinkWrap: true,

@@ -16,8 +16,7 @@ abstract class GlobalDataSource {
   Future<String> takePhoto({required ImageQualityModel imageQualityModel});
   Future<String> takeImage({required ImageQualityModel imageQualityModel});
   Future<bool> downloadAssets({required String folderDB, required String path});
-  Future<String> saveImage(
-      {String? idUser, required String path, required String folderDB});
+  Future<String> saveImage({String? idUser, required String path, required String folderDB});
   Future<String> updateImage({
     String? idUser,
     required String path,

@@ -82,7 +82,8 @@ class _ChatGroupState extends State<ChatGroup> {
     _mPlayer.openPlayer();
     openTheRecorder();
     elementToSelected = ElementToDownload.image;
-    BlocProvider.of<ChatGroupBloc>(context).add(GetChatStreamEvent(idGroup: widget.model.groupModel!.id!));
+    BlocProvider.of<ChatGroupBloc>(context)
+        .add(GetChatStreamEvent(idGroup: widget.model.groupModel!.id!));
   }
 
   Future<void> generatePath() async {
@@ -176,8 +177,7 @@ class _ChatGroupState extends State<ChatGroup> {
                                   groupModel: widget.model.groupModel,
                                 ),
                               ),
-                            )
-                        ),
+                            )),
                   ),
                   Flexible(
                     fit: FlexFit.tight,
@@ -188,7 +188,8 @@ class _ChatGroupState extends State<ChatGroup> {
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapShot) {
                               bool pause = _mPlayer.isPaused;
-                              if ((snapShot.hasData && pause) || (snapShot.hasData && isPlayingAudio)) {
+                              if ((snapShot.hasData && pause) ||
+                                  (snapShot.hasData && isPlayingAudio)) {
                                 handledMapData(snapShot.data!);
                               }
                               return listChats.isNotEmpty
@@ -196,7 +197,8 @@ class _ChatGroupState extends State<ChatGroup> {
                                       reverse: true,
                                       shrinkWrap: true,
                                       itemCount: listChats.length,
-                                      itemBuilder: (BuildContext context, int index) {
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
                                         ChatModel chat = listChats[index];
                                         return Container(
                                           margin: const EdgeInsets.symmetric(
@@ -208,7 +210,8 @@ class _ChatGroupState extends State<ChatGroup> {
                                           child: CustomChat(
                                             model: CustomChatModel(
                                               color: chat.idUserCreate ==
-                                                      widget.model.userModel!.uid!
+                                                      widget
+                                                          .model.userModel!.uid!
                                                   ? CustomChatColor.light
                                                   : CustomChatColor.dark,
                                               chatModel: chat,
@@ -229,7 +232,8 @@ class _ChatGroupState extends State<ChatGroup> {
                                     );
                             },
                           )
-                        : const Center(child: CustomCircularProgressIndicator()),
+                        : const Center(
+                            child: CustomCircularProgressIndicator()),
                   ),
                   BlocBuilder<GlobalBloc, GlobalState>(
                       builder: (context, state) {
@@ -250,29 +254,30 @@ class _ChatGroupState extends State<ChatGroup> {
                       BlocProvider.of<GlobalBloc>(context).add(DisposeEvent());
                     }
                     return ChatInput(
-                        isSend: isSend,
-                        mediaList: listPath,
-                        saveAudio: saveAudio,
-                        saveVideo: saveVideo,
-                        counter: _recorderTxt,
-                        controller: controller,
-                        loadingButton: loadingButton,
-                        typeInputChat: chatInputType,
-                        audioInputState: audioInputState,
-                        handledTapOption: handledTapOption,
-                        handledPlayAudio: handledPlayAudio,
-                        elementToDownload: elementToSelected,
-                        handledDeleteAudio: handledDeleteAudio,
-                        handledChangeInput: handledChangeInput,
-                        handledDeleteImage: handledDeleteImage,
-                        handledListenAudio: handledListenAudio,
-                        handledStopRecorder: handledStopRecorder,
-                        handledTapCamara: () => handledTakeImage(isPhoto: true),
-                        handledSubmitChat: () {
-                          listPath.isNotEmpty
-                              ? saveImage()
-                              : handledSaveMessage();
-                        });
+                      isSend: isSend,
+                      mediaList: listPath,
+                      saveAudio: saveAudio,
+                      saveVideo: saveVideo,
+                      counter: _recorderTxt,
+                      controller: controller,
+                      loadingButton: loadingButton,
+                      typeInputChat: chatInputType,
+                      audioInputState: audioInputState,
+                      handledTapOption: handledTapOption,
+                      handledPlayAudio: handledPlayAudio,
+                      elementToDownload: elementToSelected,
+                      handledDeleteAudio: handledDeleteAudio,
+                      handledChangeInput: handledChangeInput,
+                      handledDeleteImage: handledDeleteImage,
+                      handledListenAudio: handledListenAudio,
+                      handledStopRecorder: handledStopRecorder,
+                      handledTapCamara: () => handledTakeImage(isPhoto: true),
+                      handledSubmitChat: () {
+                        listPath.isNotEmpty
+                            ? saveImage()
+                            : handledSaveMessage();
+                      },
+                    );
                   })
                 ],
               );
@@ -284,12 +289,20 @@ class _ChatGroupState extends State<ChatGroup> {
   }
 
   handledMapData(QuerySnapshot data) {
-    listChats = data.docs.map((e) => ChatModel.fromJson(e.data(), e.id)).toList();
+    listChats =
+        data.docs.map((e) => ChatModel.fromJson(e.data(), e.id)).toList();
     listChats.sort((a, b) => b.dateCreate.compareTo(a.dateCreate));
-    List<ChatModel> listChatsFilter = listChats.where((element) => element.listUserReceiver.contains(widget.model.userModel!.uid!)).toList();
+    List<ChatModel> listChatsFilter = listChats
+        .where((element) =>
+            element.listUserReceiver.contains(widget.model.userModel!.uid!))
+        .toList();
     List<String> listChatId = listChatsFilter.map((e) => e.id!).toList();
     if (listChatId.isNotEmpty) {
-      BlocProvider.of<ChatGroupBloc>(context).add(ReadingChatEvent(listIdChat: listChatId, userId: widget.model.userModel!.uid!,),
+      BlocProvider.of<ChatGroupBloc>(context).add(
+        ReadingChatEvent(
+          listIdChat: listChatId,
+          userId: widget.model.userModel!.uid!,
+        ),
       );
     }
   }
@@ -484,10 +497,11 @@ class _ChatGroupState extends State<ChatGroup> {
     await handledStopRecorder();
     loadingButton = true;
     audioInputState = AudioInputState.slow;
-    BlocProvider.of<ChatGroupBloc>(context).add(SaveAudioEvent(file: File(_mPath)));
+    BlocProvider.of<ChatGroupBloc>(context)
+        .add(SaveAudioEvent(file: File(_mPath)));
   }
 
-  createMessage(){
+  createMessage() {
     path = "";
     isAssets = false;
     controller.text = "";
