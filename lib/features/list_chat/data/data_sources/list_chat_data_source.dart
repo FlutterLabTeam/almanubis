@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class ListChatDataSource {
   Future<List<ChatModel>> getListChat(String userId);
-  Future<Stream<QuerySnapshot>> getListChatSnapShot({required bool isAdmin, required userId});
+  Future<Stream<QuerySnapshot>> getListGroupSnapShot({required bool isAdmin, required userId});
 }
 
 class ListChatDataSourceImpl implements ListChatDataSource {
@@ -30,10 +30,9 @@ class ListChatDataSourceImpl implements ListChatDataSource {
   }
 
   @override
-  Future<Stream<QuerySnapshot>> getListChatSnapShot({required bool isAdmin, required userId}) async {
+  Future<Stream<QuerySnapshot>> getListGroupSnapShot({required bool isAdmin, required userId}) async {
     try {
       Stream<QuerySnapshot> _listChatsSnapShot;
-
       if(isAdmin){
         _listChatsSnapShot = FirebaseFirestore.instance.collection('groups').snapshots();
       }else{

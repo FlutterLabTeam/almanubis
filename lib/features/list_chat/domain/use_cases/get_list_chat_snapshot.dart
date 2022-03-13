@@ -4,16 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:almanubis/core/usecases/use_cases.dart';
 import 'package:almanubis/features/list_chat/domain/repositories/list_chat_repository.dart';
 
-class GetListChatSnapShot
+class GetListGroupSnapShot
     extends UseCase<Stream<QuerySnapshot>, GetListChatSnapShotParams> {
   final ListChatRepository listChatRepository;
 
-  GetListChatSnapShot({required this.listChatRepository});
+  GetListGroupSnapShot({required this.listChatRepository});
 
   @override
   Future<Either<Failure, Stream<QuerySnapshot>>> call(
       GetListChatSnapShotParams params) {
-    return listChatRepository.getListChatSnapShot(
+    return listChatRepository.getListGroupSnapShot(
       isAdmin: params.isAdmin,
       userId: params.userId,
     );

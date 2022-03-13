@@ -120,7 +120,7 @@ init() async {
       ));
   sl.registerFactory(() => ListChatBloc(
         getListChat: sl(),
-        getListChatSnapShot: sl(),
+        getListGroupSnapShot: sl(),
       ));
   sl.registerFactory(() => ChatGroupBloc(
         saveVideo: sl(),
@@ -162,9 +162,9 @@ init() async {
   sl.registerLazySingleton(() => GetAllUserAdd(addNewUserRepository: sl()));
   sl.registerLazySingleton(() => SearchUserAdd(addNewUserRepository: sl()));
   sl.registerLazySingleton(() => DeleteUser(informationPanelRepository: sl()));
-  sl.registerLazySingleton(() => GetListChatSnapShot(listChatRepository: sl()));
   sl.registerLazySingleton(() => AddNewUserUseCase(addNewUserRepository: sl()));
   sl.registerLazySingleton(() => UpdateUser(userConfigurationRepository: sl()));
+  sl.registerLazySingleton(() => GetListGroupSnapShot(listChatRepository: sl()));
   sl.registerLazySingleton(() => ActiveNotification(informationPanelRepository: sl()));
   sl.registerLazySingleton(() => DisableNotification(informationPanelRepository: sl()));
 

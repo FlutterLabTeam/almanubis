@@ -12,20 +12,20 @@ part 'list_chat_state.dart';
 
 class ListChatBloc extends Bloc<ListChatEvent, ListChatState> {
   final GetListChat getListChat;
-  final GetListChatSnapShot getListChatSnapShot;
+  final GetListGroupSnapShot getListGroupSnapShot;
 
   ListChatBloc({
     required this.getListChat,
-    required this.getListChatSnapShot,
+    required this.getListGroupSnapShot,
   }) : super(ListChatInitial());
 
   @override
   Stream<ListChatState> mapEventToState(
     ListChatEvent event,
   ) async* {
-    if (event is GetAllListChatStreamEvent) {
+    if (event is GetAllListGroupStreamEvent) {
       yield GetAllListChatLoadingState();
-      final result = await getListChatSnapShot(GetListChatSnapShotParams(
+      final result = await getListGroupSnapShot(GetListChatSnapShotParams(
         userId: event.userId,
         isAdmin: event.isAdmin,
       ),);
@@ -44,6 +44,11 @@ class ListChatBloc extends Bloc<ListChatEvent, ListChatState> {
       }, (List<ChatModel> listChat) async* {
         yield GetAllListChatState(listChatModel: listChat);
       });
+    }
+    if (event is ListChatInitialEvent) {
+      yield GetAllListChatLoadingState();
+      yield ListChatInitial();
+
     }
   }
 }

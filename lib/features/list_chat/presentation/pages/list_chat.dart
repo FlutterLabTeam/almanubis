@@ -24,16 +24,18 @@ class ListChat extends StatefulWidget {
 class _ListChatState extends State<ListChat> {
   static late Size size;
   static late bool isListenChange;
+  static late bool isGetData = false;
   static late bool isStreamNotEmpty = false;
-  static late List<GroupModel> listGroup = [];
+  static late List<GroupModel> listChatGroup = [];
   static late Stream<QuerySnapshot> streamData;
   static late List<ChatModel> listMessageChat = [];
 
   @override
   void initState() {
+    super.initState();
+    isGetData = true;
     isListenChange = false;
     BlocProvider.of<ListChatBloc>(context).add(GetAllListChatEvent(userId: widget.userModel.uid!));
-    super.initState();
   }
 
   @override
@@ -54,7 +56,7 @@ class _ListChatState extends State<ListChat> {
         if (state is GetAllListChatState) {
           listMessageChat = state.listChatModel;
           BlocProvider.of<ListChatBloc>(context).add(
-            GetAllListChatStreamEvent(
+            GetAllListGroupStreamEvent(
               userId: widget.userModel.uid!,
               isAdmin: widget.userModel.rol == "ADMIN",
             ),
@@ -86,30 +88,28 @@ class _ListChatState extends State<ListChat> {
                     child: isStreamNotEmpty
                         ? StreamBuilder(
                             stream: streamData,
-                            builder: (context,
-                                AsyncSnapshot<QuerySnapshot> snapShot) {
-                              if (snapShot.hasData) {
-                                listGroup = snapShot.data!.docs.map((e) => GroupModel.fromJson(e.data(), e.id)).toList();
-                                if(isListenChange){
-                                  handledListenChange(snapShot.data!.docChanges);
-                                }
-                                isListenChange = true;
-                              }
+                            builder: (context, AsyncSnapshot<QuerySnapshot> snapShot) {
+                              handledSnapShotFunction(snapShot);
                               return ListView.builder(
-                                padding: EdgeInsets.symmetric(vertical: size.height * 0.05, horizontal: 25),
-                                itemCount: listGroup.length,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: size.height * 0.05,
+                                    horizontal: 25),
+                                itemCount: listChatGroup.length,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
-                                  GroupModel group = listGroup[index];
+                                  GroupModel group = listChatGroup[index];
                                   int counter = handledCalculateMessage(group);
                                   return CardChatHome(
                                     model: CardChatHomeModel(
-                                        counter: counter,
-                                        title: group.title,
-                                        description: group.description,
-                                        handledCart: () => handledPushChat(group),
-                                        dateTime: group.dateUpdate ?? group.dateCreate,
-                                        imageUrl: group.image.isEmpty ? noImage : group.image,
+                                      counter: counter,
+                                      title: group.title,
+                                      description: group.description,
+                                      handledCart: () => handledPushChat(group),
+                                      dateTime:
+                                          group.dateUpdate ?? group.dateCreate,
+                                      imageUrl: group.image.isEmpty
+                                          ? noImage
+                                          : group.image,
                                     ),
                                   );
                                 },
@@ -129,25 +129,49 @@ class _ListChatState extends State<ListChat> {
     );
   }
 
-  handledPushChat(GroupModel groupModel) => Navigator.of(context).pushNamed(
-        '/chatGroup',
-        arguments: ChatGroupModel(
-          groupModel: groupModel,
-          userModel: widget.userModel,
-        ),
-      );
-
-  int handledCalculateMessage(GroupModel groupModel) {
-    List<ChatModel> chatModel = listMessageChat.where((element) => element.idGroup == groupModel.id!).toList();
-    int data = chatModel.where((element) => element.listUserReceiver.contains(widget.userModel.uid!)).toList().length;
-    return data;
+  handledPushChat(GroupModel groupModel) {
+    isGetData = false;
+    listMessageChat.removeWhere((element) => element.idGroup == groupModel.id);
+    BlocProvider.of<ListChatBloc>(context).add(ListChatInitialEvent());
+    Navigator.of(context).pushNamed(
+      '/chatGroup',
+      arguments: ChatGroupModel(
+        groupModel: groupModel,
+        userModel: widget.userModel,
+      ),
+    );
   }
 
-  handledListenChange(List<DocumentChange> dataChange){
-    List<GroupModel> listGroupChange = dataChange.map((e) => GroupModel.fromJson(e.doc.data(), e.doc.id)).toList();
-    for (var element in listGroupChange) {
-      ChatModel chatModel = ChatModel.fromJsonNoData(idGroup: element.id, listUserReceiver: [widget.userModel.uid!]);
+  int handledCalculateMessage(GroupModel groupModel) => listMessageChat
+      .where((element) => element.idGroup == groupModel.id!)
+      .toList()
+      .length;
+
+  handledListenChange(List<DocumentChange> dataChange) {
+    List<GroupModel> listChatGroupChange = dataChange
+        .map((e) => GroupModel.fromJson(e.doc.data(), e.doc.id))
+        .toList();
+    for (var element in listChatGroupChange) {
+      ChatModel chatModel = ChatModel.fromJsonNoData(
+          idGroup: element.id, listUserReceiver: [widget.userModel.uid!]);
       listMessageChat.add(chatModel);
     }
+  }
+
+  handledSnapShotFunction(AsyncSnapshot<QuerySnapshot> snapShot) {
+    if(isGetData){
+      if (snapShot.hasData) {
+        listChatGroup = snapShot.data!.docs
+            .map((e) => GroupModel.fromJson(e.data(), e.id))
+            .toList();
+        if (isListenChange) {
+          handledListenChange(snapShot.data!.docChanges);
+        }
+        isListenChange = true;
+      }
+    }else{
+      isGetData = true;
+    }
+
   }
 }
