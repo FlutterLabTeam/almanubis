@@ -14,13 +14,16 @@ class AuthNewScreen extends BaseScreen<AuthScreenState, AuthCubit> {
     if (state.isLoading) {
       return Lottie();
     }
+
     return Column(
       children: [
         CustomInput(model: state.userInputModel),
+        (state.isLoading) ? 
         ElevatedButton(
           onPressed: () => bloc.login('', ''),
           child: Text("Login"),
-        ),
+        ) :
+        Lottie();
       ],
     );
   }

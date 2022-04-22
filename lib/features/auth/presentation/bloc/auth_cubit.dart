@@ -1,8 +1,6 @@
 import 'package:almanubis/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../core/errors/failure.dart';
 import '../../domain/usecases/get_user_data.dart';
 import '../../domain/usecases/login_email.dart';
 import '../../domain/usecases/save_user_logged.dart';
