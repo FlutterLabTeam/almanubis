@@ -60,104 +60,109 @@ class _AuthPageState extends State<AuthPage> {
           body: CustomBody(
         model: CustomBodyModel(
           color: ColorCustomBody.dark,
-          body: SingleChildScrollView(child: BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) {
-              buttonLoading = false;
-              if (state is ChangePasswordState) {
-                statePassword = state.state;
-              }
-              if (state is LoginLoadingState) {
-                buttonLoading = true;
-              }
-              return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: size.height * 0.17,
-                      margin: EdgeInsets.only(top: size.height * 0.13),
-                      width: double.infinity,
-                      child: CustomImage(
-                        model: CustomImageModel(color: CustomImageColor.light),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: size.height * 0.04),
-                      child: Text(
-                        "almanubis",
-                        style: CompanyFontStyle.style().titleAppLight,
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(
-                        top: size.height * 0.1,
-                        bottom: size.height * 0.02,
-                        right: size.width * 0.12,
-                        left: size.width * 0.12,
-                      ),
-                      child: CustomInput(
-                        model: CustomInputColorModel(
-                            label: "Usuario", controller: emailController),
-                      ),
-                    ),
-                    Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: size.width * 0.12),
-                      child: CustomInput(
-                        model: CustomInputColorModel(
-                          label: "Contraseña",
-                          isObscure: statePassword,
-                          controller: passwordController,
-                          typeInput: CustomInputType.password,
-                          tapIcon: () => BlocProvider.of<AuthBloc>(context)
-                              .add(ChangePasswordEvent(state: !statePassword)),
+          body: SingleChildScrollView(
+            child: BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                buttonLoading = false;
+                if (state is ChangePasswordState) {
+                  statePassword = state.state;
+                }
+                if (state is LoginLoadingState) {
+                  buttonLoading = true;
+                }
+                return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: size.height * 0.17,
+                        margin: EdgeInsets.only(top: size.height * 0.13),
+                        width: double.infinity,
+                        child: CustomImage(
+                          model:
+                              CustomImageModel(color: CustomImageColor.light),
                         ),
                       ),
-                    ),
-                    buttonLoading
-                        ? Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.symmetric(
-                              vertical: size.height * 0.08,
-                            ),
-                            child: const CustomCircularProgressIndicator(),
-                          )
-                        : Container(
-                            height: size.height * 0.085,
-                            margin: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.12,
-                              vertical: size.height * 0.08,
-                            ),
-                            child: CustomButton(
-                              model: CustomButtonModel(
-                                label: "Entrar",
-                                handledButton: () => handledLogin(),
-                                color: CustomButtonColor.dark,
+                      Container(
+                        margin: EdgeInsets.only(top: size.height * 0.04),
+                        child: Text(
+                          "almanubis",
+                          style: CompanyFontStyle.style().titleAppLight,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(
+                          top: size.height * 0.1,
+                          bottom: size.height * 0.02,
+                          right: size.width * 0.12,
+                          left: size.width * 0.12,
+                        ),
+                        child: CustomInput(
+                          model: CustomInputColorModel(
+                              label: "Usuario", controller: emailController),
+                        ),
+                      ),
+                      Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: size.width * 0.12),
+                        child: CustomInput(
+                          model: CustomInputColorModel(
+                            label: "Contraseña",
+                            isObscure: statePassword,
+                            controller: passwordController,
+                            typeInput: CustomInputType.password,
+                            tapIcon: () => BlocProvider.of<AuthBloc>(context)
+                                .add(
+                                    ChangePasswordEvent(state: !statePassword)),
+                          ),
+                        ),
+                      ),
+                      buttonLoading
+                          ? Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.symmetric(
+                                vertical: size.height * 0.08,
+                              ),
+                              child: const CustomCircularProgressIndicator(),
+                            )
+                          : Container(
+                              height: size.height * 0.085,
+                              margin: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.12,
+                                vertical: size.height * 0.08,
+                              ),
+                              child: CustomButton(
+                                model: CustomButtonModel(
+                                  label: "Entrar",
+                                  handledButton: () => handledLogin(),
+                                  color: CustomButtonColor.dark,
+                                ),
                               ),
                             ),
-                          ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Solicita el acceso a ",
-                          style: TextStyle(
-                              color: CompanyColor.color().third, fontSize: 12),
-                        ),
-                        GestureDetector(
-                          child: Text(
-                            "Info@almanubis.com",
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Solicita el acceso a ",
                             style: TextStyle(
-                                color: CompanyColor.color().second,
+                                color: CompanyColor.color().third,
                                 fontSize: 12),
                           ),
-                        )
-                      ],
-                    )
-                  ]);
-            },
-          )),
+                          GestureDetector(
+                            child: Text(
+                              "Info@almanubis.com",
+                              style: TextStyle(
+                                  color: CompanyColor.color().second,
+                                  fontSize: 12),
+                            ),
+                          )
+                        ],
+                      )
+                    ]);
+              },
+            ),
+          ),
         ),
       )),
     );
@@ -171,6 +176,6 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   handledGoHome(UserModel userModel) {
-      Navigator.pushReplacementNamed(context, "/home", arguments: userModel);
+    Navigator.pushReplacementNamed(context, "/home", arguments: userModel);
   }
 }
